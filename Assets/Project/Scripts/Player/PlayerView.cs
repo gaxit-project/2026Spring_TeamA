@@ -42,6 +42,9 @@ public class PlayerView : MonoBehaviour
     public System.Action<Vector2> OnMoveInputReceived;
     public System.Action<Vector2> OnLookInputReceived;
 
+    public System.Action OnFireInputReceived;
+    public System.Action OnReloadInputReceived;
+
     private void OnMove(InputValue value)
     {
         // 入力値を読み取って、イベントを購読している先に通知する
@@ -51,5 +54,18 @@ public class PlayerView : MonoBehaviour
     private void OnLook(InputValue value)
     {
         OnLookInputReceived?.Invoke(value.Get<Vector2>());
+    }
+
+    private void OnFire(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            OnFireInputReceived?.Invoke();
+        }
+    }
+
+    private void OnReload(InputValue value)
+    {
+        OnReloadInputReceived?.Invoke();
     }
 }
