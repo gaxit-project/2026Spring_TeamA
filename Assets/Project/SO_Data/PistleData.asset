@@ -19,5 +19,6 @@ MonoBehaviour:
   damage: 1
   speed: 50
   maxAmmo: 15
-  fireRate: 0.5
+  initAmmo: 100
+  fireRate: 0.3
   reloadTime: 2

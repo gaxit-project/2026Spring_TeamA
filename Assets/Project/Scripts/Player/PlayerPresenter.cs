@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Threading;
-using Cysharp.Threading.Tasks.CompilerServices;
+using System.Collections.Generic;
 
 public class PlayerPresenter : MonoBehaviour
 {
@@ -12,16 +12,22 @@ public class PlayerPresenter : MonoBehaviour
     [SerializeField] private GunData[] inventoryGuns;
     [SerializeField] private GunView gunView;
 
+    [SerializeField] private AmmoView ammoView;
+
     private PlayerModel model;
     private GunModel gunModel;
 
     [SerializeField] private Transform weaponHolder;
     [SerializeField] private GameObject defaultGunPrefab;
 
+    // GunDataをキーにして、GunModelを保存する辞書
+    private Dictionary<GunData, GunModel> gunStatus = new Dictionary<GunData, GunModel>();
+
     private int currentGunIndex = 0; // 今構えている銃のインデックス
     private Vector2 rawLookInput; // 視点移動の入力を保持
     private bool isFiring; // ボタンが押されているかどうかの状態
     private float lastFireTime; // 最後に撃った時刻を記録する変数
+    private CancellationTokenSource fireCts;
     private CancellationTokenSource reloadCts; // リロード中断用
 
     private void Awake()
@@ -40,14 +46,6 @@ public class PlayerPresenter : MonoBehaviour
         // Viewの入力イベントを購読し、Modelのデータへ反映させる
         // 移動・視点入力
         view.OnMoveInputReceived += (input) => model.MoveInput = input;
-        /*view.OnLookInputReceived += (look) =>
-        {
-            float stickSmoothing = Time.deltaTime * 100f; // 100は調整用の倍率
-            model.CurrentPan += look.x * playerData.rotationSensitivity * stickSmoothing;
-
-            model.currentPitch -= look.y * playerData.rotationSensitivity;
-            model.currentPitch = Mathf.Clamp(model.currentPitch, playerData.minPitch, playerData.maxPitch);
-        };*/
 
         view.OnLookInputReceived += (look) =>
         {
@@ -55,7 +53,7 @@ public class PlayerPresenter : MonoBehaviour
         };
 
 
-        // 攻撃
+        // 攻撃系
         view.OnAimInputReceived += (IsAiming) =>
         {
             view.SetAiming(IsAiming);
@@ -63,15 +61,34 @@ public class PlayerPresenter : MonoBehaviour
 
         view.OnFireInputReceived += (pressed) =>
         {
+            Debug.Log($"{pressed}");
+
+            if (isFiring == pressed) return;
             // 押しっぱなしの状態を記録
             isFiring = pressed;
 
-            // セミオートは押された瞬間だけ発射する
-            if (pressed && !gunData.isFullAuto) TryFire();
-
-            //if (!gunModel.CanShoot()) return;
-
-            //if (Time.time >= lastFireTime + gunData.fireRate) ExecuteFire();
+            if (pressed)
+            {
+                if (gunData.isFullAuto)
+                {
+                    if (fireCts == null || fireCts.IsCancellationRequested)
+                    {
+                        fireCts?.Cancel();
+                        fireCts = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
+                        FireLoopAsync(fireCts.Token).Forget();
+                    }
+                }
+                else
+                {
+                    TryFire();
+                }
+            }
+            else
+            {
+                fireCts?.Cancel();
+                fireCts?.Dispose();
+                fireCts = null;
+            }
         };
 
         view.OnFireEffectTiming += () =>
@@ -130,18 +147,6 @@ public class PlayerPresenter : MonoBehaviour
 
         view.UpdateBodyRotation(model.CurrentPan);
         view.SetUpperBodyPitch(model.currentPitch);
-
-        if (isFiring && gunData != null && gunData.isFullAuto)
-        {
-            if (view.GetComponent<Animator>().GetBool("IsAiming"))
-            {
-                TryFire();
-            }
-            else
-            {
-                isFiring = false;
-            }
-        }
     }
 
     private void RotateWeapon(int direction)
@@ -173,6 +178,13 @@ public class PlayerPresenter : MonoBehaviour
             reloadCts = null;
         }
 
+        if (fireCts != null)
+        {
+            fireCts?.Cancel();
+            fireCts?.Dispose();
+            fireCts = null;
+        }
+
         foreach (Transform child in weaponHolder) Destroy(child.gameObject);
 
         GameObject gunObj = Instantiate(data.gunPrefab, weaponHolder);
@@ -185,14 +197,36 @@ public class PlayerPresenter : MonoBehaviour
         gunObj.transform.localPosition = Vector3.zero;
         gunObj.transform.localRotation = Quaternion.identity;
 
-        gunView = gunObj.GetComponent<GunView>();
+        // この武器が初めて使うものなら、新しくModelを作って辞書に登録する
+        if (!gunStatus.ContainsKey(data)) gunStatus.Add(data, new GunModel(data));
 
+        // 辞書から現在の武器の状態を取得する
+        gunModel = gunStatus[data];
+
+        gunView = gunObj.GetComponent<GunView>();
         this.gunData = data;
-        gunModel = new GunModel(data);
+ 
+
+        ammoView.UpdateAmmoDisplay(gunModel.CurrentAmmo, gunModel.ReserveAmmo);
+    }
+
+    private async UniTaskVoid FireLoopAsync(CancellationToken token)
+    {
+        while (!token.IsCancellationRequested)
+        {
+            if (view.GetComponent<Animator>().GetBool("IsAiming") && gunModel.CanShoot())
+            {
+                TryFire();
+            }
+
+            // 次の発射まで待機する
+            await UniTask.Delay((int)(gunData.fireRate * 1000), cancellationToken: token);
+        }
     }
 
     private void TryFire()
     {
+        if (!isFiring) return;
         if (!gunModel.CanShoot()) return;
         if (Time.time < lastFireTime + gunData.fireRate) return;
         if (!view.GetComponent<Animator>().GetBool("IsAiming")) return;
@@ -205,10 +239,10 @@ public class PlayerPresenter : MonoBehaviour
         lastFireTime = Time.time;
 
         gunModel.ConsumeAmmo();
+        ammoView.UpdateAmmoDisplay(gunModel.CurrentAmmo, gunModel.ReserveAmmo);
 
+        view.OnShoot();
         view.PlayFireAnim();
-
-        if (gunData.isFullAuto) view.OnShoot();
 
         Debug.Log($"[Fire] Damage: {gunModel.Damage}, Remaining Ammo: {gunModel.CurrentAmmo}");
     }
@@ -226,7 +260,16 @@ public class PlayerPresenter : MonoBehaviour
         {
             await UniTask.Delay((int)(gunData.reloadTime * 1000), cancellationToken: token);
             gunModel.Reload();
+
+            if (ammoView != null)
+            {
+                ammoView.UpdateAmmoDisplay(gunModel.CurrentAmmo, gunModel.ReserveAmmo);
+            }
             Debug.Log($"Reload complete! Ammo: {gunModel.CurrentAmmo}");
+        }
+        catch (System.OperationCanceledException)
+        {
+
         }
         finally
         {

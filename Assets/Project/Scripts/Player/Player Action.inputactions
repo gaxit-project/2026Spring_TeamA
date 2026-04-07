@@ -26,21 +26,21 @@
                 },
                 {
                     "name": "Fire",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "e28a002c-f98c-4f94-a89a-4ad028308707",
-                    "expectedControlType": "",
-                    "processors": "",
+                    "expectedControlType": "Digital",
+                    "processors": "AxisDeadzone",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Aim",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "460c6a5e-4850-4862-8a55-9a50aa48e055",
-                    "expectedControlType": "",
+                    "expectedControlType": "Digital",
                     "processors": "",
-                    "interactions": "Press(behavior=2)",
-                    "initialStateCheck": true
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Reload",
