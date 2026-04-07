@@ -3,8 +3,8 @@
 public class GunView : MonoBehaviour
 {
     [SerializeField] private GameObject bulletPrefab; // 銃弾のプレハブ
-    [SerializeField] private Transform muzzlePoint; // 弾が出る位置
-    //[SerializeField] private ParticleSystem muzzleFlash;
+    public Transform muzzlePoint; // 弾が出る位置
+    [SerializeField] private ParticleSystem muzzleFlash;
 
     public void LaunchBullet(Vector3 targetDirection, float speed)
     {
@@ -14,6 +14,11 @@ public class GunView : MonoBehaviour
         if (rb != null)
         {
             rb.linearVelocity = targetDirection * speed;
+        }
+
+        if (muzzleFlash != null)
+        {
+            muzzleFlash.Play();
         }
     }
 }
