@@ -205,6 +205,11 @@ public class PlayerPresenter : MonoBehaviour
 
         gunView = gunObj.GetComponent<GunView>();
         this.gunData = data;
+
+        if (data.drawSound != null)
+        {
+            gunView.PlayShotSound(data.drawSound);
+        }
  
 
         ammoView.UpdateAmmoDisplay(gunModel.CurrentAmmo, gunModel.ReserveAmmo);
@@ -231,6 +236,12 @@ public class PlayerPresenter : MonoBehaviour
         if (Time.time < lastFireTime + gunData.fireRate) return;
         if (!view.GetComponent<Animator>().GetBool("IsAiming")) return;
 
+        if (gunModel.CurrentAmmo <= 0 && !gunModel.IsReloading)
+        {
+            gunView.PlayShotSound(gunData.emptySound);
+            return;
+        }
+
         ExecuteFire();
     }
 
@@ -244,6 +255,8 @@ public class PlayerPresenter : MonoBehaviour
         view.OnShoot();
         view.PlayFireAnim();
 
+        gunView.PlayShotSound(gunData.fireSound);
+
         Debug.Log($"[Fire] Damage: {gunModel.Damage}, Remaining Ammo: {gunModel.CurrentAmmo}");
     }
 
@@ -256,10 +269,13 @@ public class PlayerPresenter : MonoBehaviour
 
         view.PlayReloadAnim();
 
+        gunView.PlaySimpleSound(gunData.reloadSound);
+
         try
         {
             await UniTask.Delay((int)(gunData.reloadTime * 1000), cancellationToken: token);
             gunModel.Reload();
+            gunView.StopSound();
 
             if (ammoView != null)
             {

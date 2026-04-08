@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: PlayerData
   m_EditorClassIdentifier: 
   moveSpeed: 10
-  rotationSensitivity: 0.5
+  rotationSensitivity: 1
   minPitch: -20
   maxPitch: 20

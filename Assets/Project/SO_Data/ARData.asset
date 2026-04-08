@@ -22,3 +22,7 @@ MonoBehaviour:
   initAmmo: 100
   fireRate: 0.2
   reloadTime: 2
+  fireSound: {fileID: 8300000, guid: 1356f85e0cb80d74d9d9ecfa4f2784f4, type: 3}
+  reloadSound: {fileID: 8300000, guid: 2d8f769727d988a4e8e462c2ec4008c5, type: 3}
+  emptySound: {fileID: 8300000, guid: d765f4babfd5b1647b8ecf78d4834da8, type: 3}
+  drawSound: {fileID: 8300000, guid: b5339d98a4526254994fb3042c72b231, type: 3}
