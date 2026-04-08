@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c54cd6513c5338459942f9c7aed4db3, type: 3}
+  m_Name: ARData
+  m_EditorClassIdentifier: 
+  gunName: AR
+  gunPrefab: {fileID: 5304872329157618278, guid: 6d946e00075767e4c8262eb7d3fa621b, type: 3}
+  animatorOverride: {fileID: 22100000, guid: 3a317eda2df4e9440a3dab1aac7f00f6, type: 2}
+  isFullAuto: 1
+  damage: 1
+  speed: 50
+  maxAmmo: 30
+  initAmmo: 100
+  fireRate: 0.2
+  reloadTime: 2
+  fireSound: {fileID: 8300000, guid: 1356f85e0cb80d74d9d9ecfa4f2784f4, type: 3}
+  reloadSound: {fileID: 8300000, guid: 2d8f769727d988a4e8e462c2ec4008c5, type: 3}
+  emptySound: {fileID: 8300000, guid: d765f4babfd5b1647b8ecf78d4834da8, type: 3}
+  drawSound: {fileID: 8300000, guid: b5339d98a4526254994fb3042c72b231, type: 3}

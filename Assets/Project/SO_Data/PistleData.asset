@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c54cd6513c5338459942f9c7aed4db3, type: 3}
+  m_Name: PistleData
+  m_EditorClassIdentifier: 
+  gunName: Pistle
+  gunPrefab: {fileID: 8195485159112515587, guid: 788ca3581166f8a4a8058c6a7942945f, type: 3}
+  animatorOverride: {fileID: 22100000, guid: a8b785862b8465d4ea77e80bf130fcec, type: 2}
+  isFullAuto: 0
+  damage: 1
+  speed: 50
+  maxAmmo: 15
+  initAmmo: 100
+  fireRate: 0.3
+  reloadTime: 2
+  fireSound: {fileID: 8300000, guid: 51464b80fb69e5d449f658774e087548, type: 3}
+  reloadSound: {fileID: 8300000, guid: 2d8f769727d988a4e8e462c2ec4008c5, type: 3}
+  emptySound: {fileID: 8300000, guid: d765f4babfd5b1647b8ecf78d4834da8, type: 3}
+  drawSound: {fileID: 8300000, guid: b5339d98a4526254994fb3042c72b231, type: 3}
