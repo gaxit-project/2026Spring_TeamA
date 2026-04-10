@@ -13,6 +13,7 @@ public class PlayerPresenter : MonoBehaviour
     [SerializeField] private GunView gunView;
 
     [SerializeField] private AmmoView ammoView;
+    [SerializeField] private WeaponHUD weaponHUD;
 
     private PlayerModel model;
     private GunModel gunModel;
@@ -210,7 +211,8 @@ public class PlayerPresenter : MonoBehaviour
         {
             gunView.PlayShotSound(data.drawSound);
         }
- 
+
+        weaponHUD.UpdateWeaponUI(data);
 
         ammoView.UpdateAmmoDisplay(gunModel.CurrentAmmo, gunModel.ReserveAmmo);
     }
