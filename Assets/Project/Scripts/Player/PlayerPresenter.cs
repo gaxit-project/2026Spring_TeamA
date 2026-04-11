@@ -13,7 +13,8 @@ public class PlayerPresenter : MonoBehaviour
     [SerializeField] private GunView gunView;
 
     [SerializeField] private AmmoView ammoView;
-    [SerializeField] private WeaponHUD weaponHUD;
+    //[SerializeField] private WeaponHUD weaponHUD;
+    [SerializeField] private HPView hpView;
 
     private PlayerModel model;
     private GunModel gunModel;
@@ -43,6 +44,7 @@ public class PlayerPresenter : MonoBehaviour
 
         // Model に ScriptableObject を渡して初期化
         model = new PlayerModel(playerData);
+        hpView.UpdateHpDiaplay(model.CurrentHP);
 
         // Viewの入力イベントを購読し、Modelのデータへ反映させる
         // 移動・視点入力
@@ -137,6 +139,7 @@ public class PlayerPresenter : MonoBehaviour
             if (enemyData != null)
             {
                 model.TakeDamage(enemyData.enemyAttackPower);
+                hpView.UpdateHpDiaplay(model.CurrentHP);
             }
         };
     }
@@ -223,7 +226,7 @@ public class PlayerPresenter : MonoBehaviour
             gunView.PlayShotSound(data.drawSound);
         }
 
-        weaponHUD.UpdateWeaponUI(data);
+        //weaponHUD.UpdateWeaponUI(data);
 
         ammoView.UpdateAmmoDisplay(gunModel.CurrentAmmo, gunModel.ReserveAmmo);
     }
