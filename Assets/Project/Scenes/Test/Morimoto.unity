@@ -279,6 +279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   view: {fileID: 567498051}
+  enemyData: {fileID: 11400000, guid: a769329706876d445988ce14bfb8b83e, type: 2}
 --- !u!114 &567498051
 MonoBehaviour:
   m_ObjectHideFlags: 0
