@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Threading.Tasks;
+using UnityEngine;
 
 
 public class EnemyPresenter : MonoBehaviour
@@ -35,6 +36,12 @@ public class EnemyPresenter : MonoBehaviour
             if (isAttacking)
             {
                 view.OnAttack();
+
+                var playerView = other.gameObject.GetComponent<PlayerView>();
+                if (playerView != null)
+                {
+                    playerView.OnHitByEnemy?.Invoke(enemyData);
+                }
             }
             else
             {

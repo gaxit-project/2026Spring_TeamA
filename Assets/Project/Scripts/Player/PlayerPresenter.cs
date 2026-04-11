@@ -132,10 +132,12 @@ public class PlayerPresenter : MonoBehaviour
         // Viewにゾンビのタグを教える
         view.SetTargetTag(playerData.zombieTag);
         // ダメージ処理
-        view.OnHitEnemy += () =>
+        view.OnHitByEnemy += (enemyData) =>
         {
-            // TODO: ゾンビのデータから攻撃力を取得する
-            model.TakeDamage(10);
+            if (enemyData != null)
+            {
+                model.TakeDamage(enemyData.enemyAttackPower);
+            }
         };
     }
 

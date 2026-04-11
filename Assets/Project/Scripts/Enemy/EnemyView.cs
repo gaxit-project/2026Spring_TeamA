@@ -1,19 +1,16 @@
-﻿using System.Runtime.CompilerServices;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
-using static UnityEngine.Rendering.DebugUI;
+
 [RequireComponent(typeof(NavMeshAgent))]
 
 public class EnemyView : MonoBehaviour
 {
-
     private NavMeshAgent _agent;    // ナビゲーション制御
     private Animator _animator;
 
     public System.Action<Collider> OnContactStay;
     public System.Action<Collider> OffContactExit;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _agent = GetComponent<NavMeshAgent>();

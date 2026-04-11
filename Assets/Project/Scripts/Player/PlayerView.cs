@@ -4,7 +4,8 @@ using Unity.Cinemachine;
 
 public class PlayerView : MonoBehaviour
 {
-    public System.Action OnHitEnemy;
+    // EnemyDataを受け取るためのアクション
+    public System.Action<EnemyData> OnHitByEnemy;
 
     [SerializeField] private Transform cameraPivot;
     [SerializeField] private Animator animator;
@@ -75,14 +76,6 @@ public class PlayerView : MonoBehaviour
     public void OnShoot()
     {
         OnFireEffectTiming?.Invoke();
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.CompareTag(targetTag))
-        {
-            OnHitEnemy?.Invoke();
-        }
     }
 
     private string targetTag;
