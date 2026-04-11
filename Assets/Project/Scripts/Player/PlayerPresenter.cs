@@ -128,6 +128,15 @@ public class PlayerPresenter : MonoBehaviour
         };
 
         view.OnWeaponSwitchInputRecieved += (direction) => RotateWeapon(direction);
+
+        // Viewにゾンビのタグを教える
+        view.SetTargetTag(playerData.zombieTag);
+        // ダメージ処理
+        view.OnHitEnemy += () =>
+        {
+            // TODO: ゾンビのデータから攻撃力を取得する
+            model.TakeDamage(10);
+        };
     }
 
     private void Update()
