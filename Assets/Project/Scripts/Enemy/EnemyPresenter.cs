@@ -1,14 +1,19 @@
-﻿using Cysharp.Threading.Tasks.Triggers;
-using UnityEngine;
-using UnityEngine.AI;
+﻿using UnityEngine;
+
 
 public class EnemyPresenter : MonoBehaviour
 {
     [SerializeField] private EnemyView view;
+    [SerializeField] private EnemyData enemyData;
+
+    private EnemyModel model;
+
     private GameObject _target;     // 追跡対象
 
     private void Awake()
     {
+        model = new EnemyModel(enemyData);  // Modelに ScriptableObject を渡して初期化
+
         view.OnContactStay += (other) => Contact(other, true);
         view.OffContactExit += (other) => Contact(other, false);
     }
