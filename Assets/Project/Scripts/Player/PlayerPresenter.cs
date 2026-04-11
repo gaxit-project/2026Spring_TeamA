@@ -268,16 +268,25 @@ public class PlayerPresenter : MonoBehaviour
 
         Debug.Log("Reloading started...");
         gunModel.IsReloading = true;
-
         view.PlayReloadAnim();
-
         gunView.PlaySimpleSound(gunData.reloadSound);
+
+        float startTime = Time.time;
+        float duration = gunData.reloadTime;
 
         try
         {
-            await UniTask.Delay((int)(gunData.reloadTime * 1000), cancellationToken: token);
-            gunModel.Reload();
+            while (Time.time - startTime < duration)
+            {
+                float progress = (Time.time - startTime) / duration;
+                ammoView.SetReloadProgress(progress);
+
+                await UniTask.Yield(token);
+            }
+
+            ammoView.SetReloadProgress(0f); // バーを隠す
             gunView.StopSound();
+            gunModel.Reload();
 
             if (ammoView != null)
             {
@@ -287,7 +296,8 @@ public class PlayerPresenter : MonoBehaviour
         }
         catch (System.OperationCanceledException)
         {
-
+            ammoView.SetReloadProgress(0f);
+            gunView.StopSound();
         }
         finally
         {
