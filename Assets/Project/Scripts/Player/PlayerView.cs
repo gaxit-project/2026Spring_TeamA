@@ -4,6 +4,8 @@ using Unity.Cinemachine;
 
 public class PlayerView : MonoBehaviour
 {
+    public System.Action OnHitEnemy;
+
     [SerializeField] private Transform cameraPivot;
     [SerializeField] private Animator animator;
     private static readonly int IsMoving = Animator.StringToHash("IsMoving");
@@ -74,6 +76,17 @@ public class PlayerView : MonoBehaviour
     {
         OnFireEffectTiming?.Invoke();
     }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag(targetTag))
+        {
+            OnHitEnemy?.Invoke();
+        }
+    }
+
+    private string targetTag;
+    public void SetTargetTag(string tag) => targetTag = tag;
 
     // 入力があったことをPresenterに知らせるためのイベント
     public System.Action<Vector2> OnMoveInputReceived;
