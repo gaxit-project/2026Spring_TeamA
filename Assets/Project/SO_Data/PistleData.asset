@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: PistleData
   m_EditorClassIdentifier: 
   gunName: Pistle
+  gunIcon: {fileID: 21300000, guid: e7da34303d532944abeaacd3f15e75f4, type: 3}
   gunPrefab: {fileID: 8195485159112515587, guid: 788ca3581166f8a4a8058c6a7942945f, type: 3}
   animatorOverride: {fileID: 22100000, guid: a8b785862b8465d4ea77e80bf130fcec, type: 2}
   isFullAuto: 0
   damage: 1
-  speed: 50
+  speed: 30
   maxAmmo: 15
   initAmmo: 100
   fireRate: 0.3
