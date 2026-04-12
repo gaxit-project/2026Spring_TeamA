@@ -112,6 +112,12 @@ public class PlayerPresenter : MonoBehaviour
             if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hit, maxDistance, layerMask))
             {
                 targetPoint = hit.point; // 何かに当たった場所
+
+                var damageable = hit.collider.GetComponent<IDamageable>();
+                if (damageable != null)
+                {
+                    damageable.TakeDamage(gunData.damage);
+                }
             }
             else
             {
