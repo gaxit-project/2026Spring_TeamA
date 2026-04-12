@@ -13,7 +13,7 @@ public class GunView : MonoBehaviour
         if (clip != null && audioSource != null)
         {
             // PlayOneShot: 連射しても音が途切れずに重なって聞こえる
-            audioSource.PlayOneShot(clip);
+            audioSource.PlayOneShot(clip, 0.2f);
         }
     }
 
