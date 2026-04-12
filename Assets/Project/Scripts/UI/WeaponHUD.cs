@@ -7,7 +7,7 @@ using TMPro;
 public class WeaponHUD : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private Image iconImage;
+    //[SerializeField] private Image iconImage;
 
     private CancellationTokenSource fadeCts;
 

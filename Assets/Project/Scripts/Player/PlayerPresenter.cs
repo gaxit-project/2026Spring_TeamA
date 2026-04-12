@@ -13,7 +13,7 @@ public class PlayerPresenter : MonoBehaviour
     [SerializeField] private GunView gunView;
 
     [SerializeField] private AmmoView ammoView;
-    //[SerializeField] private WeaponHUD weaponHUD;
+    [SerializeField] private WeaponHUD weaponHUD;
     [SerializeField] private HPView hpView;
 
     private PlayerModel model;
@@ -226,7 +226,7 @@ public class PlayerPresenter : MonoBehaviour
             gunView.PlayShotSound(data.drawSound);
         }
 
-        //weaponHUD.UpdateWeaponUI(data);
+        weaponHUD.UpdateWeaponUI(data);
 
         ammoView.UpdateAmmoDisplay(gunModel.CurrentAmmo, gunModel.ReserveAmmo);
     }
