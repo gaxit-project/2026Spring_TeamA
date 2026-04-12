@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
@@ -10,6 +14,7 @@ public class EnemyView : MonoBehaviour
 
     public System.Action<Collider> OnContactStay;
     public System.Action<Collider> OffContactExit;
+    public System.Action<Collider, Collider> HitContact;
 
     void Start()
     {
@@ -50,5 +55,18 @@ public class EnemyView : MonoBehaviour
     {
         _agent.isStopped = false;   // 追跡開始
         _animator.SetBool("Attack", false);
+    }
+
+    public async UniTask Hit()
+    {
+        _agent.isStopped = true;
+        await UniTask.Delay(150);
+        _agent.isStopped = false;
+    }
+
+    public void Die()
+    {
+        _agent.isStopped = true;
+        _animator.SetBool("Die", true); 
     }
 }

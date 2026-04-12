@@ -68,6 +68,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Bullet_04 Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 5642858144603959214, guid: e4fdc43cc7c39fb48960032a89602f32, type: 3}
+      propertyPath: m_TagString
+      value: Bullet
+      objectReference: {fileID: 0}
     - target: {fileID: 5741043399777817005, guid: e4fdc43cc7c39fb48960032a89602f32, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.7071068
@@ -130,7 +134,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
