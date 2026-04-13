@@ -1,20 +1,20 @@
 ﻿using UnityEngine;
 
-public class EnemyModel 
+public class EnemyModel
 {
     private readonly EnemyData _enemyData;
 
-    public int CullentHP { get; set; }
+    public int CurrentHP { get; set; }
 
     public EnemyModel(EnemyData enemyData)
     {
         _enemyData = enemyData;
-        CullentHP = enemyData.enemyHP; 
+        CurrentHP = enemyData.enemyHP;
     }
 
     public void TakeDamage(int amount)
     {
-        CullentHP -= amount;
-        Debug.Log($"EnemyHP:{CullentHP}");
+        CurrentHP -= amount;
+        Debug.Log($"EnemyHP:{CurrentHP}");
     }
 }
