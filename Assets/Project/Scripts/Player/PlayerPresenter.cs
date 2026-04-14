@@ -1,14 +1,14 @@
-﻿using UnityEngine;
-using Cysharp.Threading.Tasks;
-using System.Threading;
+﻿using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
+using System.Threading;
+using UnityEngine;
 
 public class PlayerPresenter : MonoBehaviour
 {
     [SerializeField] private PlayerData playerData;
     [SerializeField] private PlayerView view;
 
-    [SerializeField] private GunData gunData;
     [SerializeField] private GunData[] inventoryGuns;
     [SerializeField] private GunView gunView;
 
@@ -17,6 +17,8 @@ public class PlayerPresenter : MonoBehaviour
     [SerializeField] private HPView hpView;
 
     private PlayerModel model;
+    
+    private GunData gunData;
     private GunModel gunModel;
 
     [SerializeField] private Transform weaponHolder;
@@ -53,6 +55,12 @@ public class PlayerPresenter : MonoBehaviour
         view.OnLookInputReceived += (look) =>
         {
             rawLookInput = look;
+        };
+
+        view.OnWeaponDirectSelect += (index) =>
+        {
+            Debug.Log($"[WeaponSelect] Index: {index} が押されました");
+            SwapWeapon(index);
         };
 
 

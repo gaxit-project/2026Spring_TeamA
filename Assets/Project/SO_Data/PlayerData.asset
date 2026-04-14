@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 515a77343a8956b4c8a94635651310b8, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
+  hp: 100
   moveSpeed: 10
+  moveDashSpeed: 20
   rotationSensitivity: 1
-  minPitch: -20
-  maxPitch: 20
+  minPitch: -30
+  maxPitch: 30
+  zombieTag: Zombie
+  damageInterval: 1
