@@ -19,10 +19,10 @@ public class TestPlayer : MonoBehaviour
     {
         if(_rb != null && _keyboard != null)
         {
-            if (_keyboard.wKey.isPressed) _rb.AddForce(0f, 0f, 10f);
-            if (_keyboard.aKey.isPressed) _rb.AddForce(-10f, 0f, 0f);
-            if (_keyboard.sKey.isPressed) _rb.AddForce(0f, 0f, -10f);
-            if (_keyboard.dKey.isPressed) _rb.AddForce(10f, 0f, 0f);
+            if (_keyboard.wKey.isPressed) _rb.linearVelocity = new Vector3(0f, 0f, 10f);
+            if (_keyboard.aKey.isPressed) _rb.linearVelocity = new Vector3(-10f, 0f, 0f);
+            if (_keyboard.sKey.isPressed) _rb.linearVelocity = new Vector3(0f, 0f, -10f);
+            if (_keyboard.dKey.isPressed) _rb.linearVelocity = new Vector3(10f, 0f, 0f);
         }
     }
 }
