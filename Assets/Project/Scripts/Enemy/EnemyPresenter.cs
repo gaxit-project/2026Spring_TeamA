@@ -53,19 +53,6 @@ public class EnemyPresenter : MonoBehaviour
         view.HitContact += (bullet, hitCollider) => OnHit(bullet, hitCollider);
     }
 
-    private void Start()
-    {
-        _target = GameObject.FindWithTag("Player");
-    }
-
-    private void FixedUpdate()
-    {
-        if(_isDead)
-        {
-            return;
-        }
-    }
-
     /// <summary>
     /// 攻撃があたった部位とダメージ量の処理を行う
     /// </summary>
