@@ -10,6 +10,7 @@ public class EnemyPresenter : MonoBehaviour
     [SerializeField] private EnemyData enemyData;   // ScriptableObject
     [SerializeField] private GunData gunData;   // ScriptableObject
     [SerializeField] private List<EnemyBodyPart> bodyParts;  // 当たり判定リスト
+    [SerializeField] private SoundDetectionView soundView;
 
     private EnemyModel model;
 
@@ -48,6 +49,14 @@ public class EnemyPresenter : MonoBehaviour
             }
             view.isTracking = true;
             view.MoveTo(pos);
+        };
+
+        soundView.HitEnemy += (col) =>
+        {
+            if(col.gameObject == view.gameObject || col.transform.IsChildOf(transform))
+            {
+                view.SetHearing(true);
+            }
         };
 
         view.HitContact += (bullet, hitCollider) => OnHit(bullet, hitCollider);

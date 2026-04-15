@@ -15,6 +15,7 @@ public class PlayerPresenter : MonoBehaviour
     [SerializeField] private AmmoView ammoView;
     [SerializeField] private WeaponHUD weaponHUD;
     [SerializeField] private HPView hpView;
+    [SerializeField] private SoundDetectionView sdView;
 
     private PlayerModel model;
     
@@ -136,6 +137,7 @@ public class PlayerPresenter : MonoBehaviour
             Vector3 fireDirection = (targetPoint - gunView.muzzlePoint.position).normalized;
             // その方向へ弾を発射
             gunView.LaunchBullet(fireDirection, gunData.speed);
+            sdView.SoundSource(transform.position, 10f);
         };
 
         view.OnReloadInputReceived += () =>
