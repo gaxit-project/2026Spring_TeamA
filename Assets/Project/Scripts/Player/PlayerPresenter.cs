@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerPresenter : MonoBehaviour
 {
@@ -202,6 +204,11 @@ public class PlayerPresenter : MonoBehaviour
 
     private void Update()
     {
+        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            SceneManager.LoadScene("Title");
+        }
+
         // Modelに移動量を計算させる
         Vector3 movement = model.CalcMove(Time.deltaTime);
         // 計算結果をViewに渡して移動を実行させる
