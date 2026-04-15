@@ -2905,6 +2905,7 @@ MonoBehaviour:
   enemyData: {fileID: 11400000, guid: a769329706876d445988ce14bfb8b83e, type: 2}
   gunData: {fileID: 0}
   bodyParts: []
+  soundView: {fileID: 0}
 --- !u!54 &6366368735064534514
 Rigidbody:
   m_ObjectHideFlags: 0

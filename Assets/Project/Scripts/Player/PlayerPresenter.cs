@@ -17,6 +17,7 @@ public class PlayerPresenter : MonoBehaviour
     [SerializeField] private AmmoView ammoView;
     [SerializeField] private WeaponHUD weaponHUD;
     [SerializeField] private HPView hpView;
+    [SerializeField] private SoundDetectionView sdView;
 
     private PlayerModel model;
     
