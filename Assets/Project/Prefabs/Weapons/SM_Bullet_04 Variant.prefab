@@ -69,6 +69,10 @@ PrefabInstance:
       value: SM_Bullet_04 Variant
       objectReference: {fileID: 0}
     - target: {fileID: 5642858144603959214, guid: e4fdc43cc7c39fb48960032a89602f32, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5642858144603959214, guid: e4fdc43cc7c39fb48960032a89602f32, type: 3}
       propertyPath: m_TagString
       value: Bullet
       objectReference: {fileID: 0}
@@ -99,6 +103,10 @@ PrefabInstance:
     - target: {fileID: 5741043399777817005, guid: e4fdc43cc7c39fb48960032a89602f32, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7634787681260851454, guid: e4fdc43cc7c39fb48960032a89602f32, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -166,7 +174,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &739638890318530364
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 
-public class EnemyPresenter : MonoBehaviour
+public class EnemyPresenter : MonoBehaviour, IDamageable
 {
     [SerializeField] private EnemyView view;    // 操作対象のview
     [SerializeField] private EnemyData enemyData;   // ScriptableObject
@@ -53,28 +53,14 @@ public class EnemyPresenter : MonoBehaviour
         view.HitContact += (bullet, hitCollider) => OnHit(bullet, hitCollider);
     }
 
-    /// <summary>
-    /// 攻撃があたった部位とダメージ量の処理を行う
-    /// </summary>
-    /// <param name="bullet"></param>
-    /// <param name="hitCollider"></param>
-    private void OnHit(Collider bullet, Collider hitCollider)
+    public void TakeDamage(int amount)
     {
-        var hitPart = bodyParts.Find(x => x.GetComponent<Collider>() == hitCollider);
-
-        if(hitPart == null)
-        {
-            return;
-        }
-
-        int takeDamage = hitPart.isHead ? gunData.damage * 2 : gunData.damage;
+        if (_isDead) return;
 
         // ModelにHPを計算させる
-        model.TakeDamage(takeDamage);
+        model.TakeDamage(amount);
 
-        // ダメージによる行動をViewに反映させる
         view.Hit().Forget();
-        Destroy(bullet.gameObject); // あたった弾を削除
 
         // 死亡処理
         if (model.CurrentHP <= 0 && !_isDead)
@@ -83,6 +69,20 @@ public class EnemyPresenter : MonoBehaviour
             view.Die();
             HandleDeathAsync().Forget();
         }
+    }
+
+    /// <summary>
+    /// 攻撃があたった部位とダメージ量の処理を行う
+    /// </summary>
+    /// <param name="bullet"></param>
+    /// <param name="hitCollider"></param>
+    private void OnHit(Collider bullet, Collider hitCollider)
+    {
+        var hitPart = bodyParts.Find(x => x.GetComponent<Collider>() == hitCollider);
+        if(hitPart == null) return;
+
+        int finaiDamage = hitPart.isHead ? gunData.damage * 2 : gunData.damage;
+        TakeDamage(finaiDamage);
     }
 
     private async UniTaskVoid HandleDeathAsync()

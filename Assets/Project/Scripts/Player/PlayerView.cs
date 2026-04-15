@@ -26,6 +26,11 @@ public class PlayerView : MonoBehaviour
         }
     }
 
+    public void SetDashAnimation(bool isDashing)
+    {
+        animator.SetBool("IsDashing", isDashing);
+    }
+
     public void UpdateBodyRotation(float panAngle)
     {
         transform.rotation = Quaternion.Euler(0, panAngle, 0);
@@ -85,17 +90,29 @@ public class PlayerView : MonoBehaviour
     public System.Action<Vector2> OnMoveInputReceived;
     public System.Action<Vector2> OnLookInputReceived;
 
+    public System.Action<bool> OnDashInputReceived;
     public System.Action<bool> OnAimInputReceived;
     public System.Action<bool> OnFireInputReceived;
     public System.Action OnFireEffectTiming;
     public System.Action OnReloadInputReceived;
     public System.Action<int> OnWeaponSwitchInputRecieved;
     public System.Action<int> OnWeaponDirectSelect;
+    public System.Action<Collider> OnTriggerEnterEvent;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        OnTriggerEnterEvent?.Invoke(other);
+    }
 
     private void OnMove(InputValue value)
     {
         // 入力値を読み取って、イベントを購読している先に通知する
         OnMoveInputReceived?.Invoke(value.Get<Vector2>());
+    }
+
+    private void OnDash(InputValue value)
+    {
+        OnDashInputReceived?.Invoke(value.isPressed);
     }
 
     private void OnLook(InputValue value)
