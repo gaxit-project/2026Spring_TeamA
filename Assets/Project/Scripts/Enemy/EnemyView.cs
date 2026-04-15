@@ -21,6 +21,9 @@ public class EnemyView : MonoBehaviour
     public float detectionRange = 10f;  // 検出範囲
     public bool isTracking = false;    // 追跡
 
+    private bool isHearing = false;
+    private bool isHit = false;
+
     void Start()
     {
         _agent = GetComponent<NavMeshAgent>();
@@ -54,10 +57,11 @@ public class EnemyView : MonoBehaviour
             _animator.SetBool("Attack", true);
             isTracking = false;
         }
-        else if (canSee) // 追跡開始
+        else if (canSee || isHearing　|| isHit) // 追跡開始
         {
             _animator.SetBool("Attack", false);
             OnFoundPlayer?.Invoke(player.position);
+            isHearing = false;
         }
         else if (isTracking) // 追跡中
         {
@@ -71,6 +75,7 @@ public class EnemyView : MonoBehaviour
         else
         {
             _agent.isStopped = true;
+            _agent.ResetPath();
             _animator.SetBool("Attack", false);
         }
     }
@@ -93,6 +98,11 @@ public class EnemyView : MonoBehaviour
         OffContactExit?.Invoke(other);   // 通知
     }
 
+    public void SetHearing(bool value)
+    {
+        isHearing = value;
+    }
+
     public void MoveTo(Vector3 direction)
     {
         if (isTracking)
@@ -104,14 +114,17 @@ public class EnemyView : MonoBehaviour
 
     public async UniTask Hit()
     {
+        isHit = true;
         _agent.isStopped = true;
         await UniTask.Delay(150);
         _agent.isStopped = false;
+        isHit = false;
     }
 
     public void Die()
     {
         _agent.isStopped = true;
+        _agent.ResetPath();
         _animator.SetBool("Die", true);
     }
 }
