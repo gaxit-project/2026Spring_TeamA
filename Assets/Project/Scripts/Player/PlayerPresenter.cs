@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 
 public class PlayerPresenter : MonoBehaviour
 {
+    public static PlayerPresenter Instance { get; private set; }
+
     [SerializeField] private PlayerData playerData;
     [SerializeField] private PlayerView view;
 
@@ -45,6 +47,8 @@ public class PlayerPresenter : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null) Instance = this;
+
         // 60FPS固定
         Application.targetFrameRate = 60;
 
@@ -82,8 +86,6 @@ public class PlayerPresenter : MonoBehaviour
 
         view.OnFireInputReceived += (pressed) =>
         {
-            Debug.Log($"{pressed}");
-
             if (isFiring == pressed) return;
             // 押しっぱなしの状態を記録
             isFiring = pressed;
@@ -128,6 +130,11 @@ public class PlayerPresenter : MonoBehaviour
             // 第1引数:起点, 第2:方向, 第3:当たった情報, 第4:最大距離
             if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hit, maxDistance, layerMask))
             {
+                // 当たった対象の名前をログに出す
+                Debug.Log($"Hit: {hit.collider.name} / Layer: {hit.collider.gameObject.layer}");
+                // 当たった場所まで赤い線を引く（Sceneビューで確認可能）
+                Debug.DrawLine(rayOrigin, hit.point, Color.red, 1.0f);
+
                 var damageable = hit.collider.GetComponentInParent<IDamageable>();
                 if (damageable != null)
                 {
@@ -149,6 +156,9 @@ public class PlayerPresenter : MonoBehaviour
             }
             else
             {
+                // 何にも当たっていない場合、射程限界まで緑の線を引く
+                Debug.DrawRay(rayOrigin, rayDirection * maxDistance, Color.green, 1.0f);
+
                 // 何も当たらなかった場合
                 Vector3 targetPoint = rayOrigin + (rayDirection * maxDistance);
                 Vector3 fireDirection = (targetPoint - gunView.muzzlePoint.position).normalized;
@@ -410,4 +420,6 @@ public class PlayerPresenter : MonoBehaviour
         // フェード演出開始
         gameOverView.PlayGameOverSequence().Forget();
     }
+
+    public PlayerView PlayerView => view;
 }

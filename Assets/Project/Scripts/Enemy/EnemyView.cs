@@ -24,15 +24,21 @@ public class EnemyView : MonoBehaviour
     private bool isHearing = false;
     private bool isHit = false;
 
-    void Start()
+    private void Start()
     {
         _agent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
+
+        // プレイヤーのTransformを自動取得
+        if (player == null && PlayerPresenter.Instance != null)
+        {
+            player = PlayerPresenter.Instance.PlayerView.transform;
+        }
     }
 
     private void Update()
     {
-        if (player == null)
+        if (player == null || enemyData == null)
         {
             return;
         }
@@ -57,7 +63,7 @@ public class EnemyView : MonoBehaviour
             _animator.SetBool("Attack", true);
             isTracking = false;
         }
-        else if (canSee || isHearing　|| isHit) // 追跡開始
+        else if (canSee || isHearing || isHit) // 追跡開始
         {
             _animator.SetBool("Attack", false);
             OnFoundPlayer?.Invoke(player.position);

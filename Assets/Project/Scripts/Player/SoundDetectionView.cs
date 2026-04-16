@@ -2,9 +2,15 @@
 
 public class SoundDetectionView : MonoBehaviour
 {
-    public System.Action<Collider> HitEnemy;
+    public static SoundDetectionView Instance { get; private set; }
 
+    public System.Action<Collider> HitEnemy;
     public LayerMask enemyLayer;
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+    }
 
     public void SoundSource(Vector3 center, float radius)
     {

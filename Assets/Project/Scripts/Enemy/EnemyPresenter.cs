@@ -17,6 +17,19 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
     private GameObject _target;     // 追跡対象
     private bool _isDead = false;   // 死亡判定
 
+    // 子要素にあるものはエディタ上で事前に埋めて保存する
+    private void OnValidate()
+    {
+        // Viewが未設定なら自身から取得
+        if (view == null) view = GetComponent<EnemyView>();
+        // 部位判定リストを子オブジェクトから自動取得
+        if (bodyParts == null || bodyParts.Count == 0)
+        {
+            bodyParts = new List<EnemyBodyPart>(GetComponentsInChildren<EnemyBodyPart>(true));
+        }
+    }
+
+
     private void Awake()
     {
         // Modelに ScriptableObject を渡して初期化
@@ -51,15 +64,23 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
             view.MoveTo(pos);
         };
 
-        soundView.HitEnemy += (col) =>
-        {
-            if(col.gameObject == view.gameObject || col.transform.IsChildOf(transform))
-            {
-                view.SetHearing(true);
-            }
-        };
-
         view.HitContact += (bullet, hitCollider) => OnHit(bullet, hitCollider);
+
+        if (soundView == null)
+        {
+            soundView = SoundDetectionView.Instance;
+        }
+
+        if (soundView != null)
+        {
+            soundView.HitEnemy += (col) =>
+            {
+                if (col.gameObject == view.gameObject || col.transform.IsChildOf(transform))
+                {
+                    view.SetHearing(true);
+                }
+            };
+        }
     }
 
     public void TakeDamage(int amount)
