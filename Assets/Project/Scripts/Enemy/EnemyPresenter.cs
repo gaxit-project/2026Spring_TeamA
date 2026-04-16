@@ -64,7 +64,7 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
             view.MoveTo(pos);
         };
 
-        view.HitContact += (bullet, hitCollider) => OnHit(bullet, hitCollider);
+        view.HitContact += (damage, hitCollider) => OnHit(damage, hitCollider);
 
         if (soundView == null)
         {
@@ -106,12 +106,18 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
     /// </summary>
     /// <param name="bullet"></param>
     /// <param name="hitCollider"></param>
-    private void OnHit(Collider bullet, Collider hitCollider)
+    private void OnHit(int damage, Collider hitCollider)
     {
-        var hitPart = bodyParts.Find(x => x.GetComponent<Collider>() == hitCollider);
-        if(hitPart == null) return;
+        Debug.Log($"OnHit called. Damage: {damage}, HitCollider: {hitCollider.name}");
 
-        int finaiDamage = hitPart.isHead ? gunData.damage * 2 : gunData.damage;
+        var hitPart = bodyParts.Find(x => x.GetComponent<Collider>() == hitCollider);
+        if (hitPart == null)
+        {
+            Debug.LogWarning($"BodyPart not found for {hitCollider.name}! list count: {bodyParts.Count}");
+            return;
+        }
+
+        int finaiDamage = hitPart.isHead ? damage * 2 : damage;
         TakeDamage(finaiDamage);
     }
 

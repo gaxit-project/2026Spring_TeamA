@@ -14,7 +14,7 @@ public class EnemyView : MonoBehaviour
     public Transform player;    // プレイヤーの位置情報
     public System.Action<Collider> OnContactStay;
     public System.Action<Collider> OffContactExit;
-    public System.Action<Collider, Collider> HitContact;
+    public System.Action<int, Collider> HitContact;
     public System.Action<Vector3> OnFoundPlayer;
 
     public float fieldOfView = 60f; // 視野角度

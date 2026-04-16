@@ -116,6 +116,8 @@ public class PlayerPresenter : MonoBehaviour
 
         view.OnFireEffectTiming += () =>
         {
+            Debug.Log("--- Raycast Triggered ---"); // これが1回の射撃で何回出るか確認
+
             // カメラの中心からレイを飛ばす準備
             Transform camTransform = Camera.main.transform;
             Vector3 rayOrigin = camTransform.position;
@@ -135,18 +137,22 @@ public class PlayerPresenter : MonoBehaviour
                 // 当たった場所まで赤い線を引く（Sceneビューで確認可能）
                 Debug.DrawLine(rayOrigin, hit.point, Color.red, 1.0f);
 
-                var damageable = hit.collider.GetComponentInParent<IDamageable>();
-                if (damageable != null)
-                {
-                    damageable.TakeDamage(gunData.damage);
-                }
-
+                // EnemyBodyPartがあるか確認
                 var bodyPart = hit.collider.GetComponent<EnemyBodyPart>();
+
                 if (bodyPart != null)
                 {
-                    // 演出用の弾(GameObject)は不要になったので null を渡すか、
-                    // 引数自体を NotifyHit() から消してもOKです
-                    bodyPart.NotifyHit(null);
+                    // 部位がある場合は、部位に通知を送る
+                    bodyPart.NotifyHit(gunData.damage);
+                }
+                else
+                {
+                    // 部位がない場合、オブジェクトそのものがIDamageableか確認
+                    var damageable = hit.collider.GetComponentInParent<IDamageable>();
+                    if (damageable != null)
+                    {
+                        damageable.TakeDamage(gunData.damage);
+                    }
                 }
 
                 // 3. 着弾地点を弾の目標にする

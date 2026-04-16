@@ -207,7 +207,7 @@ Transform:
   m_GameObject: {fileID: 56842639}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.8000001, y: 7.3999996, z: -3}
+  m_LocalPosition: {x: 1.8000001, y: 7.3999996, z: -1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -331,6 +331,82 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: ba84bc9d29fe72744ab3b65f2119f3a4, type: 2}
   m_BuildHeightMesh: 0
+--- !u!1001 &307098100
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4104245004696544334, guid: 7a0bb12872d143a4c88a07cd5b2b4abc, type: 3}
+      propertyPath: m_Name
+      value: Oil Barrel (ShinyRed) Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 4104245004696679684, guid: 7a0bb12872d143a4c88a07cd5b2b4abc, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4104245004696679684, guid: 7a0bb12872d143a4c88a07cd5b2b4abc, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4104245004696679684, guid: 7a0bb12872d143a4c88a07cd5b2b4abc, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4104245004696679684, guid: 7a0bb12872d143a4c88a07cd5b2b4abc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4104245004696679684, guid: 7a0bb12872d143a4c88a07cd5b2b4abc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4104245004696679684, guid: 7a0bb12872d143a4c88a07cd5b2b4abc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4104245004696679684, guid: 7a0bb12872d143a4c88a07cd5b2b4abc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4104245004696679684, guid: 7a0bb12872d143a4c88a07cd5b2b4abc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4104245004696679684, guid: 7a0bb12872d143a4c88a07cd5b2b4abc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4104245004696679684, guid: 7a0bb12872d143a4c88a07cd5b2b4abc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4104245004696679684, guid: 7a0bb12872d143a4c88a07cd5b2b4abc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4104245004696679684, guid: 7a0bb12872d143a4c88a07cd5b2b4abc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4104245004696679684, guid: 7a0bb12872d143a4c88a07cd5b2b4abc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4104245004696679684, guid: 7a0bb12872d143a4c88a07cd5b2b4abc, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4104245004696544334, guid: 7a0bb12872d143a4c88a07cd5b2b4abc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 457609654}
+  m_SourcePrefab: {fileID: 100100000, guid: 7a0bb12872d143a4c88a07cd5b2b4abc, type: 3}
 --- !u!1 &447793392
 GameObject:
   m_ObjectHideFlags: 0
@@ -452,6 +528,29 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!1 &457609653 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4104245004696544334, guid: 7a0bb12872d143a4c88a07cd5b2b4abc, type: 3}
+  m_PrefabInstance: {fileID: 307098100}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &457609654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 457609653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68fe6778dce395d4e85da4b0b5a26868, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHP: 1
+  explosionDamage: 100
+  explosionRadius: 5
+  explosionEffect: {fileID: 1096741355945016183, guid: 047276b79b6308749a5e3704654b4586, type: 3}
+  explosionSound: {fileID: 8300000, guid: 3119b3ba7e6a29a4daf70c16f1fa0d2a, type: 3}
+  soundVolume: 1
 --- !u!1 &465162233 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8098319677126459002, guid: ab3e3c701daa03e44857990aa4f907b8, type: 3}
@@ -1730,7 +1829,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3078580080931563611, guid: bd154ce00f43e6f458887d2f343a54b9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: 3206363152217411613, guid: bd154ce00f43e6f458887d2f343a54b9, type: 3}
       propertyPath: m_LocalScale.x
@@ -2004,6 +2103,7 @@ MonoBehaviour:
   spawnPoints:
   - point: {fileID: 1871183293}
     count: 5
+  spawnRadius: 5
 --- !u!4 &1173228432
 Transform:
   m_ObjectHideFlags: 0
@@ -3537,3 +3637,4 @@ SceneRoots:
   - {fileID: 1885878627}
   - {fileID: 1173228432}
   - {fileID: 1871183293}
+  - {fileID: 307098100}
