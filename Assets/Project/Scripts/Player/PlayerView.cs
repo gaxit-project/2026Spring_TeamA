@@ -48,7 +48,6 @@ public class PlayerView : MonoBehaviour
         {
             animator.SetFloat(AimPitchHash, pitch);
         }
-        //Debug.Log(pitch);
     }
 
     public void SetAnimatorController(RuntimeAnimatorController newController)
@@ -127,7 +126,6 @@ public class PlayerView : MonoBehaviour
 
     private void OnFire(InputValue value)
     {
-        Debug.Log($"[Input] Fire Pressed: {value.isPressed}");
         OnFireInputReceived?.Invoke(value.isPressed);
     }
 
