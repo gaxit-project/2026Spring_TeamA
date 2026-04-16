@@ -18,7 +18,7 @@ MonoBehaviour:
   animatorOverride: {fileID: 22100000, guid: a8b785862b8465d4ea77e80bf130fcec, type: 2}
   isFullAuto: 0
   damage: 1
-  speed: 30
+  speed: 10
   maxAmmo: 15
   initAmmo: 100
   fireRate: 0.3

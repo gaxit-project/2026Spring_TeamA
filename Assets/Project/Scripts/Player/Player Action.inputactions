@@ -86,6 +86,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Dash",
+                    "type": "PassThrough",
+                    "id": "9259dc90-dfef-4958-b03a-8636f19f1370",
+                    "expectedControlType": "Digital",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -328,6 +337,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Weapon2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fbfacf8a-e578-447d-9c13-f1a9b4a48d50",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "551ceb96-a6cd-4fa1-90ab-39775d1d9fc9",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

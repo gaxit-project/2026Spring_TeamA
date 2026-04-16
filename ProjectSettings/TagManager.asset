@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Bullet
+  - Goal
   - FxTemporaire
   layers:
   - Default
@@ -15,7 +16,7 @@ TagManager:
   - UI
   - Player
   - Enemy
-  - 
+  - Bullet
   - 
   - 
   - 

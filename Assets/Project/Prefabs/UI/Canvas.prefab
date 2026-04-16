@@ -490,6 +490,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ammo
       objectReference: {fileID: 0}
+    - target: {fileID: 4225926422660019679, guid: 91af6053d273d434c82928c59c235e3f, type: 3}
+      propertyPath: reloadBarFill
+      value: 
+      objectReference: {fileID: 2673471677270772447}
+    - target: {fileID: 4225926422660019679, guid: 91af6053d273d434c82928c59c235e3f, type: 3}
+      propertyPath: reloadBarRoot
+      value: 
+      objectReference: {fileID: 5212795965298213285}
     - target: {fileID: 4707851229147168899, guid: 91af6053d273d434c82928c59c235e3f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -577,83 +585,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 767623597013618207, guid: 91af6053d273d434c82928c59c235e3f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1320759775649776141}
-    - targetCorrespondingSourceObject: {fileID: 767623597013618207, guid: 91af6053d273d434c82928c59c235e3f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7057764146522318909}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 91af6053d273d434c82928c59c235e3f, type: 3}
---- !u!1 &2474424725545744845 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 767623597013618207, guid: 91af6053d273d434c82928c59c235e3f, type: 3}
-  m_PrefabInstance: {fileID: 2950361012960540626}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1320759775649776141
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2474424725545744845}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ac20c6816d49174586ffe6b63a6890e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentAmmoText: {fileID: 3302229974779142512}
-  reservedAmmoText: {fileID: 7810279797318490928}
-  reloadBarRoot: {fileID: 0}
-  reloadBarFill: {fileID: 0}
---- !u!114 &7057764146522318909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2474424725545744845}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78b22d61f300cd3489cd6f2682a11935, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nameText: {fileID: 8725603533165223343}
---- !u!114 &3302229974779142512 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 369903333289694882, guid: 91af6053d273d434c82928c59c235e3f, type: 3}
-  m_PrefabInstance: {fileID: 2950361012960540626}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &7612328061443815249 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4707851229147168899, guid: 91af6053d273d434c82928c59c235e3f, type: 3}
   m_PrefabInstance: {fileID: 2950361012960540626}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7810279797318490928 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4941145529329954018, guid: 91af6053d273d434c82928c59c235e3f, type: 3}
-  m_PrefabInstance: {fileID: 2950361012960540626}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &8725603533165223343 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5901505084295506557, guid: 91af6053d273d434c82928c59c235e3f, type: 3}
-  m_PrefabInstance: {fileID: 2950361012960540626}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

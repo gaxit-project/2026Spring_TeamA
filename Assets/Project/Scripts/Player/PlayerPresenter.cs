@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerPresenter : MonoBehaviour
 {
@@ -25,6 +27,9 @@ public class PlayerPresenter : MonoBehaviour
     [SerializeField] private Transform weaponHolder;
     [SerializeField] private GameObject defaultGunPrefab;
 
+    [SerializeField] private GameOverView gameOverView;
+    [SerializeField] private NextLevelView nextLevelView;
+
     // GunDataをキーにして、GunModelを保存する辞書
     private Dictionary<GunData, GunModel> gunStatus = new Dictionary<GunData, GunModel>();
 
@@ -34,6 +39,9 @@ public class PlayerPresenter : MonoBehaviour
     private float lastFireTime; // 最後に撃った時刻を記録する変数
     private CancellationTokenSource fireCts;
     private CancellationTokenSource reloadCts; // リロード中断用
+
+    private bool _isGameOver = false;
+    private bool _isLevelCleared = false;
 
     private void Awake()
     {
@@ -52,6 +60,7 @@ public class PlayerPresenter : MonoBehaviour
         // Viewの入力イベントを購読し、Modelのデータへ反映させる
         // 移動・視点入力
         view.OnMoveInputReceived += (input) => model.MoveInput = input;
+        view.OnDashInputReceived += (isDash) =>model.IsDashing = isDash;
 
         view.OnLookInputReceived += (look) =>
         {
@@ -113,31 +122,38 @@ public class PlayerPresenter : MonoBehaviour
             // Playerレイヤー(Layer 6)以外に当たるようにマスクを作成
             int layerMask = ~(1 << LayerMask.NameToLayer("Player"));
 
-            Vector3 targetPoint;
             float maxDistance = 100; // 射程距離
 
             // レイを飛ばして当たった場所を特定
             // 第1引数:起点, 第2:方向, 第3:当たった情報, 第4:最大距離
             if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hit, maxDistance, layerMask))
             {
-                targetPoint = hit.point; // 何かに当たった場所
-
-                var damageable = hit.collider.GetComponent<IDamageable>();
+                var damageable = hit.collider.GetComponentInParent<IDamageable>();
                 if (damageable != null)
                 {
                     damageable.TakeDamage(gunData.damage);
                 }
+
+                var bodyPart = hit.collider.GetComponent<EnemyBodyPart>();
+                if (bodyPart != null)
+                {
+                    // 演出用の弾(GameObject)は不要になったので null を渡すか、
+                    // 引数自体を NotifyHit() から消してもOKです
+                    bodyPart.NotifyHit(null);
+                }
+
+                // 3. 着弾地点を弾の目標にする
+                Vector3 targetPoint = hit.point;
+                Vector3 fireDirection = (targetPoint - gunView.muzzlePoint.position).normalized;
+                gunView.LaunchBullet(fireDirection, gunData.speed);
             }
             else
             {
-                targetPoint = rayOrigin + (rayDirection * maxDistance); // 何もなければ遠くの空中
+                // 何も当たらなかった場合
+                Vector3 targetPoint = rayOrigin + (rayDirection * maxDistance);
+                Vector3 fireDirection = (targetPoint - gunView.muzzlePoint.position).normalized;
+                gunView.LaunchBullet(fireDirection, gunData.speed);
             }
-
-            // 銃口からターゲット地点への方向を計算
-            Vector3 fireDirection = (targetPoint - gunView.muzzlePoint.position).normalized;
-            // その方向へ弾を発射
-            gunView.LaunchBullet(fireDirection, gunData.speed);
-            sdView.SoundSource(transform.position, 10f);
         };
 
         view.OnReloadInputReceived += () =>
@@ -158,10 +174,42 @@ public class PlayerPresenter : MonoBehaviour
                 hpView.UpdateHpDiaplay(model.CurrentHP);
             }
         };
+
+        model.OnHpChanged += (currentHp) =>
+        {
+            // HP表示を更新する
+            hpView.UpdateHpDiaplay(currentHp);
+
+            // 0以下ならゲームオーバー処理を呼ぶ
+            if (currentHp <= 0 && !_isGameOver)
+            {
+                _isGameOver = true;
+                TriggerGameOver();
+            }
+        };
+
+        view.OnTriggerEnterEvent += (other) =>
+        {
+            if (other.CompareTag("Goal") && !_isLevelCleared && !_isGameOver)
+            {
+                _isLevelCleared = true;
+                TriggerLevelClear();
+            }
+        };
+    }
+
+    private void Start()
+    {
+        model.OnHpChanged += CheckDeath;
     }
 
     private void Update()
     {
+        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            SceneManager.LoadScene("Title");
+        }
+
         // Modelに移動量を計算させる
         Vector3 movement = model.CalcMove(Time.deltaTime);
         // 計算結果をViewに渡して移動を実行させる
@@ -178,6 +226,7 @@ public class PlayerPresenter : MonoBehaviour
 
         view.UpdateBodyRotation(model.CurrentPan);
         view.SetUpperBodyPitch(model.currentPitch);
+        view.SetDashAnimation(model.IsDashing && model.MoveInput.sqrMagnitude > 0.001f);
     }
 
     private void RotateWeapon(int direction)
@@ -333,5 +382,32 @@ public class PlayerPresenter : MonoBehaviour
         {
             gunModel.IsReloading = false;
         }
+    }
+
+    private void CheckDeath(int currentHp)
+    {
+        if (currentHp <= 0 && !_isGameOver)
+        {
+            _isGameOver = true;
+            TriggerGameOver();
+        }
+    }
+
+    private void TriggerLevelClear()
+    {
+        _isGameOver = true;
+
+        // 準備中フェード開始
+        nextLevelView.PlayComingSoonSequence().Forget();
+    }
+
+    private void TriggerGameOver()
+    {
+        // マウスカーソルを表示する（ボタンを押せるように）
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        // フェード演出開始
+        gameOverView.PlayGameOverSequence().Forget();
     }
 }
