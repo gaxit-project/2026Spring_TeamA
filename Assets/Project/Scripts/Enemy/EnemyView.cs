@@ -29,6 +29,11 @@ public class EnemyView : MonoBehaviour
         _agent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
 
+        if (enemyData != null && _agent != null)
+        {
+            _agent.speed = enemyData.moveSpeed;
+        }
+
         // プレイヤーのTransformを自動取得
         if (player == null && PlayerPresenter.Instance != null)
         {

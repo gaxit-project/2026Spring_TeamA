@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: EnemyData
   m_EditorClassIdentifier: 
   enemyHP: 3
+  moveSpeed: 4
   enemyAttackPower: 30
   attackDistance: 1
