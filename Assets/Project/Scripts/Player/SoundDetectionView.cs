@@ -6,13 +6,14 @@ public class SoundDetectionView : MonoBehaviour
 
     public System.Action<Collider> HitEnemy;
     public LayerMask enemyLayer;
+    public float radius = 15f;
 
     private void Awake()
     {
         if (Instance == null) Instance = this;
     }
 
-    public void SoundSource(Vector3 center, float radius)
+    public void SoundSource(Vector3 center)
     {
         Collider[] enemies = Physics.OverlapSphere(center, radius, enemyLayer);
 
@@ -31,6 +32,6 @@ public class SoundDetectionView : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, 10f);
+        Gizmos.DrawWireSphere(transform.position, radius);
     }
 }

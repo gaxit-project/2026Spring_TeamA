@@ -19,7 +19,7 @@ public class PlayerPresenter : MonoBehaviour
     [SerializeField] private AmmoView ammoView;
     [SerializeField] private WeaponHUD weaponHUD;
     [SerializeField] private HPView hpView;
-    [SerializeField] private SoundDetectionView sdView;
+    [SerializeField] private SoundDetectionView soundView;
 
     private PlayerModel model;
     
@@ -352,6 +352,7 @@ public class PlayerPresenter : MonoBehaviour
         view.OnShoot();
         view.PlayFireAnim();
 
+        soundView.SoundSource(transform.position);
         gunView.PlayShotSound(gunData.fireSound);
 
         Debug.Log($"[Fire] Damage: {gunModel.Damage}, Remaining Ammo: {gunModel.CurrentAmmo}");
