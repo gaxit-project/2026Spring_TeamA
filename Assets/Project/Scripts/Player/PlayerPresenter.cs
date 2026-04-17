@@ -39,6 +39,8 @@ public class PlayerPresenter : MonoBehaviour
     private CancellationTokenSource fireCts;
     private CancellationTokenSource reloadCts; // リロード中断用
 
+    private bool _isDead = false;
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -193,6 +195,9 @@ public class PlayerPresenter : MonoBehaviour
             // 0以下ならゲームオーバー処理を呼ぶ
             if (currentHp <= 0)
             {
+                _isDead = true;
+                view.PlayDieAnim();
+
                 GamePresenter.Instance.TriggerGameOver();
             }
         };
@@ -315,6 +320,7 @@ public class PlayerPresenter : MonoBehaviour
 
     private void TryFire()
     {
+        if (_isDead) return;
         if (!isFiring) return;
         if (!gunModel.CanShoot()) return;
         if (Time.time < lastFireTime + gunData.fireRate) return;

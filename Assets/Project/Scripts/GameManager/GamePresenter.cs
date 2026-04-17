@@ -53,15 +53,8 @@ public class GamePresenter : MonoBehaviour
         _isGameEnded = true;
 
         model.StopTimer();
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
 
-        if (gameOverView != null)
-        {
-            gameOverView.PlayGameOverSequence().Forget();
-        }
-
-        TransitionToResultAsync().Forget();
+        ShowGameOverUIAsync().Forget();
     }
 
     public void TriggerGameClear()
@@ -78,12 +71,45 @@ public class GamePresenter : MonoBehaviour
             nextLevelView.PlayComingSoonSequence().Forget();
         }
 
-        TransitionToResultAsync().Forget();
+        ShowGameClearUIAsync().Forget();
     }
 
     private async UniTaskVoid TransitionToResultAsync()
     {
         await UniTask.Delay(TimeSpan.FromSeconds(gameData.transitionWaitTime));
         SceneManager.LoadScene(gameData.resultSceneName);
+    }
+
+    private async UniTaskVoid ShowGameClearUIAsync()
+    {
+        await UniTask.Delay(TimeSpan.FromSeconds(0.5));
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        if (nextLevelView != null)
+        {
+            nextLevelView.PlayComingSoonSequence().Forget();
+
+            await UniTask.Delay(TimeSpan.FromSeconds(1.0));
+
+            timerView.Hide();
+        }
+        TransitionToResultAsync().Forget();
+    }
+
+    private async UniTaskVoid ShowGameOverUIAsync()
+    {
+        await UniTask.Delay(TimeSpan.FromSeconds(2.0f));
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        if (gameOverView != null)
+        {
+            gameOverView.PlayGameOverSequence().Forget();
+        }
+
+        timerView.Hide();
+
+        TransitionToResultAsync().Forget();
     }
 }

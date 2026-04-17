@@ -27,4 +27,16 @@ public class TimerView : MonoBehaviour
             timerText.color = Color.red;
         }
     }
+
+    public void Show()
+    {
+        // 再表示する用
+        gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+
 }
