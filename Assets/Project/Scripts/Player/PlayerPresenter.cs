@@ -29,9 +29,6 @@ public class PlayerPresenter : MonoBehaviour
     [SerializeField] private Transform weaponHolder;
     [SerializeField] private GameObject defaultGunPrefab;
 
-    [SerializeField] private GameOverView gameOverView;
-    [SerializeField] private NextLevelView nextLevelView;
-
     // GunDataをキーにして、GunModelを保存する辞書
     private Dictionary<GunData, GunModel> gunStatus = new Dictionary<GunData, GunModel>();
 
@@ -41,9 +38,6 @@ public class PlayerPresenter : MonoBehaviour
     private float lastFireTime; // 最後に撃った時刻を記録する変数
     private CancellationTokenSource fireCts;
     private CancellationTokenSource reloadCts; // リロード中断用
-
-    private bool _isGameOver = false;
-    private bool _isLevelCleared = false;
 
     private void Awake()
     {
@@ -197,26 +191,19 @@ public class PlayerPresenter : MonoBehaviour
             hpView.UpdateHpDiaplay(currentHp);
 
             // 0以下ならゲームオーバー処理を呼ぶ
-            if (currentHp <= 0 && !_isGameOver)
+            if (currentHp <= 0)
             {
-                _isGameOver = true;
-                TriggerGameOver();
+                GamePresenter.Instance.TriggerGameOver();
             }
         };
 
         view.OnTriggerEnterEvent += (other) =>
         {
-            if (other.CompareTag("Goal") && !_isLevelCleared && !_isGameOver)
+            if (other.CompareTag("Goal"))
             {
-                _isLevelCleared = true;
-                TriggerLevelClear();
+                GamePresenter.Instance.TriggerGameClear();
             }
         };
-    }
-
-    private void Start()
-    {
-        model.OnHpChanged += CheckDeath;
     }
 
     private void Update()
@@ -398,33 +385,6 @@ public class PlayerPresenter : MonoBehaviour
         {
             gunModel.IsReloading = false;
         }
-    }
-
-    private void CheckDeath(int currentHp)
-    {
-        if (currentHp <= 0 && !_isGameOver)
-        {
-            _isGameOver = true;
-            TriggerGameOver();
-        }
-    }
-
-    private void TriggerLevelClear()
-    {
-        _isGameOver = true;
-
-        // 準備中フェード開始
-        nextLevelView.PlayComingSoonSequence().Forget();
-    }
-
-    private void TriggerGameOver()
-    {
-        // マウスカーソルを表示する（ボタンを押せるように）
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-
-        // フェード演出開始
-        gameOverView.PlayGameOverSequence().Forget();
     }
 
     public PlayerView PlayerView => view;

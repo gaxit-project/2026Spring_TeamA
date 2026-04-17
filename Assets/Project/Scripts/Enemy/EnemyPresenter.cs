@@ -96,6 +96,9 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
         if (model.CurrentHP <= 0 && !_isDead)
         {
             _isDead = true;
+
+            SessionData.AddKill();
+
             view.Die();
             HandleDeathAsync().Forget();
         }

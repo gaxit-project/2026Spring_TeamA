@@ -1,15 +1,26 @@
-﻿using UnityEngine;
+﻿using Cysharp.Threading.Tasks;
+using System;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GamePresenter : MonoBehaviour
 {
-    [SerializeField] private GameData gameData;
+    public static GamePresenter Instance { get; private set; }
 
+    [SerializeField] private GameData gameData;
     [SerializeField] private TimerView timerView;
 
+    [SerializeField] private GameOverView gameOverView;
+    [SerializeField] private NextLevelView nextLevelView;
+
     private GameModel model;
+    private bool _isGameEnded = false;
 
     private void Awake()
     {
+        SessionData.ResetData();
+
+        if (Instance == null) Instance = this;
         model = new GameModel(gameData);
 
         model.OnTimeChanged += (time) =>
@@ -20,7 +31,7 @@ public class GamePresenter : MonoBehaviour
         model.OnTimeUp += () =>
         {
             timerView.ShowTimeUpMessage();
-            HandleTimeUp();
+            TriggerGameOver();
         };
 
         timerView.UpdateTimerDisplay(model.CurrentTime);
@@ -36,8 +47,43 @@ public class GamePresenter : MonoBehaviour
         model.Tick(Time.deltaTime);
     }
 
-    private void HandleTimeUp()
+    public void TriggerGameOver()
     {
-        Debug.Log("Time's Up! Game Over!");
+        if (_isGameEnded) return;
+        _isGameEnded = true;
+
+        model.StopTimer();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        if (gameOverView != null)
+        {
+            gameOverView.PlayGameOverSequence().Forget();
+        }
+
+        TransitionToResultAsync().Forget();
+    }
+
+    public void TriggerGameClear()
+    {
+        if (_isGameEnded) return;
+        _isGameEnded = true;
+
+        model.StopTimer();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        if (nextLevelView != null)
+        {
+            nextLevelView.PlayComingSoonSequence().Forget();
+        }
+
+        TransitionToResultAsync().Forget();
+    }
+
+    private async UniTaskVoid TransitionToResultAsync()
+    {
+        await UniTask.Delay(TimeSpan.FromSeconds(gameData.transitionWaitTime));
+        SceneManager.LoadScene(gameData.resultSceneName);
     }
 }

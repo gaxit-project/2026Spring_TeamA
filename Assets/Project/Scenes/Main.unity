@@ -1968,11 +1968,11 @@ PrefabInstance:
     - target: {fileID: 2914454189447459183, guid: bd154ce00f43e6f458887d2f343a54b9, type: 3}
       propertyPath: gameOverView
       value: 
-      objectReference: {fileID: 2024953755}
+      objectReference: {fileID: 0}
     - target: {fileID: 2914454189447459183, guid: bd154ce00f43e6f458887d2f343a54b9, type: 3}
       propertyPath: nextLevelView
       value: 
-      objectReference: {fileID: 2024953758}
+      objectReference: {fileID: 0}
     - target: {fileID: 3078580080931563611, guid: bd154ce00f43e6f458887d2f343a54b9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.6
@@ -2347,6 +2347,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1410489551}
   - component: {fileID: 1410489550}
+  - component: {fileID: 1410489554}
+  - component: {fileID: 1410489553}
+  - component: {fileID: 1410489552}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2368,6 +2371,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameData: {fileID: 11400000, guid: 2df30ff0c7859fb41ada9afb29ee6912, type: 2}
   timerView: {fileID: 492173853}
+  gameOverView: {fileID: 1410489553}
+  nextLevelView: {fileID: 1410489554}
 --- !u!4 &1410489551
 Transform:
   m_ObjectHideFlags: 0
@@ -2383,6 +2388,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1410489552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1410489549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dd2357f1cbc1db4c842a87bbb28ef98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _NextScene: Title
+--- !u!114 &1410489553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1410489549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e72290d9355bef5449b381004df28108, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panelImage: {fileID: 814799819}
+  gameOverText: {fileID: 1845579010}
+  returnTitleButton: {fileID: 1986766649}
+  fadeDuration: 2
+--- !u!114 &1410489554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1410489549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af1a0549047596a419f331c285650d71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panelImage: {fileID: 1576773605}
+  ComingSoonText: {fileID: 1827219504}
+  fadeDuration: 2
 --- !u!1 &1517569223
 GameObject:
   m_ObjectHideFlags: 0
@@ -3433,7 +3482,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1986766649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3478,7 +3527,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2024953756}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SceneChangeButton, Assembly-CSharp
         m_MethodName: ChangeScene
         m_Mode: 1
@@ -3609,84 +3658,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &2024953754
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2024953757}
-  - component: {fileID: 2024953756}
-  - component: {fileID: 2024953755}
-  - component: {fileID: 2024953758}
-  m_Layer: 0
-  m_Name: Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2024953755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2024953754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e72290d9355bef5449b381004df28108, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panelImage: {fileID: 814799819}
-  gameOverText: {fileID: 1845579010}
-  returnTitleButton: {fileID: 1986766649}
-  fadeDuration: 2
---- !u!114 &2024953756
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2024953754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7dd2357f1cbc1db4c842a87bbb28ef98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _NextScene: Title
---- !u!4 &2024953757
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2024953754}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2024953758
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2024953754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af1a0549047596a419f331c285650d71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panelImage: {fileID: 1576773605}
-  ComingSoonText: {fileID: 1827219504}
-  fadeDuration: 2
 --- !u!1 &2090409138
 GameObject:
   m_ObjectHideFlags: 0
@@ -3770,7 +3741,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2024953756}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SceneChangeButton, Assembly-CSharp
         m_MethodName: ChangeScene
         m_Mode: 1
@@ -3833,7 +3804,6 @@ SceneRoots:
   - {fileID: 702599283}
   - {fileID: 591295157}
   - {fileID: 1546429394}
-  - {fileID: 2024953757}
   - {fileID: 1885878627}
   - {fileID: 1173228432}
   - {fileID: 1871183293}
