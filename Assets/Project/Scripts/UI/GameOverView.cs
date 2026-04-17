@@ -8,13 +8,11 @@ public class GameOverView : MonoBehaviour
 {
     [SerializeField] private Image panelImage;
     [SerializeField] private TextMeshProUGUI gameOverText;
-    [SerializeField] private Button returnTitleButton;
     [SerializeField] private float fadeDuration = 2.0f;
 
     private void Start()
     {
         SetAlpha(0);
-        returnTitleButton.gameObject.SetActive(false); // ボタンは物理的に消しておく
     }
 
     private void SetAlpha(float alpha)
@@ -41,6 +39,5 @@ public class GameOverView : MonoBehaviour
         }
 
         SetAlpha(1);
-        returnTitleButton.gameObject.SetActive(true); // 最後にボタンを出す
     }
 }
