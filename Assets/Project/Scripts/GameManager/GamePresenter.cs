@@ -66,11 +66,6 @@ public class GamePresenter : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        if (nextLevelView != null)
-        {
-            nextLevelView.PlayComingSoonSequence().Forget();
-        }
-
         ShowGameClearUIAsync().Forget();
     }
 
