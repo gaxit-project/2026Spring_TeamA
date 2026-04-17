@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 
 public class EnemyPresenter : MonoBehaviour, IDamageable
@@ -33,38 +34,15 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
     private void Awake()
     {
         // Modelに ScriptableObject を渡して初期化
-        model = new EnemyModel(enemyData);  
+        model = new EnemyModel(enemyData);
 
         // EnemyViewの衝突イベントを購読し,PlayerViewのへ反映させる
-        view.OnContactStay += (other) =>
-        {
-            if (_isDead)
-            {
-                return;
-            }
-
-            if (other.CompareTag("Player"))
-            {
-                var playerView = other.GetComponent<PlayerView>();
-                if(playerView != null)
-                {
-                    playerView.OnHitByEnemy?.Invoke(enemyData);
-                }
-            }
-        };
+        view.OnContactStay += HandlePlayerContact;
 
         // EnemyViewでプレイヤーの位置を購読しEnemyViewへ反映させる
-        view.OnFoundPlayer += (pos) =>
-        {
-            if (_isDead)
-            {
-                return;
-            }
-            view.isTracking = true;
-            view.MoveTo(pos);
-        };
+        view.OnFoundPlayer += HandleFoundPlayer;
 
-        view.HitContact += (damage, hitCollider) => OnHit(damage, hitCollider);
+        view.HitContact += OnHit; 
 
         if (soundView == null)
         {
@@ -73,14 +51,58 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
 
         if (soundView != null)
         {
-            soundView.HitEnemy += (col) =>
-            {
-                if (col.gameObject == view.gameObject || col.transform.IsChildOf(transform))
-                {
-                    view.SetHearing(true);
-                }
-            };
+            soundView.HitEnemy += HandleSoundDetected;
         }
+    }
+
+    private void OnDestroy()
+    {
+        if(view != null)
+        {
+            view.OnContactStay -= HandlePlayerContact;
+            view.OnFoundPlayer -= HandleFoundPlayer;
+            view.HitContact -= OnHit;
+        }
+
+        if(soundView != null)
+        {
+            soundView.HitEnemy -= HandleSoundDetected;
+        }
+    }
+
+    private void HandleSoundDetected(Collider col)
+    {
+        if (_isDead)
+        {
+            return;
+        }
+        if (col.gameObject == view.gameObject || col.transform.IsChildOf(transform))
+        {
+            view.SetHearing(true);
+        }
+    }
+
+    private void HandlePlayerContact(Collider col)
+    {
+        if(_isDead)
+        {
+            return;
+        }
+        if(col.CompareTag("Player"))
+        {
+            var playerView = col.GetComponent<PlayerView>();
+            playerView?.OnHitByEnemy?.Invoke(enemyData);
+        }
+    }
+
+    private void HandleFoundPlayer(Vector3 pos)
+    {
+        if (_isDead)
+        {
+            return;
+        }
+        view.isTracking = true;
+        view.MoveTo(pos);
     }
 
     public void TakeDamage(int amount)
@@ -104,8 +126,6 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
     /// <summary>
     /// 攻撃があたった部位とダメージ量の処理を行う
     /// </summary>
-    /// <param name="bullet"></param>
-    /// <param name="hitCollider"></param>
     private void OnHit(int damage, Collider hitCollider)
     {
         Debug.Log($"OnHit called. Damage: {damage}, HitCollider: {hitCollider.name}");

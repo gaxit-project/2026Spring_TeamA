@@ -43,6 +43,12 @@ public class EnemyView : MonoBehaviour
             return;
         }
 
+        if(_animator.GetBool("Die"))
+        {
+            _agent.isStopped = true;
+            return;
+        }
+
         Vector3 startPos = transform.position + Vector3.up;
         Vector3 offset = player.position - transform.position;
         Vector3 dir = offset.normalized;
@@ -67,11 +73,13 @@ public class EnemyView : MonoBehaviour
         {
             _animator.SetBool("Attack", false);
             OnFoundPlayer?.Invoke(player.position);
+            isTracking = true;
             isHearing = false;
         }
-        else if (isTracking) // 追跡中
+        else if (isTracking) // 気が付いた位置まで追跡後止まる
         {
             _animator.SetBool("Attack", false);
+
             if (_agent.remainingDistance <= _agent.stoppingDistance)
             {
                 isTracking = false;
@@ -122,7 +130,8 @@ public class EnemyView : MonoBehaviour
     {
         isHit = true;
         _agent.isStopped = true;
-        await UniTask.Delay(150);
+        _animator.SetTrigger("GetHit");
+        await UniTask.Delay(50);
         _agent.isStopped = false;
         isHit = false;
     }
