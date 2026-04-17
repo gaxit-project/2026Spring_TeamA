@@ -76,10 +76,14 @@ public class PlayerView : MonoBehaviour
         }
     }
 
-    // アニメーションに発射のタイミングを組み込む関数
     public void OnShoot()
     {
         OnFireEffectTiming?.Invoke();
+    }
+
+    public void PlayDieAnim()
+    {
+        if (animator != null) animator.SetTrigger("Die");
     }
 
     private string targetTag;

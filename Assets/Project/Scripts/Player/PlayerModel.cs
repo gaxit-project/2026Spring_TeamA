@@ -14,7 +14,7 @@ public class PlayerModel
     public Vector2 MoveInput { get; set; }
     public float CurrentPan { get; set; }
     public float currentPitch { get; set; }
-    public bool IsDashing { get; set; } // ダッシュ中フラグ
+    public bool IsDashing { get; set; }
 
     // コンストラクタ：初期化時にPresenterからデータを入れてもらう
     public PlayerModel(PlayerData data)
