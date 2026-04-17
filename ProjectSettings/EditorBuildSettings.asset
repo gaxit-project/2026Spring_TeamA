@@ -14,6 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Project/Scenes/Main.unity
     guid: 938033b2dd1454944a06a1ea97f1b785
+  - enabled: 1
+    path: Assets/Project/Scenes/Result.unity
+    guid: 021c6d74f8113134cac8787308f22a78
   - enabled: 0
     path: Assets/Project/Scenes/Test/Hiroebe/PlayerTest.unity
     guid: 08f7330ea714a42498446bdcf7d088f2
