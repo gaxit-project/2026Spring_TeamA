@@ -149,6 +149,13 @@ public class PlayerPresenter : MonoBehaviour
                     {
                         damageable.TakeDamage(gunData.damage);
                     }
+
+                    var glass = hit.collider.GetComponent<BulletproofGlass>();
+                    if (glass != null)
+                    {
+                        // ガラスに座標と向きのデータを渡す
+                        glass.AddCrack(hit.point, hit.normal);
+                    }
                 }
 
                 // 3. 着弾地点を弾の目標にする
