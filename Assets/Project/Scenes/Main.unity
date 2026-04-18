@@ -1833,8 +1833,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 0
-  radius: 15
+    m_Bits: 128
+  radius: 30
 --- !u!1001 &1036196990
 PrefabInstance:
   m_ObjectHideFlags: 0
