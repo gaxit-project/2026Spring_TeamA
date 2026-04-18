@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 
 public class EnemyPresenter : MonoBehaviour, IDamageable
