@@ -5,9 +5,25 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+  - enabled: 0
+    path: Assets/Project/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Project/Scenes/Title.unity
+    guid: 7dba7800e619cf041bae4e671702fcfd
+  - enabled: 1
+    path: Assets/Project/Scenes/Main.unity
+    guid: 938033b2dd1454944a06a1ea97f1b785
+  - enabled: 1
+    path: Assets/Project/Scenes/Result.unity
+    guid: 021c6d74f8113134cac8787308f22a78
+  - enabled: 0
+    path: Assets/Project/Scenes/Test/Hiroebe/PlayerTest.unity
+    guid: 08f7330ea714a42498446bdcf7d088f2
+  - enabled: 0
+    path: Assets/Project/Scenes/Test/Hiroebe/BarrelTest.unity
+    guid: c39216a8924c09c428e84f29f28f84d8
   m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: a3888d97481098b499e9200ed42eafa0, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
