@@ -96,15 +96,26 @@ public class PlayerView : MonoBehaviour
     public System.Action<bool> OnDashInputReceived;
     public System.Action<bool> OnAimInputReceived;
     public System.Action<bool> OnFireInputReceived;
+    
     public System.Action OnFireEffectTiming;
     public System.Action OnReloadInputReceived;
+    public System.Action OnInteractInputReceived;
+    
     public System.Action<int> OnWeaponSwitchInputRecieved;
     public System.Action<int> OnWeaponDirectSelect;
+    
+
     public System.Action<Collider> OnTriggerEnterEvent;
+    public System.Action<Collider> OnTriggerExitEvent;
 
     private void OnTriggerEnter(Collider other)
     {
         OnTriggerEnterEvent?.Invoke(other);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        OnTriggerExitEvent?.Invoke(other);
     }
 
     private void OnMove(InputValue value)
@@ -156,5 +167,10 @@ public class PlayerView : MonoBehaviour
     private void OnWeapon2(InputValue value)
     {
         if (value.isPressed) OnWeaponDirectSelect?.Invoke(1);
+    }
+
+    private void OnInteract(InputValue value)
+    {
+        if (value.isPressed) OnInteractInputReceived?.Invoke();
     }
 }
