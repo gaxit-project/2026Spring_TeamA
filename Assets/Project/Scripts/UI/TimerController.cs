@@ -3,14 +3,14 @@ using TMPro;
 
 public class TimerController : MonoBehaviour
 {
-    [SerializeField] private int _timeLimit = 600;
+    [SerializeField] private int timeLimit = 600;
     private float _remainingTime;
     private TextMeshProUGUI _timerUI;
     private bool _isRunning = true;
 
     void Start()
     {
-        _remainingTime = _timeLimit;
+        _remainingTime = timeLimit;
         
         // TextMeshProUGUI‚ðŽæ“¾
         if (GetComponent<TextMeshProUGUI>() is TextMeshProUGUI timer) _timerUI = timer;
