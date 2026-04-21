@@ -24,6 +24,8 @@ public class EnemyView : MonoBehaviour
     private bool isHearing = false;
     private bool isHit = false;
 
+    private Renderer[] renderers;
+
     private void Start()
     {
         _agent = GetComponent<NavMeshAgent>();
@@ -39,6 +41,8 @@ public class EnemyView : MonoBehaviour
         {
             player = PlayerPresenter.Instance.PlayerView.transform;
         }
+
+        renderers = GetComponentsInChildren<Renderer>();
     }
 
     private void Update()
@@ -77,6 +81,7 @@ public class EnemyView : MonoBehaviour
         else if (canSee || isHearing || isHit) // 追跡開始
         {
             _animator.SetBool("Attack", false);
+            _animator.SetBool("Tracking", true);
             OnFoundPlayer?.Invoke(player.position);
             isTracking = true;
             isHearing = false;
@@ -146,5 +151,25 @@ public class EnemyView : MonoBehaviour
         _agent.isStopped = true;
         _agent.ResetPath();
         _animator.SetBool("Die", true);
+    }
+
+    public async UniTask Extinction()
+    {
+        float duration = 2.0f;
+        float time = 0f;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float alpha = 1.0f - time / duration;
+            
+            foreach(var r in renderers)
+            {
+                Color color = r.material.color;
+                color.a = alpha;
+                r.material.color = color;
+            }
+            await UniTask.Yield();  // 1フレーム待機
+        }   
     }
 }

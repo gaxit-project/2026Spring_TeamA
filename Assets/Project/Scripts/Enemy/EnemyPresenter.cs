@@ -29,7 +29,6 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
         }
     }
 
-
     private void Awake()
     {
         // Modelに ScriptableObject を渡して初期化
@@ -143,9 +142,15 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
         TakeDamage(finaiDamage);
     }
 
+    /// <summary>
+    /// ゾンビが消える処理
+    /// </summary>
+    /// <returns></returns>
     private async UniTaskVoid HandleDeathAsync()
     {
-        await UniTask.Delay(TimeSpan.FromSeconds(5));
+        await UniTask.Delay(TimeSpan.FromSeconds(3));
+        await view.Extinction();
+        await UniTask.Delay(TimeSpan.FromSeconds(3));
         if (this != null) Destroy(gameObject);
     }
 }
