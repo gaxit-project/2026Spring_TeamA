@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43b7d3d4458d2a84cbfd54b2e09e3f78, type: 3}
+  m_Name: NPCData
+  m_EditorClassIdentifier: 
+  rescueSuccessProbability: 0.5
+  timeToStartWalking: 2
+  relievedWalkSpeed: 2
+  relievedWalkDistance: 5
+  destroyDelayAfterWalk: 4
+  panicRunSpeed: 15
+  panicRunDistance: 15
+  destroyDelayAfterPanic: 4

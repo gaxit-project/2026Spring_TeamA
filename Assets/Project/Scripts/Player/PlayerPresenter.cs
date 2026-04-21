@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -29,15 +30,21 @@ public class PlayerPresenter : MonoBehaviour
     [SerializeField] private Transform weaponHolder;
     [SerializeField] private GameObject defaultGunPrefab;
 
+    [SerializeField] private TextMeshProUGUI interactPromptText;
+
     // GunDataをキーにして、GunModelを保存する辞書
     private Dictionary<GunData, GunModel> gunStatus = new Dictionary<GunData, GunModel>();
 
-    private int currentGunIndex = 0; // 今構えている銃のインデックス
     private Vector2 rawLookInput; // 視点移動の入力を保持
+    
+    private int currentGunIndex = 0; // 今構えている銃のインデックス
     private bool isFiring; // ボタンが押されているかどうかの状態
     private float lastFireTime; // 最後に撃った時刻を記録する変数
+
     private CancellationTokenSource fireCts;
     private CancellationTokenSource reloadCts; // リロード中断用
+
+    private IInteractable currentInteractable;
 
     private bool _isDead = false;
 
@@ -51,6 +58,11 @@ public class PlayerPresenter : MonoBehaviour
         if (inventoryGuns.Length > 0)
         {
             SetupWeapon(inventoryGuns[currentGunIndex]);
+        }
+
+        if (interactPromptText != null)
+        {
+            interactPromptText.gameObject.SetActive(false);
         }
 
         // Model に ScriptableObject を渡して初期化
@@ -214,6 +226,47 @@ public class PlayerPresenter : MonoBehaviour
             if (other.CompareTag("Goal"))
             {
                 GamePresenter.Instance.TriggerGameClear();
+            }
+
+            var interactable = other.GetComponentInParent<IInteractable>();
+            if (interactable != null)
+            {
+                currentInteractable = interactable;
+
+                if (interactPromptText != null)
+                {
+                    interactPromptText.text = "[F] : Talk";
+                    interactPromptText.gameObject.SetActive(true);
+                }
+            }
+        };
+
+        view.OnTriggerExitEvent += (other) =>
+        {
+            var interactible = other.GetComponentInParent<IInteractable>();
+            if (interactible != null && currentInteractable == interactible)
+            {
+                currentInteractable = null;
+
+                if (interactPromptText != null)
+                {
+                    interactPromptText.gameObject.SetActive(false);
+                }
+            }
+        };
+
+        view.OnInteractInputReceived += () =>
+        {
+            if (_isDead) return;
+
+            if (currentInteractable != null)
+            {
+                currentInteractable.Interact(this.gameObject);
+
+                if (interactPromptText != null)
+                {
+                    interactPromptText.gameObject.SetActive(false);
+                }
             }
         };
     }
