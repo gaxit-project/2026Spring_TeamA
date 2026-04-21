@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "NPCData", menuName = "ScriptableObjects/NPCData")]
-public class NpcData : ScriptableObject
+public class NPCData : ScriptableObject
 {
     [Header("確率")]
     [Range(0f, 1f), Tooltip("助かる（素直に言うことを聞く）確率")]

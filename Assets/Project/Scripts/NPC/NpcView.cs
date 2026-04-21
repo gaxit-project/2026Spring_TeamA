@@ -6,9 +6,9 @@ using UnityEditor.Rendering;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(NavMeshAgent))]
-public class NpcView : MonoBehaviour, IInteractable
+public class NPCView : MonoBehaviour, IInteractable
 {
-    [SerializeField] private NpcData npcData;
+    [SerializeField] private NPCData npcData;
     [SerializeField] private Transform escapePoint; // 逃げていく場所
 
     private Animator _animator;
