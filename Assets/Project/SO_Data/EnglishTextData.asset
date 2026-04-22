@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameStartMission: Escape the lab within 1 minutes!
   gameStartDisplayTime: 4
-  interactPrompt: '[X] : Talk'
+  interactPrompt: '[Y] : Talk'
   rescueSuccessMessage: Success!
   rescueMessageDisplayTime: 3
   npcDeathMessage: Casualties among survivors
