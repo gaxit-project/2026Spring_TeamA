@@ -69,7 +69,7 @@ public class NPCView : MonoBehaviour, IInteractable, IDamageable
             _animator.SetTrigger("Relieved");
 
             // スコア加算
-            //SessionData.AddKill(5);
+            SessionData.AddRescue();
 
             UIManager.Instance.ShowRescueMessage();
 
