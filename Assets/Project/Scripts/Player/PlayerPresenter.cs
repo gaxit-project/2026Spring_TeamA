@@ -30,8 +30,6 @@ public class PlayerPresenter : MonoBehaviour
     [SerializeField] private Transform weaponHolder;
     [SerializeField] private GameObject defaultGunPrefab;
 
-    [SerializeField] private TextMeshProUGUI interactPromptText;
-
     // GunDataをキーにして、GunModelを保存する辞書
     private Dictionary<GunData, GunModel> gunStatus = new Dictionary<GunData, GunModel>();
 
@@ -58,11 +56,6 @@ public class PlayerPresenter : MonoBehaviour
         if (inventoryGuns.Length > 0)
         {
             SetupWeapon(inventoryGuns[currentGunIndex]);
-        }
-
-        if (interactPromptText != null)
-        {
-            interactPromptText.gameObject.SetActive(false);
         }
 
         // Model に ScriptableObject を渡して初期化
@@ -232,12 +225,7 @@ public class PlayerPresenter : MonoBehaviour
             if (interactable != null)
             {
                 currentInteractable = interactable;
-
-                if (interactPromptText != null)
-                {
-                    interactPromptText.text = "[F] : Talk";
-                    interactPromptText.gameObject.SetActive(true);
-                }
+                UIManager.Instance.ShowInteractPrompt();
             }
         };
 
@@ -247,11 +235,7 @@ public class PlayerPresenter : MonoBehaviour
             if (interactible != null && currentInteractable == interactible)
             {
                 currentInteractable = null;
-
-                if (interactPromptText != null)
-                {
-                    interactPromptText.gameObject.SetActive(false);
-                }
+                UIManager.Instance.HideInteractPrompt();
             }
         };
 
@@ -262,11 +246,7 @@ public class PlayerPresenter : MonoBehaviour
             if (currentInteractable != null)
             {
                 currentInteractable.Interact(this.gameObject);
-
-                if (interactPromptText != null)
-                {
-                    interactPromptText.gameObject.SetActive(false);
-                }
+                UIManager.Instance.HideInteractPrompt();
             }
         };
     }

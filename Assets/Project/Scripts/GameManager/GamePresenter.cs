@@ -39,6 +39,7 @@ public class GamePresenter : MonoBehaviour
 
     private void Start()
     {
+        UIManager.Instance.ShowMissionStartMessage();
         model.StartTimer();
     }
 

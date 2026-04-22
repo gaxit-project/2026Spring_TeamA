@@ -6,7 +6,7 @@ using UnityEditor.Rendering;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(NavMeshAgent))]
-public class NPCView : MonoBehaviour, IInteractable
+public class NPCView : MonoBehaviour, IInteractable, IDamageable
 {
     [SerializeField] private NPCData npcData;
     [SerializeField] private Transform escapePoint; // 逃げていく場所
@@ -14,12 +14,31 @@ public class NPCView : MonoBehaviour, IInteractable
     private Animator _animator;
     private NavMeshAgent _agent;
     private bool _hasInteracted = false;
+    private bool _isDead = false;
+
+    public bool CanInteract => !_hasInteracted && !_isDead;
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
         _agent = GetComponent<NavMeshAgent>();
         _agent.isStopped = true;
+    }
+
+    public void TakeDamage(int amount)
+    {
+        if (_isDead) return;
+
+        _isDead = true;
+
+        if (_agent != null && _agent.isOnNavMesh)
+        {
+            _agent.isStopped = true;
+        }
+
+        _animator.SetTrigger("Die");
+
+        UIManager.Instance.ShowNpcDeathMessage();
     }
 
     public void Interact(GameObject interactor)
@@ -51,6 +70,8 @@ public class NPCView : MonoBehaviour, IInteractable
 
             // スコア加算
             //SessionData.AddKill(5);
+
+            UIManager.Instance.ShowRescueMessage();
 
             WalkAwayAsync(interactor).Forget();
         }
