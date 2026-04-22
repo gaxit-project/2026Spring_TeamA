@@ -2,7 +2,6 @@
 using UnityEngine.AI;
 using System;
 using Cysharp.Threading.Tasks;
-using UnityEditor.Rendering;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(NavMeshAgent))]
