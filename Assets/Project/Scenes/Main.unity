@@ -4324,6 +4324,10 @@ PrefabInstance:
       propertyPath: Target.TrackingTarget
       value: 
       objectReference: {fileID: 775917348}
+    - target: {fileID: 7406185418234706009, guid: bd154ce00f43e6f458887d2f343a54b9, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 41d1121d99459814588fd250bcaa7164, type: 2}
     - target: {fileID: 7693310999145201773, guid: bd154ce00f43e6f458887d2f343a54b9, type: 3}
       propertyPath: m_Drag
       value: 5
@@ -4335,6 +4339,10 @@ PrefabInstance:
     - target: {fileID: 7693310999145201773, guid: bd154ce00f43e6f458887d2f343a54b9, type: 3}
       propertyPath: m_Constraints
       value: 84
+      objectReference: {fileID: 0}
+    - target: {fileID: 7693310999145201773, guid: bd154ce00f43e6f458887d2f343a54b9, type: 3}
+      propertyPath: m_Interpolate
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
