@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 217beaac8f7f348408048f7e329c3787, type: 3}
   m_Name: GameData
   m_EditorClassIdentifier: 
-  gameTimeSeconds: 60
+  gameTimeSeconds: 5
   resultSceneName: Result
   transitionWaitTime: 3
