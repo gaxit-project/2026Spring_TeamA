@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
-using Unity.Cinemachine;
+
+[RequireComponent(typeof(Rigidbody))]
 
 public class PlayerView : MonoBehaviour
 {
@@ -9,19 +10,32 @@ public class PlayerView : MonoBehaviour
 
     [SerializeField] private Transform cameraPivot;
     [SerializeField] private Animator animator;
+
+    private Rigidbody _rb;
+
     private static readonly int IsMoving = Animator.StringToHash("IsMoving");
     private static readonly int IsAimingHash = Animator.StringToHash("IsAiming");
     private static readonly int AimPitchHash = Animator.StringToHash("AimPitch");
     private static readonly int FireTrigger = Animator.StringToHash("OnFire");
     private static readonly int ReloadTrigger = Animator.StringToHash("OnReload");
 
-    public void Move(Vector3 move)
+    private void Awake()
     {
-        transform.Translate(move, Space.Self);
+        _rb = GetComponent<Rigidbody>();
+    }
+
+    public void Move(Vector3 velocity)
+    {
+        if (_rb != null)
+        {
+            Vector3 worldVel = transform.TransformDirection(velocity);
+
+            _rb.linearVelocity = new Vector3(worldVel.x, _rb.linearVelocity.y, worldVel.z);
+        }
 
         if (animator != null)
         {
-            bool moving = move.magnitude > 0.001f;
+            bool moving = velocity.magnitude > 0.001f;
             animator.SetBool(IsMoving, moving);
         }
     }

@@ -288,9 +288,9 @@ public class PlayerPresenter : MonoBehaviour
         if (_isInputBlocked) return;
 
         // Modelに移動量を計算させる
-        Vector3 movement = model.CalcMove(Time.deltaTime);
+        Vector3 velocity = model.CalcVelocity();
         // 計算結果をViewに渡して移動を実行させる
-        view.Move(movement);
+        view.Move(velocity);
 
         if (rawLookInput.sqrMagnitude > 0.001f)
         {

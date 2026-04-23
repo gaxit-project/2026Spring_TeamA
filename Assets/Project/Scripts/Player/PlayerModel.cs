@@ -23,10 +23,10 @@ public class PlayerModel
         CurrentHP = data.hp;
     }
 
-    public Vector3 CalcMove(float deltaTime)
+    public Vector3 CalcVelocity()
     {
         float speed = IsDashing ? _data.moveDashSpeed : _data.moveSpeed;
-        return new Vector3(MoveInput.x, 0, MoveInput.y) * speed * deltaTime;
+        return new Vector3(MoveInput.x, 0, MoveInput.y) * speed;
     }
 
     public void TakeDamage(int amount)
