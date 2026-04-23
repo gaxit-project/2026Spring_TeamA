@@ -22,13 +22,16 @@ public class PlayerPresenter : MonoBehaviour
     [SerializeField] private HPView hpView;
     [SerializeField] private SoundDetectionView soundView;
 
+
+    [SerializeField] private Transform weaponHolder;
+    [SerializeField] private GameObject defaultGunPrefab;
+
+    private bool _isInputBlocked = false;
+    
     private PlayerModel model;
     
     private GunData gunData;
     private GunModel gunModel;
-
-    [SerializeField] private Transform weaponHolder;
-    [SerializeField] private GameObject defaultGunPrefab;
 
     // GunDataをキーにして、GunModelを保存する辞書
     private Dictionary<GunData, GunModel> gunStatus = new Dictionary<GunData, GunModel>();
@@ -207,7 +210,7 @@ public class PlayerPresenter : MonoBehaviour
             // 0以下ならゲームオーバー処理を呼ぶ
             if (currentHp <= 0)
             {
-                _isDead = true;
+                DisableInput(false);
                 view.PlayDieAnim();
 
                 GamePresenter.Instance.TriggerGameOver();
@@ -241,7 +244,7 @@ public class PlayerPresenter : MonoBehaviour
 
         view.OnInteractInputReceived += () =>
         {
-            if (_isDead) return;
+            if (_isInputBlocked) return;
 
             if (currentInteractable != null)
             {
@@ -251,12 +254,38 @@ public class PlayerPresenter : MonoBehaviour
         };
     }
 
+    public void DisableInput(bool isTimeOut)
+    {
+        if (_isInputBlocked) return;
+        _isInputBlocked = true;
+        // 撃っている最中なら射撃を強制キャンセル
+        if (fireCts != null)
+        {
+            fireCts.Cancel();
+            fireCts.Dispose();
+            fireCts = null;
+        }
+        // 足を強制的に止める
+        model.MoveInput = Vector2.zero;
+        view.Move(Vector3.zero);
+        if (isTimeOut)
+        {
+            view.PlayTimeOutAnim(); // 時間切れ
+        }
+        else
+        {
+            view.PlayDieAnim(); // 死亡
+        }
+    }
+
     private void Update()
     {
         if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             SceneManager.LoadScene("Title");
         }
+
+        if (_isInputBlocked) return;
 
         // Modelに移動量を計算させる
         Vector3 movement = model.CalcMove(Time.deltaTime);
@@ -360,7 +389,7 @@ public class PlayerPresenter : MonoBehaviour
 
     private void TryFire()
     {
-        if (_isDead) return;
+        if (_isInputBlocked) return;
         if (!isFiring) return;
         if (!gunModel.CanShoot()) return;
         if (Time.time < lastFireTime + gunData.fireRate) return;

@@ -86,6 +86,11 @@ public class PlayerView : MonoBehaviour
         if (animator != null) animator.SetTrigger("Die");
     }
 
+    public void PlayTimeOutAnim()
+    {
+        if (animator != null) animator.SetTrigger("TimeLimit");
+    }
+
     private string targetTag;
     public void SetTargetTag(string tag) => targetTag = tag;
 
