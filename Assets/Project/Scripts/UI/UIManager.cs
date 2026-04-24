@@ -54,10 +54,10 @@ public class UIManager : MonoBehaviour
         systemMessageText.DOFade(0f, 1f).SetDelay(displayTime);
     }
 
-    public void ShowInteractPrompt()
+    public void ShowInteractPrompt(string text)
     {
         if (interactPromptText == null) return;
-        interactPromptText.text = textData.interactPrompt;
+        interactPromptText.text = text;
         interactPromptText.gameObject.SetActive(true);
     }
 

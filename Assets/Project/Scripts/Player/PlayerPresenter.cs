@@ -47,8 +47,6 @@ public class PlayerPresenter : MonoBehaviour
 
     private IInteractable currentInteractable;
 
-    private bool _isDead = false;
-
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -225,10 +223,16 @@ public class PlayerPresenter : MonoBehaviour
             }
 
             var interactable = other.GetComponentInParent<IInteractable>();
+
+            Debug.Log($"[TriggerEnter] 接触: {other.name}, IInteractableあり: {interactable != null}");
+
             if (interactable != null)
             {
                 currentInteractable = interactable;
-                UIManager.Instance.ShowInteractPrompt();
+
+                // 文字をもらって表示する
+                string promptText = currentInteractable.GetInteractPrompt();
+                UIManager.Instance.ShowInteractPrompt(promptText);
             }
         };
 
@@ -237,6 +241,8 @@ public class PlayerPresenter : MonoBehaviour
             var interactible = other.GetComponentInParent<IInteractable>();
             if (interactible != null && currentInteractable == interactible)
             {
+                Debug.Log($"[TriggerExit] {other.name} から離れました");
+
                 currentInteractable = null;
                 UIManager.Instance.HideInteractPrompt();
             }

@@ -3630,6 +3630,29 @@ CapsuleCollider:
   m_Height: 3
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!136 &865553956
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 865553946}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!21 &870750722
 Material:
   serializedVersion: 8
@@ -6315,6 +6338,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8430700210096457295, guid: 8160a017a29f14a418bf493322919bcb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 865553950}
+    - targetCorrespondingSourceObject: {fileID: 8430700210096457295, guid: 8160a017a29f14a418bf493322919bcb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 865553956}
   m_SourcePrefab: {fileID: 100100000, guid: 8160a017a29f14a418bf493322919bcb, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
