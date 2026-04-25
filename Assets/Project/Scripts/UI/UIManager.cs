@@ -32,15 +32,10 @@ public class UIManager : MonoBehaviour
         ShowSystemMessage(textData.gameStartMission, textData.gameStartDisplayTime);
     }
 
-    public void ShowRescueMessage()
-    {
-        ShowSystemMessage(textData.rescueSuccessMessage, textData.rescueMessageDisplayTime);
-    }
-
     public void ShowNpcDeathMessage()
     {
         if (textData == null) return;
-        ShowSystemMessage(textData.npcDeathMessage, textData.npcDeathDisplayTime);
+        ShowSystemMessage(textData.npcDeathMessage, textData.npcMessageDisplayTime);
     }
 
     public void ShowSystemMessage(string text, float displayTime)
@@ -54,10 +49,10 @@ public class UIManager : MonoBehaviour
         systemMessageText.DOFade(0f, 1f).SetDelay(displayTime);
     }
 
-    public void ShowInteractPrompt()
+    public void ShowInteractPrompt(string text)
     {
         if (interactPromptText == null) return;
-        interactPromptText.text = textData.interactPrompt;
+        interactPromptText.text = text;
         interactPromptText.gameObject.SetActive(true);
     }
 
