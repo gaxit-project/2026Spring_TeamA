@@ -1,4 +1,5 @@
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.CompilerServices;
 using DG.Tweening;
 using System;
 using System.Threading;
@@ -42,15 +43,7 @@ public class NPCView : MonoBehaviour, IInteractable, IDamageable
             _agent.isStopped = true;
         }
 
-        // 死亡後はインタラクトできないようコライダーを無効化
-        foreach (Collider col in GetComponentsInChildren<Collider>())
-        {
-            col.enabled = false;
-        }
-        
-        // Rigidbodyがついていたら、すり抜けて床下に落ちないようにKinematicにする
-        Rigidbody rb = GetComponent<Rigidbody>();
-        if (rb != null) rb.isKinematic = true;
+        DisableColliderDelayedAsync().Forget();
 
         _animator.SetTrigger("Die");
 
@@ -233,6 +226,22 @@ public class NPCView : MonoBehaviour, IInteractable, IDamageable
         // 歩き去る時はディレイ後に1.5秒かけてフェードアウト
         float delay = Mathf.Max(0, npcData.destroyDelayAfterWalk - 1.5f);
         FadeOutAndDestroyAsync(delay, 1.5f).Forget();
+    }
+
+    private async UniTaskVoid DisableColliderDelayedAsync()
+    {
+        // 弾がNPCに飛んでくるまでの時間稼ぎ
+        await UniTask.Delay(System.TimeSpan.FromSeconds(2.0f));
+
+        // 死亡後はインタラクトできないようコライダーを無効化
+        foreach (Collider col in GetComponentsInChildren<Collider>())
+        {
+            col.enabled = false;
+        }
+
+        // Rigidbodyがついていたら、すり抜けて床下に落ちないようにKinematicにする
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null) rb.isKinematic = true;
     }
 
     private void SetupMaterialForFade(Material mat)
