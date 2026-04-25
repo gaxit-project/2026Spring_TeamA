@@ -1,4 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -284,6 +284,23 @@ public class PlayerPresenter : MonoBehaviour
         }
     }
 
+    public void SetInputBlocked(bool isBlocked)
+    {
+        _isInputBlocked = isBlocked;
+        if (isBlocked)
+        {
+            model.MoveInput = Vector2.zero;
+            view.Move(Vector3.zero);
+
+            if (fireCts != null)
+            {
+                fireCts.Cancel();
+                fireCts.Dispose();
+                fireCts = null;
+            }
+        }
+    }
+
     private void Update()
     {
         if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
@@ -291,7 +308,12 @@ public class PlayerPresenter : MonoBehaviour
             SceneManager.LoadScene("Title");
         }
 
-        if (_isInputBlocked) return;
+        if (_isInputBlocked)
+        {
+            view.UpdateBodyRotation(model.CurrentPan);
+            view.SetUpperBodyPitch(model.currentPitch);
+            return;
+        }
 
         // Modelに移動量を計算させる
         Vector3 velocity = model.CalcVelocity();

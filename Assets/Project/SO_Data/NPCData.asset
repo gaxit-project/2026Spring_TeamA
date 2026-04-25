@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43b7d3d4458d2a84cbfd54b2e09e3f78, type: 3}
   m_Name: NPCData
   m_EditorClassIdentifier: 
-  rescueSuccessProbability: 0
+  rescueSuccessProbability: 0.5
   timeToStartWalking: 2
   relievedWalkSpeed: 2
   relievedWalkDistance: 5
-  destroyDelayAfterWalk: 4
-  panicRunSpeed: 5
+  destroyDelayAfterWalk: 3
+  panicRunSpeed: 10
   panicRunDistance: 15
   destroyDelayAfterPanic: 10

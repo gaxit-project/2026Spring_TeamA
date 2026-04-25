@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using System;
 using System.Threading;
 using UnityEngine;
@@ -41,6 +42,16 @@ public class NPCView : MonoBehaviour, IInteractable, IDamageable
             _agent.isStopped = true;
         }
 
+        // 死亡後はインタラクトできないようコライダーを無効化
+        foreach (Collider col in GetComponentsInChildren<Collider>())
+        {
+            col.enabled = false;
+        }
+        
+        // Rigidbodyがついていたら、すり抜けて床下に落ちないようにKinematicにする
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null) rb.isKinematic = true;
+
         _animator.SetTrigger("Die");
 
         UIManager.Instance.ShowNpcDeathMessage();
@@ -61,10 +72,17 @@ public class NPCView : MonoBehaviour, IInteractable, IDamageable
             _isPanicking = false;
 
             CancelDestroyTimer();
-
             _agent.isStopped = true;
             _agent.ResetPath();
+            _agent.velocity = Vector3.zero;
 
+            // 逃走後に助けた時のセリフ
+            if (UIManager.Instance != null && UIManager.Instance.textData != null)
+            {
+                UIManager.Instance.ShowSystemMessage(UIManager.Instance.textData.npcRescueAfterEscapeMessage, 3.0f);
+            }
+
+            PlayerPresenter.Instance.SetInputBlocked(true);
             RescueSuccess(interactor);
 
             return;
@@ -72,24 +90,47 @@ public class NPCView : MonoBehaviour, IInteractable, IDamageable
 
         _hasInteracted = true;
 
-        // 助かるか逃げるか判定
+        InteractSequenceAsync(interactor).Forget();
+    }
+
+    private async UniTaskVoid InteractSequenceAsync(GameObject interactor)
+    {
+        PlayerPresenter.Instance.SetInputBlocked(true);
+
+        await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
+
+        if (this == null || _isDead)
+        {
+            if (PlayerPresenter.Instance != null) PlayerPresenter.Instance.SetInputBlocked(false);
+            return;
+        }
+
         bool isRescueSuccess = UnityEngine.Random.value <= npcData.rescueSuccessProbability;
 
         if (isRescueSuccess)
         {
+            // 最初から助かった時のセリフ
+            if (UIManager.Instance != null && UIManager.Instance.textData != null)
+            {
+                UIManager.Instance.ShowSystemMessage(UIManager.Instance.textData.npcInitialRescueMessage, 3.0f);
+            }
             RescueSuccess(interactor);
         }
         else
         {
-            Debug.Log("生存者がパニックになって逃げ出しました");
-
             _isPanicking = true;
 
+            // 逃走する時のセリフ
+            if (UIManager.Instance != null && UIManager.Instance.textData != null)
+            {
+                UIManager.Instance.ShowSystemMessage(UIManager.Instance.textData.npcPanicMessage, 3.0f);
+            }
+
+            Debug.Log("生存者がパニックになって逃げ出しました");
             _animator.SetTrigger("PanicRun");
             _agent.isStopped = false;
             _agent.speed = npcData.panicRunSpeed;
 
-            // 下の階層の方に逃げる
             if (escapePoint != null)
             {
                 _agent.SetDestination(escapePoint.position);
@@ -102,25 +143,30 @@ public class NPCView : MonoBehaviour, IInteractable, IDamageable
             }
 
             _destroyCts = new CancellationTokenSource();
+            
+            // パニック時はディレイ後に1.5秒かけてフェードアウト
+            float delay = Mathf.Max(0, npcData.destroyDelayAfterPanic - 1.5f);
+            FadeOutAndDestroyAsync(delay, 1.5f, _destroyCts.Token).Forget();
 
-            DestroyAfterDelayAsync(npcData.destroyDelayAfterPanic, _destroyCts.Token).Forget();
+            await UniTask.Delay(TimeSpan.FromSeconds(1.5f));
+
+            if (PlayerPresenter.Instance != null)
+            {
+                PlayerPresenter.Instance.SetInputBlocked(false);
+            }
         }
     }
 
     public string GetInteractPrompt()
     {
-        // データが無かった場合
         if (UIManager.Instance == null || UIManager.Instance.textData == null) return "";
-
 
         if (_isPanicking)
         {
-            // 逃走中
             return UIManager.Instance.textData.stopPanickingPrompt;
         }
         else
         {
-            // 怯えている時
             return UIManager.Instance.textData.interactPrompt;
         }
     }
@@ -129,44 +175,120 @@ public class NPCView : MonoBehaviour, IInteractable, IDamageable
     {
         Debug.Log("生存者を救出しました");
 
-        // プレイヤーの方を振り向く
+        // コライダーを無効化して貫通させる
+        foreach (Collider col in GetComponentsInChildren<Collider>())
+        {
+            col.enabled = false;
+        }
+        
+        // Rigidbodyがついていたら、すり抜けて床下に落ちないようにKinematicにする
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null) rb.isKinematic = true;
+
         Vector3 lookPos = interactor.transform.position;
         lookPos.y = transform.position.y;
+        
+        // 滑らかに振り向く
+        if (!_isPanicking){
+            transform.DOLookAt(lookPos, 0.5f);
+        }
+        else{
+            transform.DOLookAt(lookPos, 0.1f);
+        }
 
-        transform.LookAt(lookPos);
+        _animator.CrossFade("Relieved Sigh", 0.1f);
 
-        _animator.CrossFade("Relieved", 0.1f);
-
-        // スコア加算
         SessionData.AddRescue();
-
-        UIManager.Instance.ShowRescueMessage();
 
         WalkAwayAsync(interactor).Forget();
     }
 
     private async UniTaskVoid WalkAwayAsync(GameObject interactor)
     {
-        await UniTask.Delay(TimeSpan.FromSeconds(2f));
+        try
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(2f), cancellationToken: this.GetCancellationTokenOnDestroy());
+        }
+        catch (OperationCanceledException)
+        {
+            if (PlayerPresenter.Instance != null) PlayerPresenter.Instance.SetInputBlocked(false);
+            return;
+        }
 
-        if (this == null) return;
+        if (PlayerPresenter.Instance != null)
+        {
+            PlayerPresenter.Instance.SetInputBlocked(false);
+        }
+
+        if (this == null || _isDead) return;
 
         _agent.isStopped = false;
         _agent.speed = 2f;
 
-        _animator.CrossFade("Walk", 0.1f);
+        _animator.CrossFade("Walking", 0.1f);
 
         Vector3 behindPlayer = interactor.transform.position - interactor.transform.forward * 5f;
         _agent.SetDestination(behindPlayer);
 
-        DestroyAfterDelayAsync(npcData.destroyDelayAfterWalk).Forget();
+        // 歩き去る時はディレイ後に1.5秒かけてフェードアウト
+        float delay = Mathf.Max(0, npcData.destroyDelayAfterWalk - 1.5f);
+        FadeOutAndDestroyAsync(delay, 1.5f).Forget();
     }
 
-    private async UniTaskVoid DestroyAfterDelayAsync(float delay, CancellationToken token = default)
+    private void SetupMaterialForFade(Material mat)
+    {
+        if (mat.HasProperty("_Mode"))
+        {
+            mat.SetFloat("_Mode", 2); // Fade
+            mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            mat.SetInt("_ZWrite", 0);
+            mat.DisableKeyword("_ALPHATEST_ON");
+            mat.EnableKeyword("_ALPHABLEND_ON");
+            mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            mat.renderQueue = 3000;
+        }
+
+        if (mat.HasProperty("_Surface"))
+        {
+            mat.SetFloat("_Surface", 1);
+            mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            mat.SetInt("_ZWrite", 0);
+            mat.renderQueue = 3000;
+            mat.SetShaderPassEnabled("ShadowCaster", false);
+        }
+    }
+
+    private async UniTaskVoid FadeOutAndDestroyAsync(float delay, float fadeDuration, CancellationToken token = default)
     {
         try
         {
             await UniTask.Delay(TimeSpan.FromSeconds(delay), cancellationToken: token);
+
+            if (this == null) return;
+
+            Renderer[] renderers = GetComponentsInChildren<Renderer>();
+            
+            foreach (Renderer r in renderers)
+            {
+                foreach (Material mat in r.materials)
+                {
+                    SetupMaterialForFade(mat);
+
+                    if (mat.HasProperty("_Color"))
+                    {
+                        mat.DOFade(0f, fadeDuration);
+                    }
+                    else if (mat.HasProperty("_BaseColor"))
+                    {
+                        mat.DOFade(0f, "_BaseColor", fadeDuration);
+                    }
+                }
+            }
+
+            await UniTask.Delay(TimeSpan.FromSeconds(fadeDuration), cancellationToken: token);
+
             if (this != null)
             {
                 Destroy(gameObject);

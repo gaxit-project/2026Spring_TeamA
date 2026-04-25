@@ -32,15 +32,10 @@ public class UIManager : MonoBehaviour
         ShowSystemMessage(textData.gameStartMission, textData.gameStartDisplayTime);
     }
 
-    public void ShowRescueMessage()
-    {
-        ShowSystemMessage(textData.rescueSuccessMessage, textData.rescueMessageDisplayTime);
-    }
-
     public void ShowNpcDeathMessage()
     {
         if (textData == null) return;
-        ShowSystemMessage(textData.npcDeathMessage, textData.npcDeathDisplayTime);
+        ShowSystemMessage(textData.npcDeathMessage, textData.npcMessageDisplayTime);
     }
 
     public void ShowSystemMessage(string text, float displayTime)
