@@ -1,4 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -65,8 +65,19 @@ public class GamePresenter : MonoBehaviour
         _isGameEnded = true;
 
         model.StopTimer();
+
+        // プレイヤーの操作をブロック
+        if (PlayerPresenter.Instance != null)
+        {
+            PlayerPresenter.Instance.DisableInput(true);
+        }
+
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        // プレイ中のUIを非表示にする
+        if (timerView != null) timerView.Hide();
+        if (UIManager.Instance != null) UIManager.Instance.HideInteractPrompt();
 
         ShowGameClearUIAsync().Forget();
     }
@@ -79,18 +90,70 @@ public class GamePresenter : MonoBehaviour
 
     private async UniTaskVoid ShowGameClearUIAsync()
     {
+        // 少し間を開ける
         await UniTask.Delay(TimeSpan.FromSeconds(0.5));
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        
         if (nextLevelView != null)
         {
-            nextLevelView.PlayComingSoonSequence().Forget();
-
-            await UniTask.Delay(TimeSpan.FromSeconds(1.0));
-
-            timerView.Hide();
+            // ホワイトアウトとテキスト表示終わるまで待機
+            await nextLevelView.PlaySequence(true);
         }
+
+        // リザルトへ遷移
         TransitionToResultAsync().Forget();
+    }
+
+    public void TriggerNextLevel()
+    {
+        if (_isGameEnded) return;
+        _isGameEnded = true;
+
+        model.StopTimer();
+
+        // プレイヤーの操作をブロック
+        if (PlayerPresenter.Instance != null)
+        {
+            PlayerPresenter.Instance.DisableInput(true);
+        }
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        // プレイ中のUIを非表示にする
+        if (timerView != null) timerView.Hide();
+        if (UIManager.Instance != null) UIManager.Instance.HideInteractPrompt();
+
+        ShowNextLevelUIAsync().Forget();
+    }
+
+    private async UniTaskVoid TransitionToNextLevelAsync()
+    {
+        await UniTask.Delay(TimeSpan.FromSeconds(gameData.transitionWaitTime));
+        
+        // GameDataに設定された次のシーンをロード。空なら現在のシーンを再読み込み
+        if (!string.IsNullOrEmpty(gameData.nextLevelSceneName))
+        {
+            SceneManager.LoadScene(gameData.nextLevelSceneName);
+        }
+        else
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+    }
+
+    private async UniTaskVoid ShowNextLevelUIAsync()
+    {
+        // 少し間を開ける
+        await UniTask.Delay(TimeSpan.FromSeconds(0.5));
+        
+        if (nextLevelView != null)
+        {
+            // 暗転とLoading...テキスト表示が終わるまで待機 
+            await nextLevelView.PlaySequence(false);
+        }
+
+        // 次の階層へ遷移
+        TransitionToNextLevelAsync().Forget();
     }
 
     private async UniTaskVoid ShowGameOverUIAsync()

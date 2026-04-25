@@ -7,6 +7,7 @@ TagManager:
   - Bullet
   - Goal
   - FxTemporaire
+  - NextLevel
   layers:
   - Default
   - TransparentFX
