@@ -14,5 +14,8 @@ public class TextData : ScriptableObject
     public string npcRescueAfterEscapeMessage = "Wait, you're human... I'm so sorry, I panicked!";
     public string npcDeathMessage = "Oh no! What have I done...";
 
+    public string gameClearMessage = "GAME CLEAR";
+    public string loadingMessage = "Loading...";
+
     public float npcMessageDisplayTime = 3.0f;
 }

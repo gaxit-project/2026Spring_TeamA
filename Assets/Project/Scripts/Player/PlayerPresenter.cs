@@ -221,6 +221,10 @@ public class PlayerPresenter : MonoBehaviour
             {
                 GamePresenter.Instance.TriggerGameClear();
             }
+            else if (other.CompareTag("NextLevel"))
+            {
+                GamePresenter.Instance.TriggerNextLevel();
+            }
 
             var interactable = other.GetComponentInParent<IInteractable>();
 
