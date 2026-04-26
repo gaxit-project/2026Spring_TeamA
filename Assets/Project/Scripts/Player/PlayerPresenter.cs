@@ -1,4 +1,4 @@
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -236,7 +236,7 @@ public class PlayerPresenter : MonoBehaviour
 
                 // 文字をもらって表示する
                 string promptText = currentInteractable.GetInteractPrompt();
-                UIManager.Instance.ShowInteractPrompt(promptText);
+                UIEvents.OnShowInteractPrompt?.Invoke(promptText);
             }
         };
 
@@ -248,7 +248,7 @@ public class PlayerPresenter : MonoBehaviour
                 Debug.Log($"[TriggerExit] {other.name} から離れました");
 
                 currentInteractable = null;
-                UIManager.Instance.HideInteractPrompt();
+                UIEvents.OnHideInteractPrompt?.Invoke();
             }
         };
 
@@ -259,7 +259,7 @@ public class PlayerPresenter : MonoBehaviour
             if (currentInteractable != null)
             {
                 currentInteractable.Interact(this.gameObject);
-                UIManager.Instance.HideInteractPrompt();
+                UIEvents.OnHideInteractPrompt?.Invoke();
             }
         };
     }
