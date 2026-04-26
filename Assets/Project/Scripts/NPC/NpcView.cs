@@ -90,60 +90,65 @@ public class NPCView : MonoBehaviour, IInteractable, IDamageable
 
     private async UniTaskVoid InteractSequenceAsync(GameObject interactor)
     {
-        PlayerPresenter.Instance.SetInputBlocked(true);
+        UIEvents.OnCutsceneStateChanged?.Invoke(true);
+
+        CancellationToken token = this.GetCancellationTokenOnDestroy();
 
         await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
 
-        if (this == null || _isDead)
+        try
         {
-            if (PlayerPresenter.Instance != null) PlayerPresenter.Instance.SetInputBlocked(false);
-            return;
-        }
-
-        bool isRescueSuccess = UnityEngine.Random.value <= npcData.rescueSuccessProbability;
-
-        if (isRescueSuccess)
-        {
-            // 最初から助かった時のセリフ
-            UIEvents.OnShowSystemMessage?.Invoke(UIManager.Instance.textData.npcInitialRescueMessage, 3.0f);
-            
-            RescueSuccess(interactor);
-        }
-        else
-        {
-            _isPanicking = true;
-
-            // 逃走する時のセリフ
-            UIEvents.OnShowSystemMessage?.Invoke(UIManager.Instance.textData.npcPanicMessage, 3.0f);
-
-            Debug.Log("生存者がパニックになって逃げ出しました");
-            _animator.SetTrigger("PanicRun");
-            _agent.isStopped = false;
-            _agent.speed = npcData.panicRunSpeed;
-
-            if (escapePoint != null)
+            // 待機処理にトークンを渡す
+            await UniTask.Delay(TimeSpan.FromSeconds(0.5f), cancellationToken: token);
+            if (this == null || _isDead)
             {
-                _agent.SetDestination(escapePoint.position);
+                UIEvents.OnCutsceneStateChanged?.Invoke(false);
+                return;
+            }
+            bool isRescueSuccess = UnityEngine.Random.value <= npcData.rescueSuccessProbability;
+            if (isRescueSuccess)
+            {
+                // 最初から助かった時のセリフ
+                if (UIManager.Instance.textData != null)
+                {
+                    UIEvents.OnShowSystemMessage?.Invoke(UIManager.Instance.textData.npcInitialRescueMessage, 3.0f);
+                }
+                RescueSuccess(interactor);
             }
             else
             {
-                Vector3 runDirection = (transform.position - interactor.transform.position).normalized;
-                Vector3 targetPos = transform.position + runDirection * npcData.panicRunDistance;
-                _agent.SetDestination(targetPos);
+                _isPanicking = true;
+                // 逃走する時のセリフ
+                if (UIManager.Instance.textData != null)
+                {
+                    UIEvents.OnShowSystemMessage?.Invoke(UIManager.Instance.textData.npcPanicMessage, 3.0f);
+                }
+                Debug.Log("生存者がパニックになって逃げ出しました");
+                _animator.SetTrigger("PanicRun");
+                _agent.isStopped = false;
+                _agent.speed = npcData.panicRunSpeed;
+                if (escapePoint != null)
+                {
+                    _agent.SetDestination(escapePoint.position);
+                }
+                else
+                {
+                    Vector3 runDirection = (transform.position - interactor.transform.position).normalized;
+                    Vector3 targetPos = transform.position + runDirection * npcData.panicRunDistance;
+                    _agent.SetDestination(targetPos);
+                }
+                _destroyCts = new CancellationTokenSource();
+                
+                float delay = Mathf.Max(0, npcData.destroyDelayAfterPanic - 1.5f);
+                FadeOutAndDestroyAsync(delay, 1.5f, _destroyCts.Token).Forget();
+                await UniTask.Delay(TimeSpan.FromSeconds(1.5f), cancellationToken: token);
+                UIEvents.OnCutsceneStateChanged?.Invoke(false);
             }
-
-            _destroyCts = new CancellationTokenSource();
-            
-            // パニック時はディレイ後に1.5秒かけてフェードアウト
-            float delay = Mathf.Max(0, npcData.destroyDelayAfterPanic - 1.5f);
-            FadeOutAndDestroyAsync(delay, 1.5f, _destroyCts.Token).Forget();
-
-            await UniTask.Delay(TimeSpan.FromSeconds(1.5f));
-
-            if (PlayerPresenter.Instance != null)
-            {
-                PlayerPresenter.Instance.SetInputBlocked(false);
-            }
+        }
+        catch (OperationCanceledException)
+        {
+            // 待機中にNPCが消滅してキャンセルされた場合も、念のためPlayerの操作ブロックを解除する
+            UIEvents.OnCutsceneStateChanged?.Invoke(false);
         }
     }
 
@@ -198,7 +203,7 @@ public class NPCView : MonoBehaviour, IInteractable, IDamageable
     {
         try
         {
-            await UniTask.Delay(TimeSpan.FromSeconds(2f), cancellationToken: this.GetCancellationTokenOnDestroy());
+            await UniTask.Delay(TimeSpan.FromSeconds(npcData.timeToStartWalking), cancellationToken: this.GetCancellationTokenOnDestroy());
         }
         catch (OperationCanceledException)
         {
@@ -214,11 +219,11 @@ public class NPCView : MonoBehaviour, IInteractable, IDamageable
         if (this == null || _isDead) return;
 
         _agent.isStopped = false;
-        _agent.speed = 2f;
+        _agent.speed = npcData.relievedWalkSpeed;
 
         _animator.CrossFade("Walking", 0.1f);
 
-        Vector3 behindPlayer = interactor.transform.position - interactor.transform.forward * 5f;
+        Vector3 behindPlayer = interactor.transform.position - interactor.transform.forward * npcData.relievedWalkDistance;
         _agent.SetDestination(behindPlayer);
 
         // 歩き去る時はディレイ後に1.5秒かけてフェードアウト

@@ -21,6 +21,11 @@ public static class UIEvents
     // === システムメッセージ関連 ===
 
     /// <summary>
+    /// カットシーンの開始・終了を通知するイベント
+    /// </summary>
+    public static Action<bool> OnCutsceneStateChanged;
+
+    /// <summary>
     /// ミッション開始のメッセージを表示するイベント
     /// </summary>
     public static Action OnShowMissionStartMessage;
