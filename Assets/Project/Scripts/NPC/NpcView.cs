@@ -48,6 +48,11 @@ public class NPCView : MonoBehaviour, IInteractable, IDamageable
         _animator.SetTrigger("Die");
 
         UIManager.Instance.ShowNpcDeathMessage();
+
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.HideInteractPrompt();
+        }
     }
 
     public void Interact(GameObject interactor)
@@ -152,6 +157,7 @@ public class NPCView : MonoBehaviour, IInteractable, IDamageable
 
     public string GetInteractPrompt()
     {
+        if (_isDead) return "";
         if (UIManager.Instance == null || UIManager.Instance.textData == null) return "";
 
         if (_isPanicking)
