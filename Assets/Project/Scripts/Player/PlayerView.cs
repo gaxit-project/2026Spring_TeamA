@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.Cinemachine;
 
@@ -86,30 +86,15 @@ public class PlayerView : MonoBehaviour
         if (animator != null) animator.SetTrigger("Die");
     }
 
-<<<<<<< Updated upstream:Assets/TutorialInfo/Scripts/Player/PlayerView.cs
-    private string targetTag;
-    public void SetTargetTag(string tag) => targetTag = tag;
-=======
     public void PlayTimeOutAnim()
     {
         if (animator != null) animator.SetTrigger("TimeLimit");
     }
->>>>>>> Stashed changes:Assets/Project/Scripts/Player/PlayerView.cs
 
     // 入力があったことをPresenterに知らせるためのイベント
     public event System.Action<Vector2> OnMoveInputReceived;
     public event System.Action<Vector2> OnLookInputReceived;
 
-<<<<<<< Updated upstream:Assets/TutorialInfo/Scripts/Player/PlayerView.cs
-    public System.Action<bool> OnDashInputReceived;
-    public System.Action<bool> OnAimInputReceived;
-    public System.Action<bool> OnFireInputReceived;
-    public System.Action OnFireEffectTiming;
-    public System.Action OnReloadInputReceived;
-    public System.Action<int> OnWeaponSwitchInputRecieved;
-    public System.Action<int> OnWeaponDirectSelect;
-    public System.Action<Collider> OnTriggerEnterEvent;
-=======
     public event System.Action<bool> OnDashInputReceived;
     public event System.Action<bool> OnAimInputReceived;
     public event System.Action<bool> OnFireInputReceived;
@@ -121,10 +106,8 @@ public class PlayerView : MonoBehaviour
     public event System.Action<int> OnWeaponSwitchInputRecieved;
     public event System.Action<int> OnWeaponDirectSelect;
     
-
     public event System.Action<Collider> OnTriggerEnterEvent;
     public event System.Action<Collider> OnTriggerExitEvent;
->>>>>>> Stashed changes:Assets/Project/Scripts/Player/PlayerView.cs
 
     private void OnTriggerEnter(Collider other)
     {
