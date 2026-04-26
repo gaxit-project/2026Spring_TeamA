@@ -75,10 +75,7 @@ public class NPCView : MonoBehaviour, IInteractable, IDamageable
             _agent.velocity = Vector3.zero;
 
             // 逃走後に助けた時のセリフ
-            if (UIManager.Instance != null && UIManager.Instance.textData != null)
-            {
-                UIManager.Instance.ShowSystemMessage(UIManager.Instance.textData.npcRescueAfterEscapeMessage, 3.0f);
-            }
+            UIEvents.OnShowSystemMessage?.Invoke(UIManager.Instance.textData.npcRescueAfterEscapeMessage, 3.0f);
 
             PlayerPresenter.Instance.SetInputBlocked(true);
             RescueSuccess(interactor);
@@ -108,10 +105,8 @@ public class NPCView : MonoBehaviour, IInteractable, IDamageable
         if (isRescueSuccess)
         {
             // 最初から助かった時のセリフ
-            if (UIManager.Instance != null && UIManager.Instance.textData != null)
-            {
-                UIManager.Instance.ShowSystemMessage(UIManager.Instance.textData.npcInitialRescueMessage, 3.0f);
-            }
+            UIEvents.OnShowSystemMessage?.Invoke(UIManager.Instance.textData.npcInitialRescueMessage, 3.0f);
+            
             RescueSuccess(interactor);
         }
         else
@@ -119,10 +114,7 @@ public class NPCView : MonoBehaviour, IInteractable, IDamageable
             _isPanicking = true;
 
             // 逃走する時のセリフ
-            if (UIManager.Instance != null && UIManager.Instance.textData != null)
-            {
-                UIManager.Instance.ShowSystemMessage(UIManager.Instance.textData.npcPanicMessage, 3.0f);
-            }
+            UIEvents.OnShowSystemMessage?.Invoke(UIManager.Instance.textData.npcPanicMessage, 3.0f);
 
             Debug.Log("生存者がパニックになって逃げ出しました");
             _animator.SetTrigger("PanicRun");

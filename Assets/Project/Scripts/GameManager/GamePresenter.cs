@@ -1,4 +1,4 @@
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -40,7 +40,8 @@ public class GamePresenter : MonoBehaviour
 
     private void Start()
     {
-        UIManager.Instance.ShowMissionStartMessage();
+        UIEvents.OnShowMissionStartMessage?.Invoke();
+
         model.StartTimer();
     }
 
@@ -77,7 +78,7 @@ public class GamePresenter : MonoBehaviour
 
         // プレイ中のUIを非表示にする
         if (timerView != null) timerView.Hide();
-        if (UIManager.Instance != null) UIManager.Instance.HideInteractPrompt();
+        UIEvents.OnHideInteractPrompt?.Invoke();
 
         ShowGameClearUIAsync().Forget();
     }
@@ -121,7 +122,7 @@ public class GamePresenter : MonoBehaviour
 
         // プレイ中のUIを非表示にする
         if (timerView != null) timerView.Hide();
-        if (UIManager.Instance != null) UIManager.Instance.HideInteractPrompt();
+        UIEvents.OnHideInteractPrompt?.Invoke();
 
         ShowNextLevelUIAsync().Forget();
     }
