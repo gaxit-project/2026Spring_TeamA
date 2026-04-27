@@ -16,8 +16,8 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private Slider SESlider;
     [SerializeField] private Slider BGMSlider;
 
-    private float seVolume = 0.5f;
-    private float bgmVolume = 0.5f;
+    private float _seVolume = 0.5f;
+    private float _bgmVolume = 0.5f;
 
     public static SoundManager Instance;
 
@@ -27,6 +27,7 @@ public class SoundManager : MonoBehaviour
         {
             //インスタンスがなければ設定
             Instance = this;
+            DontDestroyOnLoad(this.gameObject);
         }
         else
         {
@@ -38,22 +39,9 @@ public class SoundManager : MonoBehaviour
     void Start()
     {
         //シーン切り替え時に関数を呼び出すようにする
-        SceneManager.activeSceneChanged += GetSliders;
+        SceneManager.activeSceneChanged += CallGetSliders;
 
-
-        //保存した音量のデータをロード
-        LoadVolumeSetting();
-
-        if (SESlider == null || BGMSlider == null)
-        {
-            SESlider = GameObject.Find("SESlider").GetComponent<Slider>();
-            BGMSlider = GameObject.Find("BGMSlider").GetComponent<Slider>();
-            GameObject.Find("SettingMenu").SetActive(false);
-        }
-        if (SESlider != null && BGMSlider != null)
-        {
-            InitializeSliders();
-        }
+        //AudioSourceが無い場合はアタッチする
         if (audioSourceSE == null)
         {
             audioSourceSE = gameObject.AddComponent<AudioSource>();
@@ -61,16 +49,28 @@ public class SoundManager : MonoBehaviour
         if (audioSourceBGM == null)
         {
             audioSourceBGM = gameObject.AddComponent<AudioSource>();
-            PlayBGM(0);
         }
+
+        //保存した音量のデータをロード
+        LoadVolumeSetting();
+
+        GetSliders();
     }
 
     /// <summary>
-    /// タイトルシーンのときスライダーを取得して初期化する
+    /// GetSlidersを呼び出す
     /// </summary>
     /// <param name="a">ダミー</param>
     /// <param name="b">ダミー</param>
-    private void GetSliders(Scene a, Scene b)
+    private void CallGetSliders(Scene a, Scene b)
+    {
+        GetSliders();
+    }
+
+    /// <summary>
+    /// スライダーを取得して初期化する
+    /// </summary>
+    private void GetSliders()
     {
         //初期化
         SESlider = null;
@@ -87,7 +87,7 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("音量設定スライダーが見つかりませんでした");
+            //Debug.LogWarning("音量設定スライダーが見つかりませんでした");
         }
     }
 
@@ -95,12 +95,12 @@ public class SoundManager : MonoBehaviour
     {
         if (PlayerPrefs.HasKey("SEVolume") && PlayerPrefs.HasKey("BGMVolume"))
         {
-            seVolume = PlayerPrefs.GetFloat("SEVolume");
-            bgmVolume = PlayerPrefs.GetFloat("BGMVolume");
+            _seVolume = PlayerPrefs.GetFloat("SEVolume");
+            _bgmVolume = PlayerPrefs.GetFloat("BGMVolume");
         }
 
-        audioSourceSE.volume = seVolume;
-        audioSourceBGM.volume = bgmVolume;
+        audioSourceSE.volume = _seVolume;
+        audioSourceBGM.volume = _bgmVolume;
     }
 
     /// <summary>
@@ -110,8 +110,8 @@ public class SoundManager : MonoBehaviour
     {
 
         //スライダー初期値を反映
-        SESlider.value = seVolume;
-        BGMSlider.value = bgmVolume;
+        SESlider.value = _seVolume;
+        BGMSlider.value = _bgmVolume;
 
 
         //イベントリスナーを登録
@@ -129,9 +129,9 @@ public class SoundManager : MonoBehaviour
     /// </summary>
     public void OnSEVolumeChange()
     {
-        seVolume = SESlider.value;
+        _seVolume = SESlider.value;
         audioSourceSE.volume = SESlider.value;
-        PlayerPrefs.SetFloat("SEVolume", seVolume);
+        PlayerPrefs.SetFloat("SEVolume", _seVolume);
         PlayerPrefs.Save();
     }
 
@@ -140,9 +140,9 @@ public class SoundManager : MonoBehaviour
     /// </summary>
     public void OnBGMVolumeChange()
     {
-        bgmVolume = BGMSlider.value;
+        _bgmVolume = BGMSlider.value;
         audioSourceBGM.volume = BGMSlider.value;
-        PlayerPrefs.SetFloat("BGMVolume", bgmVolume);
+        PlayerPrefs.SetFloat("BGMVolume", _bgmVolume);
         PlayerPrefs.Save();
     }
 
@@ -181,8 +181,8 @@ public class SoundManager : MonoBehaviour
     /// </summary>
     private void SaveVolumeSetting()
     {
-        PlayerPrefs.SetFloat("SEVolume", seVolume);
-        PlayerPrefs.SetFloat("BGMVolume", bgmVolume);
+        PlayerPrefs.SetFloat("SEVolume", _seVolume);
+        PlayerPrefs.SetFloat("BGMVolume", _bgmVolume);
         PlayerPrefs.Save();
     }
 
@@ -191,7 +191,7 @@ public class SoundManager : MonoBehaviour
     /// </summary>
     private void OnApplicationQuit()
     {
-        SceneManager.activeSceneChanged -= GetSliders;
+        SceneManager.activeSceneChanged -= CallGetSliders;
         SaveVolumeSetting();
     }
 }
