@@ -1,4 +1,4 @@
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -74,11 +74,6 @@ public class PlayerPresenter : MonoBehaviour
 
     private void Update()
     {
-        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
-        {
-            SceneManager.LoadScene("Title");
-        }
-
         if (_isInputBlocked)
         {
             view.UpdateBodyRotation(model.CurrentPan);

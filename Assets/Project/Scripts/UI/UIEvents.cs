@@ -40,4 +40,9 @@ public static class UIEvents
     /// NPCが死亡した時の専用メッセージを表示するイベント
     /// </summary>
     public static Action OnShowNpcDeathMessage;
+
+    /// <summary>
+    /// ポーズしているかどうかを保持するイベント
+    /// </summary>
+    public static Action<bool> OnPauseStateChanged;
 }
