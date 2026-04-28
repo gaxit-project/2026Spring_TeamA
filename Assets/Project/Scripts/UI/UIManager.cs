@@ -27,22 +27,48 @@ public class UIManager : MonoBehaviour
         if (interactPromptText != null) interactPromptText.gameObject.SetActive(false);
     }
 
-    public void ShowMissionStartMessage()
+    /// <summary>
+    /// オブジェクトが有効になった時、UIEventsのイベントを購読する
+    /// </summary>
+    private void OnEnable()
     {
+        UIEvents.OnShowMissionStartMessage += ShowMissionStartMessage;
+        UIEvents.OnShowInteractPrompt += ShowInteractPrompt;
+        UIEvents.OnHideInteractPrompt += HideInteractPrompt;
+        UIEvents.OnShowSystemMessage += ShowSystemMessage;
+        UIEvents.OnShowNpcDeathMessage += ShowNpcDeathMessage;
+    }
+
+    /// <summary>
+    /// オブジェクトが無効になった時、エラーを防ぐために受信設定を解除する
+    /// </summary>
+    private void OnDisable()
+    {
+        UIEvents.OnShowMissionStartMessage -= ShowMissionStartMessage;
+        UIEvents.OnShowInteractPrompt -= ShowInteractPrompt;
+        UIEvents.OnHideInteractPrompt -= HideInteractPrompt;
+        UIEvents.OnShowSystemMessage -= ShowSystemMessage;
+        UIEvents.OnShowNpcDeathMessage -= ShowNpcDeathMessage;
+    }
+
+    private void ShowMissionStartMessage()
+    {
+        if (textData == null) return;
         ShowSystemMessage(textData.gameStartMission, textData.gameStartDisplayTime);
     }
 
-    public void ShowRescueMessage()
-    {
-        ShowSystemMessage(textData.rescueSuccessMessage, textData.rescueMessageDisplayTime);
-    }
-
+    /// <summary>
+    /// NPC死亡時のメッセージを表示する
+    /// </summary>
     public void ShowNpcDeathMessage()
     {
         if (textData == null) return;
-        ShowSystemMessage(textData.npcDeathMessage, textData.npcDeathDisplayTime);
+        ShowSystemMessage(textData.npcDeathMessage, textData.npcMessageDisplayTime);
     }
 
+    /// <summary>
+    /// 画面中央にシステムメッセージを表示し、フェードアウトさせる
+    /// </summary>
     public void ShowSystemMessage(string text, float displayTime)
     {
         if (systemMessageText == null) return;
@@ -54,13 +80,19 @@ public class UIManager : MonoBehaviour
         systemMessageText.DOFade(0f, 1f).SetDelay(displayTime);
     }
 
-    public void ShowInteractPrompt()
+    /// <summary>
+    /// インタラクトの説明テキストを表示する
+    /// </summary>
+    public void ShowInteractPrompt(string text)
     {
         if (interactPromptText == null) return;
-        interactPromptText.text = textData.interactPrompt;
+        interactPromptText.text = text;
         interactPromptText.gameObject.SetActive(true);
     }
 
+    /// <summary>
+    /// インタラクトの説明テキストを隠す
+    /// </summary>
     public void HideInteractPrompt()
     {
         if (interactPromptText == null) return;

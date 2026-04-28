@@ -16,7 +16,7 @@ MonoBehaviour:
   timeToStartWalking: 2
   relievedWalkSpeed: 2
   relievedWalkDistance: 5
-  destroyDelayAfterWalk: 4
-  panicRunSpeed: 15
+  destroyDelayAfterWalk: 3
+  panicRunSpeed: 10
   panicRunDistance: 15
-  destroyDelayAfterPanic: 4
+  destroyDelayAfterPanic: 10

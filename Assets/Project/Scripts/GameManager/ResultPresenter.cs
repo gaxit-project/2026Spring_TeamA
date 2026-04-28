@@ -9,6 +9,7 @@ public class ResultPresenter : MonoBehaviour
     private void Start()
     {
         view.UpdateKillCountDisplay(SessionData.KillCount);
+        view.UpdateRescueCountDisplay(SessionData.RescueCount);
     }
 
     public void ReturnToTitle()

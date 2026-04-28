@@ -7,14 +7,17 @@ public class PlayerModel
 
     public int CurrentHP { get; private set; }
 
-    public System.Action<int> OnHpChanged;
+    public event System.Action<int> OnHpChanged;
+
     private float _lastDamageTime;
 
     // 現在の入力値を保持するプロパティ（Presenterから更新される）
     public Vector2 MoveInput { get; set; }
     public float CurrentPan { get; set; }
-    public float currentPitch { get; set; }
+    public float CurrentPitch { get; set; }
     public bool IsDashing { get; set; }
+
+    public bool IsAiming { get; set; } = false;
 
     // コンストラクタ：初期化時にPresenterからデータを入れてもらう
     public PlayerModel(PlayerData data)

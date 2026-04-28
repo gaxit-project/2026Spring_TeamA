@@ -2,5 +2,9 @@
 
 public interface IInteractable
 {
-       void Interact(GameObject interactor);
+    bool CanInteract { get; }
+
+    string GetInteractPrompt(); // 画面に出す文字を教えてもらう
+
+    void Interact(GameObject interactor);
 }
