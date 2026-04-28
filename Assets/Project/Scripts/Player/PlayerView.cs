@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.Cinemachine;
 
@@ -89,6 +89,17 @@ public class PlayerView : MonoBehaviour
     public void PlayTimeOutAnim()
     {
         if (animator != null) animator.SetTrigger("TimeLimit");
+    }
+
+    public void ForceIdle()
+    {
+        if (animator != null)
+        {
+            // 移動フラグをオフにする
+            animator.SetBool("IsDashing", false);
+            animator.SetBool(IsMoving, false);
+            animator.Play("Idle", 0, 0f);
+        }
     }
 
     // 入力があったことをPresenterに知らせるためのイベント

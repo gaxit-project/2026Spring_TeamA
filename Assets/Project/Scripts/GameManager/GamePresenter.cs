@@ -127,6 +127,50 @@ public class GamePresenter : MonoBehaviour
         ShowNextLevelUIAsync().Forget();
     }
 
+    public void TriggerWarp(Transform destination)
+    {
+        if (_isGameEnded) return;
+
+        WarpSequenceAsync(destination).Forget();
+    }
+
+    private async UniTaskVoid WarpSequenceAsync(Transform destination)
+    {
+        // ワープ中に動けないように、プレイヤーの入力を止める
+        if (PlayerPresenter.Instance != null)
+        {
+            PlayerPresenter.Instance.SetInputBlocked(true);
+            PlayerPresenter.Instance.PlayerView.ForceIdle();
+        }
+
+        // フェードインを行う
+        if (nextLevelView != null)
+        {
+            nextLevelView.gameObject.SetActive(true);
+            await nextLevelView.PlaySequence(false);
+        }
+
+        // 裏でプレイヤーの座標を移動
+        if (destination != null && PlayerPresenter.Instance != null)
+        {
+            PlayerPresenter.Instance.transform.position = destination.position;
+            PlayerPresenter.Instance.transform.rotation = destination.rotation;
+        }
+
+        // 余韻
+        await UniTask.Delay(TimeSpan.FromSeconds(0.5));
+
+        // ロード画面をフェードアウト
+        if (nextLevelView != null)
+        {
+            await nextLevelView.FadeOutAsync();
+        }
+
+        // プレイヤーの操作を再開
+        if (PlayerPresenter.Instance != null)
+            PlayerPresenter.Instance.SetInputBlocked(false);
+    }
+
     private async UniTaskVoid TransitionToNextLevelAsync()
     {
         await UniTask.Delay(TimeSpan.FromSeconds(gameData.transitionWaitTime));

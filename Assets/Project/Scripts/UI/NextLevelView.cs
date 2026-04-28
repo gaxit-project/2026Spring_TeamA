@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Cysharp.Threading.Tasks;
@@ -84,5 +84,18 @@ public class NextLevelView : MonoBehaviour
         {
             await targetText.DOFade(1.0f, textFadeDuration).AsyncWaitForCompletion();
         }
+    }
+
+    public async UniTask FadeOutAsync()
+    {
+        // パネルとテキストをフェードアウト
+        if (loadingText != null)
+            await loadingText.DOFade(0f, textFadeDuration).AsyncWaitForCompletion();
+
+        if (panelImage != null)
+            await panelImage.DOFade(0f, whiteoutDuration).AsyncWaitForCompletion();
+
+        // 完全に消えたらパネル自体を非表示にする
+        gameObject.SetActive(false);
     }
 }
