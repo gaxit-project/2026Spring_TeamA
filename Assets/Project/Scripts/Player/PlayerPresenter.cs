@@ -260,10 +260,7 @@ public class PlayerPresenter : MonoBehaviour
             {
                 GamePresenter.Instance.TriggerGameClear();
             }
-            else if (other.CompareTag("NextLevel"))
-            {
-                GamePresenter.Instance.TriggerNextLevel();
-            }
+
             var interactable = other.GetComponentInParent<IInteractable>();
             Debug.Log($"[TriggerEnter] 接触: {other.name}, IInteractableあり: {interactable != null}");
             if (interactable != null)
@@ -297,7 +294,6 @@ public class PlayerPresenter : MonoBehaviour
             }
         };
     }
-
 
     /// <summary>
     /// NPCの救出イベント中など、一時的にプレイヤーの操作をブロック（または解除）する。
