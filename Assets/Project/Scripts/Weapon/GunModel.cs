@@ -26,8 +26,7 @@ public class GunModel
 
     public void Reload()
     {
-        int ammoToLoad = _data.maxAmmo - CurrentAmmo;
-        //int ammoToLoad = Mathf.Min(needed, ReserveAmmo);
+        int ammoToLoad = Mathf.Min(_data.maxAmmo - CurrentAmmo, ReserveAmmo);
         if (ammoToLoad > ReserveAmmo)
         {
             ammoToLoad = ReserveAmmo;

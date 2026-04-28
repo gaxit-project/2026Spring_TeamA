@@ -1,7 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.InputSystem;
-
-[RequireComponent(typeof(Rigidbody))]
+using Unity.Cinemachine;
 
 public class PlayerView : MonoBehaviour
 {
@@ -10,32 +9,19 @@ public class PlayerView : MonoBehaviour
 
     [SerializeField] private Transform cameraPivot;
     [SerializeField] private Animator animator;
-
-    private Rigidbody _rb;
-
     private static readonly int IsMoving = Animator.StringToHash("IsMoving");
     private static readonly int IsAimingHash = Animator.StringToHash("IsAiming");
     private static readonly int AimPitchHash = Animator.StringToHash("AimPitch");
     private static readonly int FireTrigger = Animator.StringToHash("OnFire");
     private static readonly int ReloadTrigger = Animator.StringToHash("OnReload");
 
-    private void Awake()
+    public void Move(Vector3 move)
     {
-        _rb = GetComponent<Rigidbody>();
-    }
-
-    public void Move(Vector3 velocity)
-    {
-        if (_rb != null)
-        {
-            Vector3 worldVel = transform.TransformDirection(velocity);
-
-            _rb.linearVelocity = new Vector3(worldVel.x, _rb.linearVelocity.y, worldVel.z);
-        }
+        transform.Translate(move, Space.Self);
 
         if (animator != null)
         {
-            bool moving = velocity.magnitude > 0.001f;
+            bool moving = move.magnitude > 0.001f;
             animator.SetBool(IsMoving, moving);
         }
     }
@@ -105,36 +91,27 @@ public class PlayerView : MonoBehaviour
         if (animator != null) animator.SetTrigger("TimeLimit");
     }
 
-    private string targetTag;
-    public void SetTargetTag(string tag) => targetTag = tag;
-
     // 入力があったことをPresenterに知らせるためのイベント
-    public System.Action<Vector2> OnMoveInputReceived;
-    public System.Action<Vector2> OnLookInputReceived;
+    public event System.Action<Vector2> OnMoveInputReceived;
+    public event System.Action<Vector2> OnLookInputReceived;
 
-    public System.Action<bool> OnDashInputReceived;
-    public System.Action<bool> OnAimInputReceived;
-    public System.Action<bool> OnFireInputReceived;
+    public event System.Action<bool> OnDashInputReceived;
+    public event System.Action<bool> OnAimInputReceived;
+    public event System.Action<bool> OnFireInputReceived;
     
-    public System.Action OnFireEffectTiming;
-    public System.Action OnReloadInputReceived;
-    public System.Action OnInteractInputReceived;
+    public event System.Action OnFireEffectTiming;
+    public event System.Action OnReloadInputReceived;
+    public event System.Action OnInteractInputReceived;
     
-    public System.Action<int> OnWeaponSwitchInputRecieved;
-    public System.Action<int> OnWeaponDirectSelect;
+    public event System.Action<int> OnWeaponSwitchInputRecieved;
+    public event System.Action<int> OnWeaponDirectSelect;
     
-
-    public System.Action<Collider> OnTriggerEnterEvent;
-    public System.Action<Collider> OnTriggerExitEvent;
+    public event System.Action<Collider> OnTriggerEnterEvent;
+    public event System.Action<Collider> OnTriggerExitEvent;
 
     private void OnTriggerEnter(Collider other)
     {
         OnTriggerEnterEvent?.Invoke(other);
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        OnTriggerExitEvent?.Invoke(other);
     }
 
     private void OnMove(InputValue value)
@@ -186,10 +163,5 @@ public class PlayerView : MonoBehaviour
     private void OnWeapon2(InputValue value)
     {
         if (value.isPressed) OnWeaponDirectSelect?.Invoke(1);
-    }
-
-    private void OnInteract(InputValue value)
-    {
-        if (value.isPressed) OnInteractInputReceived?.Invoke();
     }
 }
