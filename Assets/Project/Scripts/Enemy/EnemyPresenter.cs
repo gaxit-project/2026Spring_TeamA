@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-
 
 public class EnemyPresenter : MonoBehaviour, IDamageable
 {
@@ -16,6 +16,7 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
 
     private GameObject _target;     // 追跡対象
     private bool _isDead = false;   // 死亡判定
+    private CancellationTokenSource _cts = new CancellationTokenSource();
 
     // 子要素にあるものはエディタ上で事前に埋めて保存する
     private void OnValidate()
@@ -53,6 +54,11 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
         }
     }
 
+    private void Start()
+    {
+        MoveInterval(_cts.Token).Forget();
+    }
+
     private void OnDestroy()
     {
         if(view != null)
@@ -65,6 +71,13 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
         if(soundView != null)
         {
             soundView.HitEnemy -= HandleSoundDetected;
+        }
+
+        if (_cts != null)
+        {
+            _cts.Cancel(); // 万が一キャンセルされていない時の保険
+            _cts.Dispose();
+            _cts = null;
         }
     }
 
@@ -117,6 +130,8 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
         {
             _isDead = true;
 
+            _cts.Cancel();
+
             SessionData.AddKill();
 
             view.Die();
@@ -140,6 +155,23 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
 
         int finaiDamage = hitPart.isHead ? damage * 2 : damage;
         TakeDamage(finaiDamage);
+    }
+
+    /// <summary>
+    /// 移動処理
+    /// </summary>
+    /// <returns></returns>
+    private async UniTask MoveInterval(CancellationToken token)
+    {
+        await UniTask.DelayFrame(UnityEngine.Random.Range(0, 30), cancellationToken: token);
+
+        while(!token.IsCancellationRequested)
+        {
+            view.Moving();
+
+            float nextInterval = UnityEngine.Random.Range(0.2f, 0.5f);
+            await UniTask.Delay(TimeSpan.FromSeconds(nextInterval), cancellationToken: token);
+        }
     }
 
     /// <summary>

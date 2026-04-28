@@ -1,30 +1,47 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Runtime.CompilerServices;
+using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
-
 public class EnemyView : MonoBehaviour
 {
     [SerializeField] private EnemyData enemyData;   // ScriptableObject
-
     private NavMeshAgent _agent;    // 経路探索・移動制御
     private Animator _animator; // アニメーション制御
-
+    private Renderer[] renderers; 
     public Transform player;    // プレイヤーの位置情報
-    public System.Action<Collider> OnContactStay;
-    public System.Action<Collider> OffContactExit;
-    public System.Action<int, Collider> HitContact;
-    public System.Action<Vector3> OnFoundPlayer;
-
-    public float fieldOfView = 60f; // 視野角度
-    public float detectionRange = 10f;  // 検出範囲
-    public bool isTracking = false;    // 追跡
-
-    private bool isHearing = false;
+    public bool isTracking { get; set; } = false;
     private bool isHit = false;
 
-    private Renderer[] renderers;
+    public enum EnemyState { Idle, Tracking, Attacking, Knock }
+
+    private EnemyState currentState = EnemyState.Idle;
+
+    private float sqrDistance = 0f;
+    private bool canSee = false;
+    private bool isPlayerWindow = false;
+    private bool isHearing = false;
+
+    private bool isWandering = false;
+    [SerializeField] private float wanderRange = 10f;
+
+    [Header("Idle Settings")]
+    [SerializeField] private float minWaitTime = 1.0f; // 最小待ち時間
+    [SerializeField] private float maxWaitTime = 3.0f; // 最大待ち時間
+
+    // 以下イベント定義
+    public event System.Action<Collider> OnContactStay;
+    public event System.Action<Collider> OffContactExit;
+    public event System.Action<Vector3> OnFoundPlayer;
+    public event System.Action<int, Collider> HitContact;
+
+    // 以下行動アニメーション
+    private static readonly int HashAttack = Animator.StringToHash("Attack");
+    private static readonly int HashKnock = Animator.StringToHash("Knock");
+    private static readonly int HashTracking = Animator.StringToHash("Tracking");
+    private static readonly int HashIsMoving = Animator.StringToHash("isMoving");
 
     private void Start()
     {
@@ -47,93 +64,149 @@ public class EnemyView : MonoBehaviour
 
     private void Update()
     {
-        if (player == null || enemyData == null)
-        {
-            return;
-        }
+        bool isMoving = _agent.velocity.sqrMagnitude > 0.1f;
+        _animator.SetBool(HashIsMoving, isMoving);
+    }
 
-        if(_animator.GetBool("Die"))
-        {
-            _agent.isStopped = true;
-            return;
-        }
+    public void Moving()
+    {
+        ScanEnvironment();  // 状況データ収集
+        EnemyState nextState = DetermineNextState();    // 状態判断
+        ChangeState(nextState);  // 状態変化
+        CurrentAction();    // 実行
+    }
 
+    private void ScanEnvironment()
+    {
+        bool isInView = false;  // プレイヤーが見えているかどうか
         Vector3 startPos = transform.position + Vector3.up;
         Vector3 offset = player.position - transform.position;
         Vector3 dir = offset.normalized;
-        float sqrDistance = offset.sqrMagnitude;    // 2点間の距離の2乗
+        sqrDistance = offset.sqrMagnitude;    // 2点間の距離の2乗
 
-        // 視界にプレイヤーが入っているか
-        bool isInView = offset.sqrMagnitude <= detectionRange * detectionRange && Vector3.Dot(transform.forward, dir) >= Mathf.Cos(fieldOfView * 0.5f * Mathf.Deg2Rad);
-
-        // プレイヤーを視認したかどうか(遮蔽物判定)
-        bool canSee = isInView && Physics.Raycast(startPos, dir, out var hit, detectionRange) && hit.collider.CompareTag("Player");
-
-        Debug.DrawRay(startPos, dir * detectionRange, canSee ? Color.red : Color.gray);
-
-        // 攻撃範囲内にいるとき
-        if (sqrDistance <= enemyData.attackDistance * enemyData.attackDistance)   
+        if (Physics.Raycast(startPos, dir, out var hit, enemyData.detectionRange))
         {
-            _agent.isStopped = true;    // 追跡停止
-            _animator.SetBool("Attack", true);
-            isTracking = false;
-        }
-        else if (canSee || isHearing || isHit) // 追跡開始
-        {
-            _animator.SetBool("Attack", false);
-            _animator.SetBool("Tracking", true);
-            OnFoundPlayer?.Invoke(player.position);
-            isTracking = true;
-            isHearing = false;
-        }
-        else if (isTracking) // 気が付いた位置まで追跡後止まる
-        {
-            _animator.SetBool("Attack", false);
-
-            if (_agent.remainingDistance <= _agent.stoppingDistance)
-            {
-                isTracking = false;
-                _agent.isStopped = true;
-            }
+            // 視界にプレイヤーが入っているか
+            isInView = offset.sqrMagnitude <= enemyData.detectionRange * enemyData.detectionRange && Vector3.Dot(transform.forward, dir) >= Mathf.Cos(enemyData.fieldOfView * 0.5f * Mathf.Deg2Rad);
+            canSee = isInView && hit.collider.CompareTag("Player"); // 遮蔽物判定
         }
         else
-        {
-            _agent.isStopped = true;
-            _agent.ResetPath();
-            _animator.SetBool("Attack", false);
+        { 
+            canSee = false; 
         }
     }
 
-    /// <summary>
-    /// アタック開始処理
-    /// </summary>
-    /// <param name="other"></param>
-    private void OnTriggerStay(Collider other)
+    private EnemyState DetermineNextState()
     {
-        OnContactStay?.Invoke(other);   // 通知
+        if(sqrDistance <= enemyData.attackDistance * enemyData.attackDistance)  // 攻撃
+        {
+            return EnemyState.Attacking;
+        }
+        if(isPlayerWindow)  // 窓叩き
+        {
+            return EnemyState.Knock;
+        }
+        if(canSee || isHearing || isTracking) // 追跡
+        {
+            return EnemyState.Tracking;
+        }
+        return EnemyState.Idle;
     }
 
-    /// <summary>
-    /// アタック終了処理
-    /// </summary>
-    /// <param name="other"></param>
+    private void ChangeState(EnemyState nextState)
+    {
+        if(currentState == nextState)
+        {
+            return;
+        }
+
+        currentState = nextState;
+
+        _animator.SetBool(HashAttack, currentState == EnemyState.Attacking);
+        _animator.SetBool(HashKnock, currentState == EnemyState.Knock);
+        _animator.SetBool(HashTracking, currentState == EnemyState.Tracking);
+
+        _agent.isStopped = (currentState == EnemyState.Attacking || currentState == EnemyState.Knock);
+    }
+
+    private void CurrentAction()
+    {
+        switch (currentState)
+        {
+            case EnemyState.Attacking:
+                break;
+            case EnemyState.Knock:
+                break;
+            case EnemyState.Tracking:
+                _agent.destination = player.position;
+                break;
+            case EnemyState.Idle:
+                Idle();
+                break;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        OnContactStay?.Invoke(other);
+
+        if (other.CompareTag("WindowZone"))
+        {
+            isPlayerWindow = true;
+        }
+    }
+
     private void OnTriggerExit(Collider other)
     {
         OffContactExit?.Invoke(other);   // 通知
+
+        if (other.CompareTag("WindowZone"))
+        {
+            isPlayerWindow = false;
+        }
     }
 
-    public void SetHearing(bool value)
-    {
-        isHearing = value;
-    }
+    public void SetHearing(bool value) => isHearing = value;
+    public void MoveTo(Vector3 position) => _agent.SetDestination(position);
 
-    public void MoveTo(Vector3 direction)
+    // クラスのメンバ変数として追加（以前の currentTimer は削除または不要になります）
+    private float _idleEndTime = 0f;
+
+    private void Idle()
     {
-        if (isTracking)
+        // 徘徊中かチェック
+        if (isWandering)
+        {
+            if (!_agent.pathPending && _agent.remainingDistance <= _agent.stoppingDistance + 0.1f)
+            {
+                isWandering = false;
+                _idleEndTime = Time.time + Random.Range(minWaitTime, maxWaitTime);
+            }
+            return;
+        }
+
+        if (Time.time < _idleEndTime)   // 待機
+        {
+            return;
+        }
+
+        // 徘徊処理
+        Vector3 randomPoint = transform.position + Random.insideUnitSphere * wanderRange;
+        NavMeshHit hit;
+
+        if (NavMesh.SamplePosition(randomPoint, out hit, wanderRange, NavMesh.AllAreas))
         {
             _agent.isStopped = false;
-            _agent.destination = direction;    // ターゲットの現在地を目標値にセット
-        }
+            _agent.SetDestination(hit.position);
+            isWandering = true;        }
+    }
+
+    /// <summary>
+    /// ダメージ判定
+    /// </summary>
+    public void ReceiveDamage(int damage, Collider collider)
+    {
+        HitContact?.Invoke(damage, collider);
     }
 
     public async UniTask Hit()
@@ -155,6 +228,14 @@ public class EnemyView : MonoBehaviour
 
     public async UniTask Extinction()
     {
+        var skinrenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+        if(skinrenderer == null)
+        {
+            return;
+        }
+
+        var material = skinrenderer.material;   
+
         float duration = 2.0f;
         float time = 0f;
 
@@ -162,14 +243,14 @@ public class EnemyView : MonoBehaviour
         {
             time += Time.deltaTime;
             float alpha = 1.0f - time / duration;
-            
-            foreach(var r in renderers)
+
+            foreach (var r in renderers)
             {
                 Color color = r.material.color;
                 color.a = alpha;
                 r.material.color = color;
             }
             await UniTask.Yield();  // 1フレーム待機
-        }   
+        }
     }
 }
