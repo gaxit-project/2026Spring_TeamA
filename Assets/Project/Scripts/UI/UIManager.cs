@@ -27,6 +27,14 @@ public class UIManager : MonoBehaviour
         if (interactPromptText != null) interactPromptText.gameObject.SetActive(false);
     }
 
+    private void Start()
+    {
+        if (LanguageManager.Instance != null)
+        {
+            textData = LanguageManager.Instance.CurrentTextData;
+        }
+    }
+
     /// <summary>
     /// オブジェクトが有効になった時、UIEventsのイベントを購読する
     /// </summary>
