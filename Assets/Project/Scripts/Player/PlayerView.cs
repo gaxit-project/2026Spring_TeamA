@@ -125,6 +125,11 @@ public class PlayerView : MonoBehaviour
         OnTriggerEnterEvent?.Invoke(other);
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        OnTriggerExitEvent?.Invoke(other);
+    }
+
     private void OnMove(InputValue value)
     {
         // 入力値を読み取って、イベントを購読している先に通知する
@@ -174,5 +179,13 @@ public class PlayerView : MonoBehaviour
     private void OnWeapon2(InputValue value)
     {
         if (value.isPressed) OnWeaponDirectSelect?.Invoke(1);
+    }
+
+    private void OnInteract(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            OnInteractInputReceived?.Invoke();
+        }
     }
 }
