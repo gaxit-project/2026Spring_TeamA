@@ -74,6 +74,10 @@ public class PausePresenter : MonoBehaviour
     private void GoToTitle()
     {
         Time.timeScale = 1f;
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         SceneManager.LoadScene("Title");
     }
 }

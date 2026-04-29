@@ -19,5 +19,7 @@ MonoBehaviour:
   npcInitialRescueMessage: 'NPC : Thank you found me!'
   npcPanicMessage: 'NPC : No, stay away from me!'
   npcRescueAfterEscapeMessage: 'NPC : I''m so sorry, I panicked!'
-  npcDeathMessage: Casualties among survivors
+  npcDeathMessage: Oh no! What have I done...
+  gameClearMessage: GAME CLEAR
+  loadingMessage: Loading...
   npcMessageDisplayTime: 3

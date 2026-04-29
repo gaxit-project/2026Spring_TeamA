@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf59788117693ff4e989a28c5f982e21, type: 3}
+  m_Name: JapaneseTextData
+  m_EditorClassIdentifier: 
+  gameStartMission: "1 \u5206\u4EE5\u5185\u306B\u7814\u7A76\u6240\u304B\u3089\u8131\u51FA\u305B\u3088\uFF01"
+  gameStartDisplayTime: 4
+  interactPrompt: "[Y] : \u8A71\u3059"
+  stopPanickingPrompt: "[Y] : \u547C\u3076"
+  npcInitialRescueMessage: "NPC : \u898B\u3064\u3051\u3066\u304F\u308C\u3066\u3042\u308A\u304C\u3068\u3046\uFF01"
+  npcPanicMessage: "NPC : \u6765\u306A\u3044\u3067\u3001\u3042\u3063\u3061\u3078\u884C\u3063\u3066\uFF01"
+  npcRescueAfterEscapeMessage: "NPC : \u3054\u3081\u3093\u306A\u3055\u3044\u3001\u30D1\u30CB\u30C3\u30AF\u306B\u306A\u3063\u3066\u305F\u306E\uFF01"
+  npcDeathMessage: "\u751F\u5B58\u8005\u3092\u6483\u3063\u3066\u3057\u307E\u3063\u305F..."
+  gameClearMessage: GAME CLEAR
+  loadingMessage: Loading...
+  npcMessageDisplayTime: 3
