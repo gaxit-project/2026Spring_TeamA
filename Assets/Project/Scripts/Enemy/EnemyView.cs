@@ -120,6 +120,16 @@ public class EnemyView : MonoBehaviour
             return;
         }
 
+        if(nextState == EnemyState.Attacking)
+        {
+            SoundManager.Instance.PlaySound(0);
+        }
+
+        if(nextState == EnemyState.Tracking)
+        {
+            SoundManager.Instance.PlaySound(1);
+        }
+
         currentState = nextState;
 
         _animator.SetBool(HashAttack, currentState == EnemyState.Attacking);

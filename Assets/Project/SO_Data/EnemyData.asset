@@ -15,7 +15,7 @@ MonoBehaviour:
   enemyHP: 3
   moveSpeed: 4
   enemyAttackPower: 30
-  fieldOfView: 140
+  fieldOfView: 160
   detectionRange: 20
   attackDistance: 5
   windowKnockDistance: 5
