@@ -6,6 +6,7 @@ public class PlayerView : MonoBehaviour
 {
     // EnemyDataを受け取るためのアクション
     public System.Action<EnemyData> OnHitByEnemy;
+    public System.Action<BossData> OnHitByBoss;
 
     [SerializeField] private Transform cameraPivot;
     [SerializeField] private Animator animator;

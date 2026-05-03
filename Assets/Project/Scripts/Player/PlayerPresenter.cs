@@ -99,6 +99,19 @@ public class PlayerPresenter : MonoBehaviour
     }
 
     /// <summary>
+    /// 外部（ボスなど）から数値でダメージを受け取る
+    /// </summary>
+    public void TakeDamage(int damage)
+    {
+        if (_isDead) return;
+
+        model.TakeDamage(damage);
+        hpView?.UpdateHpDiaplay(model.CurrentHP);
+
+        Debug.Log($"[Player] Damaged: {damage}, Current HP: {model.CurrentHP}");
+    }
+
+    /// <summary>
     /// モデルや武器などの初期化
     /// </summary>
     private void InitPlayerState()
@@ -109,7 +122,7 @@ public class PlayerPresenter : MonoBehaviour
         }
         // Model に ScriptableObject を渡して初期化
         model = new PlayerModel(playerData);
-        hpView.UpdateHpDiaplay(model.CurrentHP);
+        hpView?.UpdateHpDiaplay(model.CurrentHP);
     }
 
     /// <summary>
@@ -234,12 +247,12 @@ public class PlayerPresenter : MonoBehaviour
             if (enemyData != null)
             {
                 model.TakeDamage(enemyData.enemyAttackPower);
-                hpView.UpdateHpDiaplay(model.CurrentHP);
+                hpView?.UpdateHpDiaplay(model.CurrentHP);
             }
         };
         model.OnHpChanged += (currentHp) =>
         {
-            hpView.UpdateHpDiaplay(currentHp);
+            hpView?.UpdateHpDiaplay(currentHp);
             if (currentHp <= 0)
             {
                 DisableInput(false);
@@ -386,9 +399,9 @@ public class PlayerPresenter : MonoBehaviour
             gunView.PlayShotSound(data.drawSound);
         }
 
-        weaponHUD.UpdateWeaponUI(data);
+        weaponHUD?.UpdateWeaponUI(data);
 
-        ammoView.UpdateAmmoDisplay(gunModel.CurrentAmmo, gunModel.ReserveAmmo);
+        ammoView?.UpdateAmmoDisplay(gunModel.CurrentAmmo, gunModel.ReserveAmmo);
     }
 
     /// <summary>
@@ -437,7 +450,7 @@ public class PlayerPresenter : MonoBehaviour
         lastFireTime = Time.time;
 
         gunModel.ConsumeAmmo();
-        ammoView.UpdateAmmoDisplay(gunModel.CurrentAmmo, gunModel.ReserveAmmo);
+        ammoView?.UpdateAmmoDisplay(gunModel.CurrentAmmo, gunModel.ReserveAmmo);
 
         view.OnShoot();
         view.PlayFireAnim();
@@ -468,24 +481,24 @@ public class PlayerPresenter : MonoBehaviour
             while (Time.time - startTime < duration)
             {
                 float progress = (Time.time - startTime) / duration;
-                ammoView.SetReloadProgress(progress);
+                ammoView?.SetReloadProgress(progress);
 
                 await UniTask.Yield(token);
             }
 
-            ammoView.SetReloadProgress(0f); // バーを隠す
+            ammoView?.SetReloadProgress(0f); // バーを隠す
             gunView.StopSound();
             gunModel.Reload();
 
             if (ammoView != null)
             {
-                ammoView.UpdateAmmoDisplay(gunModel.CurrentAmmo, gunModel.ReserveAmmo);
+                ammoView?.UpdateAmmoDisplay(gunModel.CurrentAmmo, gunModel.ReserveAmmo);
             }
             Debug.Log($"Reload complete! Ammo: {gunModel.CurrentAmmo}");
         }
         catch (System.OperationCanceledException)
         {
-            ammoView.SetReloadProgress(0f);
+            ammoView?.SetReloadProgress(0f);
             gunView.StopSound();
         }
         finally

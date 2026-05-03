@@ -31,7 +31,10 @@ public class GamePresenter : MonoBehaviour
         model.OnTimeUp += () =>
         {
             timerView.ShowTimeUpMessage();
-            PlayerPresenter.Instance.DisableInput(true);
+            if (PlayerPresenter.Instance != null)
+            {
+                PlayerPresenter.Instance.DisableInput(true);
+            }
             TriggerGameOver();
         };
 
