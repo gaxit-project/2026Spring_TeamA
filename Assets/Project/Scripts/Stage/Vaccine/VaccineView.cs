@@ -1,34 +1,73 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// 個々のワクチンの挙動を管理するView
+/// ワクチンの種類
 /// </summary>
-public class VaccineItem : MonoBehaviour, IInteractable
+public enum VaccineType { A, B, C }
+
+/// <summary>
+/// ワクチンのView。取得されるまでエフェクトを流し続けます。
+/// </summary>
+[RequireComponent(typeof(SphereCollider))]
+public class VaccineView : MonoBehaviour, IInteractable
 {
-    [SerializeField] private string vaccineName; // 例：ワクチンA
-    [SerializeField] private ParticleSystem glowParticle;
+    [SerializeField] private VaccineType type;
+    [SerializeField] private GameObject glowEffect;
 
     public System.Action OnInteracted;
 
     public bool CanInteract { get; private set; } = true;
 
+    private void Awake()
+    {
+        var col = GetComponent<SphereCollider>();
+        col.isTrigger = true;
+    }
+
     /// <summary>
-    /// プレイヤーがインタラクトした際の処理
+    /// 開始時にエフェクトを再生開始する
+    /// </summary>
+    private void Start()
+    {
+        if (glowEffect != null)
+        {
+            glowEffect.SetActive(true);
+            var ps = glowEffect.GetComponentInChildren<ParticleSystem>();
+            if (ps != null) ps.Play();
+        }
+    }
+
+    /// <summary>
+    /// インタラクト時の処理
     /// </summary>
     public void Interact(GameObject interactor)
     {
         if (!CanInteract) return;
-
         CanInteract = false;
-        if (glowParticle != null) glowParticle.Stop();
 
-        // 回収されたら非表示にする（または破棄）
+        // エフェクトを消す
+        if (glowEffect != null) glowEffect.SetActive(false);
+
+        // 本体を消す
         gameObject.SetActive(false);
+
         OnInteracted?.Invoke();
     }
 
     /// <summary>
-    /// 画面に表示するインタラクト文言
+    /// SOからテキストを取得
     /// </summary>
-    public string GetInteractPrompt() => $"ワクチン {vaccineName} を回収";
+    public string GetInteractPrompt()
+    {
+        var data = UIManager.Instance.textData;
+        if (data == null) return "";
+
+        return type switch
+        {
+            VaccineType.A => data.vaccineAPrompt,
+            VaccineType.B => data.vaccineBPrompt,
+            VaccineType.C => data.vaccineCPrompt,
+            _ => ""
+        };
+    }
 }

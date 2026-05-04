@@ -6,7 +6,7 @@ using System.Collections.Generic;
 /// </summary>
 public class VaccineManager : MonoBehaviour
 {
-    [SerializeField] private List<VaccineItem> vaccineItems;
+    [SerializeField] private List<VaccineView> vaccineItems;
     private VaccineModel _model;
 
     private void Awake()
