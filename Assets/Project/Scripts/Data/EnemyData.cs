@@ -3,6 +3,9 @@
 [CreateAssetMenu(fileName = "EnemyData", menuName = "ScriptableObjects/EnemyData")]
 public class EnemyData : ScriptableObject
 {
+    [Header("Visual Settings")]
+    public AnimatorOverrideController controller;   // アニメーション差し替え用
+
     public int enemyHP = 100;
     public float moveSpeed = 3.0f;
     public int enemyAttackPower = 30;

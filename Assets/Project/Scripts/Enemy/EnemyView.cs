@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using Cysharp.Threading.Tasks;
-using Unity.VisualScripting;
+﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -48,9 +46,15 @@ public class EnemyView : MonoBehaviour
         _agent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
 
+        if(enemyData != null && enemyData.controller != null)
+        {
+            _animator.runtimeAnimatorController = enemyData.controller; // アニメーション差し替え適用
+        }
+
         if (enemyData != null && _agent != null)
         {
             _agent.speed = enemyData.moveSpeed;
+            _animator.SetFloat("Speed", enemyData.moveSpeed);
         }
 
         // プレイヤーのTransformを自動取得
@@ -70,6 +74,11 @@ public class EnemyView : MonoBehaviour
 
     public void Moving()
     {
+        if (_agent == null || !_agent.isActiveAndEnabled || !_agent.isOnNavMesh || isHit)
+        {
+            return;
+        }
+
         ScanEnvironment();  // 状況データ収集
         EnemyState nextState = DetermineNextState();    // 状態判断
         ChangeState(nextState);  // 状態変化
@@ -79,6 +88,7 @@ public class EnemyView : MonoBehaviour
     private void ScanEnvironment()
     {
         bool isInView = false;  // プレイヤーが見えているかどうか
+        isPlayerWindow = false;
         Vector3 startPos = transform.position + Vector3.up;
         Vector3 offset = player.position - transform.position;
         Vector3 dir = offset.normalized;
@@ -86,9 +96,29 @@ public class EnemyView : MonoBehaviour
 
         if (Physics.Raycast(startPos, dir, out var hit, enemyData.detectionRange))
         {
+            bool findPlayer = false;
+
             // 視界にプレイヤーが入っているか
             isInView = offset.sqrMagnitude <= enemyData.detectionRange * enemyData.detectionRange && Vector3.Dot(transform.forward, dir) >= Mathf.Cos(enemyData.fieldOfView * 0.5f * Mathf.Deg2Rad);
-            canSee = isInView && hit.collider.CompareTag("Player"); // 遮蔽物判定
+    
+            if(isInView)
+            {
+                if (hit.collider.CompareTag("Player"))  // プレイヤーを見つけたら追跡
+                {
+                    findPlayer = true;
+                }
+                else if(hit.collider.CompareTag("WindowZone"))
+                {
+                    Physics.Raycast(hit.point +dir * 0.1f, dir, out var hits, enemyData.detectionRange);
+
+                    if (hits.collider.CompareTag("Player"))
+                    {
+                        findPlayer = true;
+                        isPlayerWindow = true;
+                    }
+                }
+            }
+            canSee = isInView && findPlayer; // 遮蔽物判定
         }
         else
         { 
@@ -98,15 +128,19 @@ public class EnemyView : MonoBehaviour
 
     private EnemyState DetermineNextState()
     {
+
         if(sqrDistance <= enemyData.attackDistance * enemyData.attackDistance)  // 攻撃
         {
             return EnemyState.Attacking;
         }
-        if(isPlayerWindow)  // 窓叩き
+        if (isPlayerWindow)  // 窓叩き
         {
-            return EnemyState.Knock;
+            if (canSee || isTracking)
+            {
+                return EnemyState.Knock;
+            }
         }
-        if(canSee || isHearing || isTracking) // 追跡
+        if (canSee || isHearing || isTracking) // 追跡
         {
             return EnemyState.Tracking;
         }
@@ -179,7 +213,6 @@ public class EnemyView : MonoBehaviour
     public void SetHearing(bool value) => isHearing = value;
     public void MoveTo(Vector3 position) => _agent.SetDestination(position);
 
-    // クラスのメンバ変数として追加（以前の currentTimer は削除または不要になります）
     private float _idleEndTime = 0f;
 
     private void Idle()
@@ -208,7 +241,8 @@ public class EnemyView : MonoBehaviour
         {
             _agent.isStopped = false;
             _agent.SetDestination(hit.position);
-            isWandering = true;        }
+            isWandering = true;        
+        }
     }
 
     /// <summary>
@@ -221,12 +255,10 @@ public class EnemyView : MonoBehaviour
 
     public async UniTask Hit()
     {
-        isHit = true;
         _agent.isStopped = true;
         _animator.SetTrigger("GetHit");
         await UniTask.Delay(50);
         _agent.isStopped = false;
-        isHit = false;
     }
 
     public void Die()
