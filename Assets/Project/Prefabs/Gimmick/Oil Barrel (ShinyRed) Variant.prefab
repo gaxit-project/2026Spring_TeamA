@@ -83,5 +83,31 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 102264, guid: eb8689b403f059a4f87fce0e01c009dc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4988864419131771197}
   m_SourcePrefab: {fileID: 100100000, guid: eb8689b403f059a4f87fce0e01c009dc, type: 3}
+--- !u!1 &4104245004696544334 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 102264, guid: eb8689b403f059a4f87fce0e01c009dc, type: 3}
+  m_PrefabInstance: {fileID: 4104245004696447798}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4988864419131771197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4104245004696544334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68fe6778dce395d4e85da4b0b5a26868, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHP: 1
+  explosionDamage: 100
+  explosionRadius: 8
+  explosionEffect: {fileID: 1096741355945016183, guid: 047276b79b6308749a5e3704654b4586, type: 3}
+  explosionSound: {fileID: 8300000, guid: 3119b3ba7e6a29a4daf70c16f1fa0d2a, type: 3}
+  soundVolume: 1
