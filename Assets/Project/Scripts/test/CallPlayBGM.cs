@@ -8,4 +8,9 @@ public class CallPlayBGM : MonoBehaviour
     {
         SoundManager.Instance.PlayBGM(index);
     }
+
+    private void OnDestroy()
+    {
+        SoundManager.Instance.StopBGM();
+    }
 }

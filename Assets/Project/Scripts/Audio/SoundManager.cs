@@ -177,6 +177,14 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
+    /// BGM‚ðŽ~‚ß‚é
+    /// </summary>
+    public void StopBGM()
+    {
+        audioSourceBGM.Stop();
+    }
+
+    /// <summary>
     /// ‰¹—Ê‚ð•Û‘¶‚·‚é
     /// </summary>
     private void SaveVolumeSetting()
