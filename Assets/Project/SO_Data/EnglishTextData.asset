@@ -20,6 +20,11 @@ MonoBehaviour:
   npcPanicMessage: 'NPC : No, stay away from me!'
   npcRescueAfterEscapeMessage: 'NPC : I''m so sorry, I panicked!'
   npcDeathMessage: Oh no! What have I done...
+  vaccineAPrompt: '[Y] : Collect Vaccine A'
+  vaccineBPrompt: '[Y] : Collect Vaccine B'
+  vaccineCPrompt: '[Y] : Collect Vaccine C'
+  goalPrompt: '[Y] : Escape'
+  vaccineWarningMessage: "You haven't collected all vaccines. \nEscape anyway?"
   gameClearMessage: GAME CLEAR
   loadingMessage: Loading...
   npcMessageDisplayTime: 3

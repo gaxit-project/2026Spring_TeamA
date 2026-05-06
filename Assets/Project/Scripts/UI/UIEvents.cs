@@ -45,4 +45,10 @@ public static class UIEvents
     /// ポーズしているかどうかを保持するイベント
     /// </summary>
     public static Action<bool> OnPauseStateChanged;
+
+    /// <summary>
+    /// 脱出テキストを表示・非表示をするイベント
+    /// </summary>
+    public static Action OnShowEscapeConfirm;
+    public static Action OnHideEscapeConfirm;
 }
