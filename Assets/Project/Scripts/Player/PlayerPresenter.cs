@@ -269,11 +269,6 @@ public class PlayerPresenter : MonoBehaviour
     {
         view.OnTriggerEnterEvent += (other) =>
         {
-            if (other.CompareTag("Goal"))
-            {
-                GamePresenter.Instance.TriggerGameClear();
-            }
-
             var interactable = other.GetComponentInParent<IInteractable>();
             Debug.Log($"[TriggerEnter] 接触: {other.name}, IInteractableあり: {interactable != null}");
             if (interactable != null)

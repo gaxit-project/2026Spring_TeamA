@@ -21,6 +21,12 @@ public class TextData : ScriptableObject
     public string vaccineBPrompt = "[Y] : Collect Vaccine B";
     public string vaccineCPrompt = "[Y] : Collect Vaccine C";
 
+    /// <summary>
+    /// ゴール関連のテキスト
+    /// </summary>
+    public string goalPrompt = "[Y] : Escape";
+    [TextArea] public string vaccineWarningMessage = "You haven't collected all vaccines. Escape anyway?";
+
     public string gameClearMessage = "GAME CLEAR";
     public string loadingMessage = "Loading...";
 

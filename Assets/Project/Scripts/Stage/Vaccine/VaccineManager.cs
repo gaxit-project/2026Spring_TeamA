@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 
 /// <summary>
@@ -16,18 +16,21 @@ public class VaccineManager : MonoBehaviour
         // 各アイテムのインタラクトイベントを購読
         foreach (var item in vaccineItems)
         {
-            item.OnInteracted += () => _model.Collect();
+            if (item != null)
+            {
+                item.OnInteracted += () => 
+                {
+                    _model.Collect();
+                    Debug.Log($"[VaccineManager] ワクチン回収！ 現在: {_model.CollectedCount}個");
+                };
+            }
         }
 
         // 全て集まった時の処理
         _model.OnAllVaccinesCollected += () =>
         {
+            Debug.Log("[VaccineManager] 3つのワクチンを全て回収しました！クリア条件達成。");
             SessionData.SetVaccineClear(true);
-
-            if (GamePresenter.Instance != null)
-            {
-                GamePresenter.Instance.TriggerGameClear();
-            }
         };
     }
 }
