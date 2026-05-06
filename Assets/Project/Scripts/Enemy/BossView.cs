@@ -91,7 +91,20 @@ public class BossView : MonoBehaviour
     /// 死亡アニメーションの再生
     /// </summary>
     public void PlayDie() => animator.SetTrigger(DieTrigger);
-    
+
+    /// <summary>
+    /// アニメーションを含めて完全に停止させる（クリア演出時用）
+    /// </summary>
+    public void ForceStopAll()
+    {
+        StopMovement(true);
+        // Animatorの速度を0にして足音などのAnimationEvent発火も防ぐ
+        if (animator != null)
+        {
+            animator.speed = 0;
+        }
+    }
+
     /// <summary>
     /// アニメーションの更新（移動速度同期）
     /// </summary>

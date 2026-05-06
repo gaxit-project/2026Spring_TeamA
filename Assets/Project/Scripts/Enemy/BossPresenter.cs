@@ -35,6 +35,20 @@ public class BossPresenter : MonoBehaviour, IDamageable
     private void Start()
     {
         InitializeSequence().Forget();
+
+        if (GamePresenter.Instance != null)
+        {
+            GamePresenter.Instance.OnGameClear += HandleGameClear;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // 破棄時に購読を解除
+        if (GamePresenter.Instance != null)
+        {
+            GamePresenter.Instance.OnGameClear -= HandleGameClear;
+        }
     }
 
     /// <summary>
@@ -185,5 +199,13 @@ public class BossPresenter : MonoBehaviour, IDamageable
             var playerView = col.GetComponent<PlayerView>();
             playerView?.OnHitByBoss?.Invoke(data);
         }
+    }
+
+    /// <summary>
+    /// ゲームクリア時にボスの動きを完全に止める
+    /// </summary>
+    private void HandleGameClear()
+    {
+        view.ForceStopAll();
     }
 }

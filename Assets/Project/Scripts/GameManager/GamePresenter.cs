@@ -13,6 +13,8 @@ public class GamePresenter : MonoBehaviour
     [SerializeField] private GameOverView gameOverView;
     [SerializeField] private NextLevelView nextLevelView;
 
+    public event Action OnGameClear;
+
     private GameModel model;
     private bool _isGameEnded = false;
 
@@ -67,6 +69,8 @@ public class GamePresenter : MonoBehaviour
     {
         if (_isGameEnded) return;
         _isGameEnded = true;
+
+        OnGameClear.Invoke();
 
         model.StopTimer();
 
