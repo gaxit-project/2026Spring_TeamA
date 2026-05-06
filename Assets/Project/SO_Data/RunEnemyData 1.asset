@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61226449cc7e2284d992de3a6de94b32, type: 3}
-  m_Name: EnemyData
+  m_Name: RunEnemyData 1
   m_EditorClassIdentifier: 
+  controller: {fileID: 22100000, guid: 89a1130e4d1dcc644bc886407f3ce8c2, type: 2}
   enemyHP: 3
-  moveSpeed: 4
+  moveSpeed: 3
   enemyAttackPower: 30
   fieldOfView: 160
   detectionRange: 20

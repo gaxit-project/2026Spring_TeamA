@@ -7,11 +7,6 @@ public class EnemyBodyPart : MonoBehaviour
 
     public void NotifyHit(int damage)
     {
-        /*if (_parentView == null)
-        {
-            _parentView.HitContact.Invoke(damage, this.GetComponent<Collider>());
-        }*/
-
         if (_parentView != null)
         {
             Debug.Log($"NotifyHit: Sending damage {damage} to {_parentView.name}");
