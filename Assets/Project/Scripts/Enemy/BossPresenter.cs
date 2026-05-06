@@ -6,11 +6,13 @@ using System.Threading;
 public class BossPresenter : MonoBehaviour, IDamageable
 {
     [SerializeField] private BossData data;
-    
+
     private BossView view;
 
     private BossModel model;
     private CancellationTokenSource _stunCts;
+
+    private bool _hasRoared = false;
 
     private void Awake()
     {
@@ -33,6 +35,20 @@ public class BossPresenter : MonoBehaviour, IDamageable
     private void Start()
     {
         InitializeSequence().Forget();
+
+        if (GamePresenter.Instance != null)
+        {
+            GamePresenter.Instance.OnGameClear += HandleGameClear;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // 破棄時に購読を解除
+        if (GamePresenter.Instance != null)
+        {
+            GamePresenter.Instance.OnGameClear -= HandleGameClear;
+        }
     }
 
     /// <summary>
@@ -41,13 +57,30 @@ public class BossPresenter : MonoBehaviour, IDamageable
     private async UniTaskVoid InitializeSequence()
     {
         view.StopMovement(true);
-         view.PlayRoar();
+        var token = this.GetCancellationTokenOnDestroy();
 
-        // 威嚇アニメーションの時間分だけ待機（例: 2.5秒）
-        await UniTask.Delay(System.TimeSpan.FromSeconds(2.5f), cancellationToken: this.GetCancellationTokenOnDestroy());
+        // プレイヤーがロードされ、かつ同じ階層になるまで待機
+        while (PlayerPresenter.Instance == null || PlayerPresenter.Instance.CurrentFloor != data.myFloor)
+        {
+            await UniTask.Yield(token);
+        }
 
+        // 遷移直後にならないよう、余韻（間）を持たせる
+        await UniTask.Delay(System.TimeSpan.FromSeconds(data.encounterDelay), cancellationToken: token);
+
+        // 初回のみ威嚇
+        if (!_hasRoared)
+        {
+            view.PlayRoar();
+            _hasRoared = true;
+
+            // 威嚇アニメーションの時間分待機（例: 2.5秒）
+            await UniTask.Delay(System.TimeSpan.FromSeconds(2.5f), cancellationToken: token);
+        }
+
+        // AIループ開始
         view.StopMovement(false);
-        UpdateAILoop(this.GetCancellationTokenOnDestroy()).Forget();
+        UpdateAILoop(token).Forget();
     }
 
     /// <summary>
@@ -166,5 +199,13 @@ public class BossPresenter : MonoBehaviour, IDamageable
             var playerView = col.GetComponent<PlayerView>();
             playerView?.OnHitByBoss?.Invoke(data);
         }
+    }
+
+    /// <summary>
+    /// ゲームクリア時にボスの動きを完全に止める
+    /// </summary>
+    private void HandleGameClear()
+    {
+        view.ForceStopAll();
     }
 }

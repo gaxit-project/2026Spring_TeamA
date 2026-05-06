@@ -13,6 +13,8 @@ public class GamePresenter : MonoBehaviour
     [SerializeField] private GameOverView gameOverView;
     [SerializeField] private NextLevelView nextLevelView;
 
+    public event Action OnGameClear;
+
     private GameModel model;
     private bool _isGameEnded = false;
 
@@ -67,6 +69,8 @@ public class GamePresenter : MonoBehaviour
     {
         if (_isGameEnded) return;
         _isGameEnded = true;
+
+        OnGameClear.Invoke();
 
         model.StopTimer();
 
@@ -167,6 +171,17 @@ public class GamePresenter : MonoBehaviour
         if (nextLevelView != null)
         {
             await nextLevelView.FadeOutAsync();
+        }
+
+
+        // ロード完了後にプレイヤーの階層を+1する
+        if (PlayerPresenter.Instance != null)
+        {
+            int nextFloor = PlayerPresenter.Instance.CurrentFloor + 1;
+            PlayerPresenter.Instance.SetFloor(nextFloor);
+
+            // プレイヤーの操作を再開
+            PlayerPresenter.Instance.SetInputBlocked(false);
         }
 
         // プレイヤーの操作を再開
