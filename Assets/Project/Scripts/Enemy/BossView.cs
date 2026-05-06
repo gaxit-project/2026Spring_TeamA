@@ -7,6 +7,11 @@ public class BossView : MonoBehaviour
 {
     public event System.Action<Collider> OnContactStay;
 
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip roarClip;
+    [SerializeField] private AudioClip footstepClip;
+    [SerializeField] private AudioClip attackClip;
+
     private NavMeshAgent agent;
     private Animator animator;
 
@@ -39,9 +44,27 @@ public class BossView : MonoBehaviour
     public void StopMovement(bool stop) => agent.isStopped = stop;
 
     /// <summary>
-    /// 威嚇（咆哮）アニメーションを再生
+    /// 足音を再生（アニメーションイベント用）
     /// </summary>
-    public void PlayRoar() => animator.SetTrigger(RoarTrigger);
+    public void PlayFootstep()
+    {
+        if (audioSource != null && footstepClip != null)
+        {
+            audioSource.PlayOneShot(footstepClip);
+        }
+    }
+
+    /// <summary>
+    /// 威嚇（咆哮）アニメーションとSEを再生
+    /// </summary>
+    public void PlayRoar()
+    {
+        animator.SetTrigger(RoarTrigger);
+        if (audioSource != null && roarClip != null)
+        {
+            audioSource.PlayOneShot(roarClip);
+        }
+    }
 
     /// <summary>
     /// ひざまずき（ダウン）アニメーションの制御
@@ -52,7 +75,18 @@ public class BossView : MonoBehaviour
     /// 振りかぶり攻撃のアニメーション再生
     /// </summary>
     public void PlayAttack() => animator.SetTrigger(AttackTrigger);
-    
+
+    /// <summary>
+    /// 攻撃音を再生（アニメーションイベント等用）
+    /// </summary>
+    public void PlayAttackSound()
+    {
+        if (audioSource != null && attackClip != null)
+        {
+            audioSource.PlayOneShot(attackClip);
+        }
+    }
+
     /// <summary>
     /// 死亡アニメーションの再生
     /// </summary>

@@ -169,6 +169,17 @@ public class GamePresenter : MonoBehaviour
             await nextLevelView.FadeOutAsync();
         }
 
+
+        // ロード完了後にプレイヤーの階層を+1する
+        if (PlayerPresenter.Instance != null)
+        {
+            int nextFloor = PlayerPresenter.Instance.CurrentFloor + 1;
+            PlayerPresenter.Instance.SetFloor(nextFloor);
+
+            // プレイヤーの操作を再開
+            PlayerPresenter.Instance.SetInputBlocked(false);
+        }
+
         // プレイヤーの操作を再開
         if (PlayerPresenter.Instance != null)
             PlayerPresenter.Instance.SetInputBlocked(false);

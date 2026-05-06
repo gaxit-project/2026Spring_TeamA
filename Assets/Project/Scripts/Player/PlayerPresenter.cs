@@ -13,6 +13,11 @@ public class PlayerPresenter : MonoBehaviour
     // このPresenterが紐付いている PlayerView コンポーネントを取得するプロパティ。
     public PlayerView PlayerView => view;
 
+    /// <summary>
+    /// 現在の階層を取得
+    /// </summary>
+    public int CurrentFloor => model?.CurrentFloor ?? 0;
+
     [SerializeField] private PlayerData playerData;
     [SerializeField] private PlayerView view;
 
@@ -235,6 +240,14 @@ public class PlayerPresenter : MonoBehaviour
         {
             view.PlayDieAnim(); // 死亡
         }
+    }
+
+    /// <summary>
+    /// 外部（階段のトリガーなど）からプレイヤーの階層を更新する
+    /// </summary>
+    public void SetFloor(int floor)
+    {
+        model?.SetFloor(floor);
     }
 
     /// <summary>

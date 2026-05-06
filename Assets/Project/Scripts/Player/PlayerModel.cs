@@ -19,6 +19,9 @@ public class PlayerModel
 
     public bool IsAiming { get; set; } = false;
 
+    public int CurrentFloor { get; private set; } = 1;
+    public event System.Action<int> OnFloorChanged;
+
     // コンストラクタ：初期化時にPresenterからデータを入れてもらう
     public PlayerModel(PlayerData data)
     {
@@ -42,5 +45,16 @@ public class PlayerModel
         Debug.Log($"Player HP: {CurrentHP}");
 
         OnHpChanged?.Invoke(CurrentHP);
+    }
+
+    /// <summary>
+    /// 階層を更新する
+    /// </summary>
+    public void SetFloor(int floor)
+    {
+        if (CurrentFloor == floor) return;
+
+        CurrentFloor = floor;
+        OnFloorChanged?.Invoke(CurrentFloor);
     }
 }
