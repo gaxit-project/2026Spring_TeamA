@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.Cinemachine;
 
@@ -16,9 +16,24 @@ public class PlayerView : MonoBehaviour
     private static readonly int FireTrigger = Animator.StringToHash("OnFire");
     private static readonly int ReloadTrigger = Animator.StringToHash("OnReload");
 
+    private Rigidbody rb;
+
+    /// <summary>
+    /// 物理演算（velocity）を使用して移動を行う
+    /// </summary>
     public void Move(Vector3 move)
     {
-        transform.Translate(move, Space.Self);
+        if (rb == null) rb = GetComponent<Rigidbody>();
+
+        if (Time.deltaTime > 0f)
+        {
+            // Presenter側でdeltaTimeが掛けられているため、速度(m/s)に逆算して代入
+            Vector3 targetVelocity = transform.TransformDirection(move) / Time.deltaTime;
+            
+            // 重力による落下(Y軸の速度)は維持する
+            targetVelocity.y = rb.linearVelocity.y;
+            rb.linearVelocity = targetVelocity;
+        }
 
         if (animator != null)
         {
