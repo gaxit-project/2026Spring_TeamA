@@ -17,6 +17,8 @@ public class PlayerView : MonoBehaviour
     private static readonly int ReloadTrigger = Animator.StringToHash("OnReload");
 
     private Rigidbody rb;
+    private bool isKnockedBack;
+    private float knockbackTimer;
 
     /// <summary>
     /// 物理演算（velocity）を使用して移動を行う
@@ -24,6 +26,17 @@ public class PlayerView : MonoBehaviour
     public void Move(Vector3 move)
     {
         if (rb == null) rb = GetComponent<Rigidbody>();
+
+        // ノックバック中の処理
+        if (isKnockedBack)
+        {
+            knockbackTimer -= Time.deltaTime;
+            if (knockbackTimer <= 0f)
+            {
+                isKnockedBack = false;
+            }
+            return; // 吹き飛ばされている間は入力を受け付けない
+        }
 
         if (Time.deltaTime > 0f)
         {
@@ -40,6 +53,17 @@ public class PlayerView : MonoBehaviour
             bool moving = move.magnitude > 0.001f;
             animator.SetBool(IsMoving, moving);
         }
+    }
+
+    /// <summary>
+    /// 外部からプレイヤーにノックバックを適用する
+    /// </summary>
+    public void ApplyKnockback(Vector3 force, float duration)
+    {
+        if (rb == null) rb = GetComponent<Rigidbody>();
+        isKnockedBack = true;
+        knockbackTimer = duration;
+        rb.linearVelocity = force;
     }
 
     public void SetDashAnimation(bool isDashing)
