@@ -11,6 +11,7 @@ public class PlayerView : MonoBehaviour
     [SerializeField] private Transform cameraPivot;
     [SerializeField] private Animator animator;
     private static readonly int IsMoving = Animator.StringToHash("IsMoving");
+    private static readonly int IsDashingHash = Animator.StringToHash("IsDashing");
     private static readonly int IsAimingHash = Animator.StringToHash("IsAiming");
     private static readonly int AimPitchHash = Animator.StringToHash("AimPitch");
     private static readonly int FireTrigger = Animator.StringToHash("OnFire");
@@ -68,7 +69,7 @@ public class PlayerView : MonoBehaviour
 
     public void SetDashAnimation(bool isDashing)
     {
-        animator.SetBool("IsDashing", isDashing);
+        animator.SetBool(IsDashingHash, isDashing);
     }
 
     public void UpdateBodyRotation(float panAngle)
@@ -136,7 +137,7 @@ public class PlayerView : MonoBehaviour
         if (animator != null)
         {
             // 移動フラグをオフにする
-            animator.SetBool("IsDashing", false);
+            animator.SetBool(IsDashingHash, false);
             animator.SetBool(IsMoving, false);
             animator.Play("Idle", 0, 0f);
         }
