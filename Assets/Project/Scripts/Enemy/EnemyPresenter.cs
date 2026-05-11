@@ -35,12 +35,6 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
         // Modelに ScriptableObject を渡して初期化
         model = new EnemyModel(enemyData);
 
-        // EnemyViewの衝突イベントを購読し,PlayerViewのへ反映させる
-        view.OnContactStay += HandlePlayerContact;
-
-        // EnemyViewでプレイヤーの位置を購読しEnemyViewへ反映させる
-        view.OnFoundPlayer += HandleFoundPlayer;
-
         view.HitContact += OnHit; 
 
         if (soundView == null)
@@ -63,8 +57,6 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
     {
         if(view != null)
         {
-            view.OnContactStay -= HandlePlayerContact;
-            view.OnFoundPlayer -= HandleFoundPlayer;
             view.HitContact -= OnHit;
         }
 
@@ -91,29 +83,6 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
         {
             view.SetHearing(true);
         }
-    }
-
-    private void HandlePlayerContact(Collider col)
-    {
-        if(_isDead)
-        {
-            return;
-        }
-        if(col.CompareTag("Player"))
-        {
-            var playerView = col.GetComponent<PlayerView>();
-            playerView?.OnHitByEnemy?.Invoke(enemyData);
-        }
-    }
-
-    private void HandleFoundPlayer(Vector3 pos)
-    {
-        if (_isDead)
-        {
-            return;
-        }
-        view.isTracking = true;
-        view.MoveTo(pos);
     }
 
     public void TakeDamage(int amount)
