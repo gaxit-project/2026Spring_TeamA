@@ -421,6 +421,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   titleSceneName: Title
   view: {fileID: 626453474}
+  scoreData: {fileID: 11400000, guid: 7558a9e67898ffb4282ecdd85e74fe00, type: 2}
 --- !u!4 &626453473
 Transform:
   m_ObjectHideFlags: 0
@@ -449,7 +450,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   killCountText: {fileID: 225589685}
+  killMultiplierText: {fileID: 0}
+  killScoreText: {fileID: 0}
   rescueCountText: {fileID: 2079337558}
+  rescueMultiplierText: {fileID: 0}
+  rescueScoreText: {fileID: 0}
+  vaccineScoreText: {fileID: 0}
+  totalScoreText: {fileID: 0}
 --- !u!1 &733850261
 GameObject:
   m_ObjectHideFlags: 0
@@ -657,6 +664,7 @@ GameObject:
   - component: {fileID: 924758629}
   - component: {fileID: 924758631}
   - component: {fileID: 924758630}
+  - component: {fileID: 924758632}
   m_Layer: 5
   m_Name: KillText
   m_TagString: Untagged
@@ -783,6 +791,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 924758628}
   m_CullTransparentMesh: 1
+--- !u!114 &924758632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 924758628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 137e62ba00f1fa447817f51125469732, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textKey: 14
 --- !u!1 &1026273665
 GameObject:
   m_ObjectHideFlags: 0
@@ -1117,6 +1138,7 @@ GameObject:
   - component: {fileID: 1614889670}
   - component: {fileID: 1614889672}
   - component: {fileID: 1614889671}
+  - component: {fileID: 1614889673}
   m_Layer: 5
   m_Name: RescueText
   m_TagString: Untagged
@@ -1243,6 +1265,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1614889669}
   m_CullTransparentMesh: 1
+--- !u!114 &1614889673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1614889669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 137e62ba00f1fa447817f51125469732, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textKey: 15
 --- !u!1 &1832751544
 GameObject:
   m_ObjectHideFlags: 0
@@ -1523,6 +1558,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 1832751547}
   - {fileID: 883029149}
-  - {fileID: 1026273666}
   - {fileID: 1028073423}
+  - {fileID: 1026273666}
   - {fileID: 626453473}

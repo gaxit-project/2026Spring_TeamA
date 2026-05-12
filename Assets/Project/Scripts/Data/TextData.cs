@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "TextData", menuName = "ScriptableObjects/TextData")]
 public class TextData : ScriptableObject
@@ -29,6 +29,16 @@ public class TextData : ScriptableObject
 
     public string gameClearMessage = "GAME CLEAR";
     public string loadingMessage = "Loading...";
+
+    /// <summary>
+    /// リザルト画面用のテキスト
+    /// </summary>
+    [Header("Result Screen Texts")]
+    public string resultZombieKillsLabel = "Zombies Defeated";
+    public string resultNpcRescuedLabel = "NPCs Rescued";
+    public string resultVaccineBonusLabel = "Vaccine Bonus";
+    public string resultVaccinePenaltyLabel = "Vaccine Penalty";
+    public string resultTotalScoreLabel = "Total Score";
 
     public float npcMessageDisplayTime = 3.0f;
 }
