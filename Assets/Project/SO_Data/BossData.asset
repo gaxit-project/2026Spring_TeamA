@@ -14,9 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHp: 100
   moveSpeed: 3.5
+  myFloor: 3
   attackDamage: 50
   attackRange: 6
   attackInterval: 3
   stoppingDistance: 5
+  knockbackForce: 50
+  knockbackDuration: 0.5
+  encounterDelay: 1
   stunDuration: 8
   stunDamageThreshold: 20
