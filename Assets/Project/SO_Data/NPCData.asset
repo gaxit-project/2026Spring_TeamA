@@ -20,3 +20,11 @@ MonoBehaviour:
   panicRunSpeed: 10
   panicRunDistance: 15
   destroyDelayAfterPanic: 10
+  maleVoices:
+    initialRescueVoice: {fileID: 8300000, guid: 6c6113c9bcbe3fb408f0960c728c0780, type: 3}
+    rescueAfterEscapeVoice: {fileID: 8300000, guid: 6c6113c9bcbe3fb408f0960c728c0780, type: 3}
+    panicVoice: {fileID: 8300000, guid: e9b6da5c98ae94c46a044ffa054be4f7, type: 3}
+  femaleVoices:
+    initialRescueVoice: {fileID: 8300000, guid: b6df1a27b46a3d349847bfc4360ffdcc, type: 3}
+    rescueAfterEscapeVoice: {fileID: 8300000, guid: b6df1a27b46a3d349847bfc4360ffdcc, type: 3}
+    panicVoice: {fileID: 8300000, guid: 328e7b0567a7fe04c97f19a80d04c72f, type: 3}
