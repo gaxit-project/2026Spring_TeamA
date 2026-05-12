@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class BossView : MonoBehaviour
 {
     public event System.Action<Collider> OnContactStay;
+    public event System.Action OnAttackHitEvent;
 
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip roarClip;
@@ -111,6 +112,14 @@ public class BossView : MonoBehaviour
     private void Update()
     {
         animator.SetFloat(Speed, agent.velocity.magnitude);
+    }
+
+    /// <summary>
+    /// アニメーションイベントから呼び出される攻撃ヒットタイミング
+    /// </summary>
+    public void OnAttackHit()
+    {
+        OnAttackHitEvent?.Invoke();
     }
 
     private void OnTriggerEnter(Collider other)

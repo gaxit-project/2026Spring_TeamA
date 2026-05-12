@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "BossData", menuName = "ScriptableObjects/BossData")]
 public class BossData : ScriptableObject
@@ -15,6 +15,8 @@ public class BossData : ScriptableObject
     public float attackRange = 2.5f;
     public float attackInterval = 3.0f;
     public float stoppingDistance = 2.0f;
+    public float knockbackForce = 12.0f;
+    public float knockbackDuration = 0.4f;
 
     [Header("威嚇設定")]
     public float encounterDelay = 1.0f;  // 発見から咆哮までの余韻
