@@ -2230,7 +2230,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.26666668
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 2bac23f54e4a2384191662ae4507ea3e, type: 2}
   m_BuildHeightMesh: 0
@@ -7961,6 +7961,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destination: {fileID: 944153041}
+--- !u!82 &1905905736 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 3287024078098881310, guid: 5e0a48e6dc2c40e44ba45082218a43e9, type: 3}
+  m_PrefabInstance: {fileID: 780547043}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1930070750
 GameObject:
   m_ObjectHideFlags: 0
@@ -8877,6 +8882,10 @@ PrefabInstance:
       propertyPath: npcData
       value: 
       objectReference: {fileID: 11400000, guid: a5e8136b6bd68dc41adcde8e2c1e87b3, type: 2}
+    - target: {fileID: -2423398326400522815, guid: 8160a017a29f14a418bf493322919bcb, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 1905905736}
     - target: {fileID: -2423398326400522815, guid: 8160a017a29f14a418bf493322919bcb, type: 3}
       propertyPath: escapePoint
       value: 

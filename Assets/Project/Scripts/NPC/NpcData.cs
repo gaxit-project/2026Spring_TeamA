@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "NPCData", menuName = "ScriptableObjects/NPCData")]
 public class NPCData : ScriptableObject
@@ -24,4 +24,21 @@ public class NPCData : ScriptableObject
     public float panicRunDistance = 15.0f;
     [Tooltip("逃げ始めてから消滅するまでの秒数")]
     public float destroyDelayAfterPanic = 4.0f;
+
+    [Header("音声設定")]
+    [Tooltip("男性用のボイスセット")]
+    public NPCVoiceSet maleVoices;
+    [Tooltip("女性用のボイスセット")]
+    public NPCVoiceSet femaleVoices;
+}
+
+[System.Serializable]
+public struct NPCVoiceSet
+{
+    [Tooltip("最初から助かった時のボイス")]
+    public AudioClip initialRescueVoice;
+    [Tooltip("逃走後に助けた時のボイス")]
+    public AudioClip rescueAfterEscapeVoice;
+    [Tooltip("パニックになって逃げる時のボイス")]
+    public AudioClip panicVoice;
 }
