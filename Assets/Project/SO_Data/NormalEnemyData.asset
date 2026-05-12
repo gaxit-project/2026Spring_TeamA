@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
   enemyHP: 4
-  moveSpeed: 10
+  moveSpeed: 5
   enemyAttackPower: 30
   fieldOfView: 160
   detectionRange: 20
