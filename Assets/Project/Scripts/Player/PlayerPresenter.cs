@@ -1,4 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -333,6 +333,30 @@ public class PlayerPresenter : MonoBehaviour
                 fireCts.Dispose();
                 fireCts = null;
             }
+        }
+    }
+
+    /// <summary>
+    /// プレイヤーの向き（水平回転・垂直回転）をモデル状態を含めて強制的に設定します。
+    /// </summary>
+    /// <param name="rotation">設定したい回転（クォータニオン）</param>
+    public void SetRotation(Quaternion rotation)
+    {
+        if (model == null) return;
+
+        // 水平回転（Pan）を更新
+        model.CurrentPan = rotation.eulerAngles.y;
+
+        // 垂直ピッチ（Pitch）を更新し、許容範囲内に収める
+        float xRot = rotation.eulerAngles.x;
+        if (xRot > 180f) xRot -= 360f;
+        model.CurrentPitch = Mathf.Clamp(xRot, playerData.minPitch, playerData.maxPitch);
+
+        // 即座にViewの回転に反映する
+        if (view != null)
+        {
+            view.UpdateBodyRotation(model.CurrentPan);
+            view.SetUpperBodyPitch(model.CurrentPitch);
         }
     }
 

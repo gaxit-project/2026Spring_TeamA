@@ -1,4 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -161,7 +161,7 @@ public class GamePresenter : MonoBehaviour
         if (destination != null && PlayerPresenter.Instance != null)
         {
             PlayerPresenter.Instance.transform.position = destination.position;
-            PlayerPresenter.Instance.transform.rotation = destination.rotation;
+            PlayerPresenter.Instance.SetRotation(destination.rotation);
         }
 
         // 余韻
