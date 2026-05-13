@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3a470cdb77364e43a682ff9b68dc732, type: 3}
+  m_Name: ScoreData
+  m_EditorClassIdentifier: 
+  vaccinePenalty: 1000
+  vaccineBonus: 30
+  rankThresholds:
+  - rankName: 
+    minScore: 0
+  - rankName: A
+    minScore: 50
+  - rankName: B
+    minScore: 40
+  - rankName: C
+    minScore: 30

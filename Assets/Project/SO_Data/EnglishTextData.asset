@@ -27,4 +27,11 @@ MonoBehaviour:
   vaccineWarningMessage: "You haven't collected all vaccines. \nEscape anyway?"
   gameClearMessage: GAME CLEAR
   loadingMessage: Loading...
+  resultZombieKillsLabel: Kill
+  resultNpcRescuedLabel: Rescue
+  resultVaccineBonusLabel: MissionClear
+  resultVaccinePenaltyLabel: MissonFaild
+  resultTotalScoreLabel: Total
+  resultTotalLabel: Total
+  resultRankLabel: Rank
   npcMessageDisplayTime: 3
