@@ -39,6 +39,8 @@ public class TextData : ScriptableObject
     public string resultVaccineBonusLabel = "Vaccine Bonus";
     public string resultVaccinePenaltyLabel = "Vaccine Penalty";
     public string resultTotalScoreLabel = "Total Score";
+    public string resultTotalLabel = "Total";
+    public string resultRankLabel = "Rank";
 
     public float npcMessageDisplayTime = 3.0f;
 }

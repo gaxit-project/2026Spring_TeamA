@@ -23,16 +23,19 @@ public class ResultPresenter : MonoBehaviour
         int rescueCount = SessionData.RescueCount;
         bool isVaccineCleared = SessionData.IsVaccineCleared;
 
-        int killScore = killCount * scoreData.killMultiplier;
-        int rescueScore = rescueCount * scoreData.rescueMultiplier;
+        // ゾンビを倒した数、NPC救出数、ワクチンのボーナス/ペナルティを合計
         int vaccineValue = isVaccineCleared ? scoreData.vaccineBonus : -scoreData.vaccinePenalty;
-        int totalScore = killScore + rescueScore + vaccineValue;
+        int totalScore = killCount + rescueCount + vaccineValue;
+
+        // 合計スコアを元にランクを算出
+        string rankName = scoreData.EvaluateRank(totalScore);
 
         view.UpdateScoreDisplay(
-            killCount, scoreData.killMultiplier, killScore,
-            rescueCount, scoreData.rescueMultiplier, rescueScore,
-            isVaccineCleared, vaccineValue,
-            totalScore
+            killCount,
+            rescueCount,
+            vaccineValue,
+            totalScore,
+            rankName
         );
     }
 

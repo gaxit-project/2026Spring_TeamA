@@ -24,7 +24,9 @@ public class LocalizedText : MonoBehaviour
         ResultNpcRescuedLabel,
         ResultVaccineBonusLabel,
         ResultVaccinePenaltyLabel,
-        ResultTotalScoreLabel
+        ResultTotalScoreLabel,
+        ResultTotalLabel,
+        ResultRankLabel
     }
 
     [SerializeField] private TextKey textKey;
@@ -87,6 +89,8 @@ public class LocalizedText : MonoBehaviour
             case TextKey.ResultVaccineBonusLabel: return data.resultVaccineBonusLabel;
             case TextKey.ResultVaccinePenaltyLabel: return data.resultVaccinePenaltyLabel;
             case TextKey.ResultTotalScoreLabel: return data.resultTotalScoreLabel;
+            case TextKey.ResultTotalLabel: return data.resultTotalLabel;
+            case TextKey.ResultRankLabel: return data.resultRankLabel;
             default: return string.Empty;
         }
     }

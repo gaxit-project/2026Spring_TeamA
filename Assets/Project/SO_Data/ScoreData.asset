@@ -12,7 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3a470cdb77364e43a682ff9b68dc732, type: 3}
   m_Name: ScoreData
   m_EditorClassIdentifier: 
-  killMultiplier: 100
-  rescueMultiplier: 500
   vaccinePenalty: 1000
-  vaccineBonus: 2000
+  vaccineBonus: 30
+  rankThresholds:
+  - rankName: 
+    minScore: 0
+  - rankName: A
+    minScore: 50
+  - rankName: B
+    minScore: 40
+  - rankName: C
+    minScore: 30
