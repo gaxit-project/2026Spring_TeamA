@@ -13,12 +13,21 @@ public class NextLevelView : MonoBehaviour
     [SerializeField] private float whiteoutDuration = 3.0f;
     [SerializeField] private float textFadeDuration = 1.0f;
 
+    private System.Threading.CancellationTokenSource _loadingCts;
+
     private void Start()
     {
         // 初期状態は透明にしておく
         SetAlpha(panelImage, 0f);
         SetAlpha(gameClearText, 0f);
         SetAlpha(loadingText, 0f);
+    }
+
+    private void OnDestroy()
+    {
+        _loadingCts?.Cancel();
+        _loadingCts?.Dispose();
+        _loadingCts = null;
     }
 
     private void SetAlpha(Graphic graphic, float alpha)
@@ -79,6 +88,15 @@ public class NextLevelView : MonoBehaviour
         // 少し待つ
         await UniTask.Delay(System.TimeSpan.FromSeconds(1.0f));
 
+        // Loadingアニメーションの開始
+        if (!isGameClear && loadingText != null)
+        {
+            _loadingCts?.Cancel();
+            _loadingCts?.Dispose();
+            _loadingCts = new System.Threading.CancellationTokenSource();
+            AnimateLoadingText(loadingStr, _loadingCts.Token).Forget();
+        }
+
         // テキストをフェードイン
         if (targetText != null)
         {
@@ -91,11 +109,38 @@ public class NextLevelView : MonoBehaviour
     /// </summary>
     public async UniTask FadeOutAsync()
     {
+        // Loadingアニメーションの停止
+        _loadingCts?.Cancel();
+        _loadingCts?.Dispose();
+        _loadingCts = null;
+
         // パネルとテキストをフェードアウト
         if (loadingText != null)
             await loadingText.DOFade(0f, textFadeDuration).AsyncWaitForCompletion();
 
         if (panelImage != null)
             await panelImage.DOFade(0f, whiteoutDuration).AsyncWaitForCompletion();
+    }
+
+    /// <summary>
+    /// Loadingテキストのドットをアニメーションさせる非同期処理。
+    /// </summary>
+    private async UniTaskVoid AnimateLoadingText(string originalText, System.Threading.CancellationToken token)
+    {
+        string baseText = originalText.TrimEnd('.');
+        int dotCount = 1;
+
+        while (!token.IsCancellationRequested)
+        {
+            if (loadingText == null) break;
+
+            string dots = new string('.', dotCount);
+            loadingText.text = baseText + dots;
+
+            // 0.5秒ごとに更新
+            await UniTask.Delay(System.TimeSpan.FromSeconds(0.5f), cancellationToken: token).SuppressCancellationThrow();
+
+            dotCount = (dotCount + 1) % 4; // 1, 2, 3, 0 のループ
+        }
     }
 }

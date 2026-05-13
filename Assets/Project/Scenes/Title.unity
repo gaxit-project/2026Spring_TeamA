@@ -1321,6 +1321,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LoadingPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 3803871478393173678, guid: 6289694651d51134a80f4f2e37ccb9a5, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3918401467790816048, guid: 6289694651d51134a80f4f2e37ccb9a5, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 750

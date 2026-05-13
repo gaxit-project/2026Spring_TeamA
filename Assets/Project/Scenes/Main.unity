@@ -12313,9 +12313,13 @@ PrefabInstance:
       propertyPath: m_VerticalAlignment
       value: 1024
       objectReference: {fileID: 0}
+    - target: {fileID: 3803871478393173678, guid: 6289694651d51134a80f4f2e37ccb9a5, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3918401467790816048, guid: 6289694651d51134a80f4f2e37ccb9a5, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 750
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 5333911682105518765, guid: 6289694651d51134a80f4f2e37ccb9a5, type: 3}
       propertyPath: m_Pivot.x
