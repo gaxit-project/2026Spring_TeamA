@@ -76,10 +76,12 @@ public class SoundManager : MonoBehaviour
         SESlider = null;
         BGMSlider = null;
 
-        //スライダーと設定画面があれば取得
-        SESlider = GameObject.Find("SESlider")?.GetComponent<Slider>();
-        BGMSlider = GameObject.Find("BGMSlider")?.GetComponent<Slider>();
-        GameObject.Find("SettingMenu")?.SetActive(false);
+        //シーン内にSettingsSlidersManagerがあればスライダーを取得
+        if (GameObject.FindFirstObjectByType<SettingsSlidersManager>() is SettingsSlidersManager SSM)
+        {
+            SESlider = SSM.GetSESlider();
+            BGMSlider = SSM.GetBGMSlider();
+        }
 
         if (SESlider != null && BGMSlider != null)
         {
@@ -87,7 +89,7 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
-            //Debug.LogWarning("音量設定スライダーが見つかりませんでした");
+            Debug.LogWarning("SettingsSlidersManagerが見つかりませんでした");
         }
     }
 
