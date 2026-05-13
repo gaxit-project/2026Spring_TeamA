@@ -1739,7 +1739,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyData: {fileID: 11400000, guid: a769329706876d445988ce14bfb8b83e, type: 2}
-  player: {fileID: 0}
+  player: {fileID: 3206363152217411613, guid: bd154ce00f43e6f458887d2f343a54b9, type: 3}
   wanderRange: 10
   minWaitTime: 1
   maxWaitTime: 3

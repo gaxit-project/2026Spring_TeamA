@@ -6560,7 +6560,7 @@ MonoBehaviour:
   enemyPrefab: {fileID: 8098319677126459002, guid: ab3e3c701daa03e44857990aa4f907b8, type: 3}
   spawnPoints:
   - point: {fileID: 1871183293}
-    count: 5
+    count: 10
   spawnRadius: 5
 --- !u!4 &1173228432
 Transform:
@@ -6822,6 +6822,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Run_Zombie
       objectReference: {fileID: 0}
+    - target: {fileID: 5735073634931002508, guid: 6ea6e936e4bf3344d905503b64d3a7f7, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 116553968}
     - target: {fileID: 5735073634931002508, guid: 6ea6e936e4bf3344d905503b64d3a7f7, type: 3}
       propertyPath: enemyData
       value: 

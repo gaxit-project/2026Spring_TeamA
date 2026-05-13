@@ -1,4 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -40,6 +40,7 @@ public class EnemyView : MonoBehaviour
 
     // 以下イベント定義
     public event System.Action<int, Collider> HitContact;
+    public event System.Action OnAttackHitEvent;
 
     // 以下行動アニメーション
     private static readonly int HashAttack = Animator.StringToHash("Attack");
@@ -276,6 +277,14 @@ public class EnemyView : MonoBehaviour
             _agent.SetDestination(hit.position);
             isWandering = true;
         }
+    }
+
+    /// <summary>
+    /// アニメーションイベントから呼び出される攻撃ヒットタイミング
+    /// </summary>
+    public void OnAttackHit()
+    {
+        OnAttackHitEvent?.Invoke();
     }
 
     /// <summary>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -36,6 +36,7 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
         model = new EnemyModel(enemyData);
 
         view.HitContact += OnHit; 
+        view.OnAttackHitEvent += HandleAttackHit; 
 
         if (soundView == null)
         {
@@ -58,6 +59,7 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
         if(view != null)
         {
             view.HitContact -= OnHit;
+            view.OnAttackHitEvent -= HandleAttackHit;
         }
 
         if(soundView != null)
@@ -124,6 +126,28 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
 
         int finaiDamage = hitPart.isHead ? damage * 2 : damage;
         TakeDamage(finaiDamage);
+    }
+
+    /// <summary>
+    /// 攻撃アニメーションのヒットタイミングに合わせてプレイヤーにダメージを与える
+    /// </summary>
+    private void HandleAttackHit()
+    {
+        if (_isDead) return;
+        if (PlayerPresenter.Instance == null) return;
+
+        // プレイヤーとの距離を確認
+        float dist = Vector3.Distance(transform.position, PlayerPresenter.Instance.transform.position);
+
+        if (dist <= enemyData.attackDistance)
+        {
+            PlayerPresenter.Instance.TakeDamage(enemyData.enemyAttackPower);
+
+            // プレイヤーにノックバック効果を適用（後ろに弾く）
+            Vector3 pushDirection = (PlayerPresenter.Instance.transform.position - transform.position).normalized;
+            pushDirection.y = 0f; // Y軸は固定
+            PlayerPresenter.Instance.PlayerView.ApplyKnockback(pushDirection * 2f, 0.15f);
+        }
     }
 
     /// <summary>
