@@ -142,7 +142,7 @@ public class EnemyView : MonoBehaviour
             }
         }
 
-        if(foundWindows)
+        if(foundWindows && windowDistance < playerDistance)
         {
             isPlayerWindow = true;
             return;
@@ -237,6 +237,7 @@ public class EnemyView : MonoBehaviour
                 break;
             case EnemyState.Knock:
                 _agent.ResetPath();
+                SoundManager.Instance.PlaySound(2);
                 break;
             case EnemyState.Idle:
                 Idle();
