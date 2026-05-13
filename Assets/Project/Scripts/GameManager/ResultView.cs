@@ -9,6 +9,27 @@ public class ResultView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI totalScoreText;    // 最終集計スコア (例: "23")
     [SerializeField] private TextMeshProUGUI rankText;          // 最終ランク (例: "S")
 
+    [Header("項目名")]
+    [SerializeField] private TextMeshProUGUI killCountLabel;
+    [SerializeField] private TextMeshProUGUI rescueCountLabel;
+    [SerializeField] private TextMeshProUGUI vaccineBonusLabel;
+    [SerializeField] private TextMeshProUGUI totalScoreLabel;
+    [SerializeField] private TextMeshProUGUI rankLabel;
+
+    /// <summary>
+    /// 言語設定データに基づいて、リザルト画面の各項目名を設定する
+    /// </summary>
+    public void InitializeLabels(TextData data, bool isVaccineCleared)
+    {
+        if (data == null) return;
+
+        if (killCountLabel != null) killCountLabel.text = data.resultZombieKillsLabel;
+        if (rescueCountLabel != null) rescueCountLabel.text = data.resultNpcRescuedLabel;
+        if (vaccineBonusLabel != null) vaccineBonusLabel.text = data.resultVaccineBonusLabel;
+        if (totalScoreLabel != null) totalScoreLabel.text = data.resultTotalScoreLabel;
+        if (rankLabel != null) rankLabel.text = data.resultRankLabel;
+    }
+
     /// <summary>
     /// 各項目の実績値、ワクチン結果、最終スコア、及びランクを画面に反映する
     /// </summary>

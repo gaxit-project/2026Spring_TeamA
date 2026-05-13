@@ -987,8 +987,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Settings
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0890d5e8fbd576345b5aafdb3d532c09, type: 2}
+  m_sharedMaterial: {fileID: 5896460460804699372, guid: 0890d5e8fbd576345b5aafdb3d532c09, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1652,8 +1652,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Quit
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0890d5e8fbd576345b5aafdb3d532c09, type: 2}
+  m_sharedMaterial: {fileID: 5896460460804699372, guid: 0890d5e8fbd576345b5aafdb3d532c09, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2641,6 +2641,10 @@ MonoBehaviour:
   titlePanel: {fileID: 248343487}
   settingsSlider: {fileID: 1605113568}
   startButton: {fileID: 1682101525192609885}
+  gameTitleText: {fileID: 1848982026}
+  startButtonText: {fileID: 1682101525192609886}
+  settingsButtonText: {fileID: 459568316}
+  exitButtonText: {fileID: 773993965}
 --- !u!4 &1404929852
 Transform:
   m_ObjectHideFlags: 0
@@ -3666,14 +3670,14 @@ RectTransform:
   m_GameObject: {fileID: 1848982024}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.9090907, y: 0.9090907, z: 0.9090907}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 248343488}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 272.7272}
+  m_AnchoredPosition: {x: 0, y: 275}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1848982026
@@ -3698,8 +3702,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u30D0\u30A4\u30AA\u30FB\u30A8\u30B9\u30B1\u30FC\u30D7"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c74d75865ef7bf7498df63a0408b6e14, type: 2}
-  m_sharedMaterial: {fileID: 6690572354338822278, guid: c74d75865ef7bf7498df63a0408b6e14, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0890d5e8fbd576345b5aafdb3d532c09, type: 2}
+  m_sharedMaterial: {fileID: 5896460460804699372, guid: 0890d5e8fbd576345b5aafdb3d532c09, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3729,7 +3733,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 0
   m_fontSizeMax: 0
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -4202,6 +4206,18 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1404929854}
+    - target: {fileID: 8323023155712934416, guid: 3f3815072afe23547b6f402cb3a051f3, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 0890d5e8fbd576345b5aafdb3d532c09, type: 2}
+    - target: {fileID: 8323023155712934416, guid: 3f3815072afe23547b6f402cb3a051f3, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 5896460460804699372, guid: 0890d5e8fbd576345b5aafdb3d532c09, type: 2}
+    - target: {fileID: 8323023155712934416, guid: 3f3815072afe23547b6f402cb3a051f3, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4216,6 +4232,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1682101525192609886 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8323023155712934416, guid: 3f3815072afe23547b6f402cb3a051f3, type: 3}
+  m_PrefabInstance: {fileID: 1682101525192609884}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807

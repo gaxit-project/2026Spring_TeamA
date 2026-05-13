@@ -37,6 +37,12 @@ public class ResultPresenter : MonoBehaviour
             totalScore,
             rankName
         );
+
+        // ラベル表示言語の初期化
+        if (LanguageManager.Instance != null)
+        {
+            view.InitializeLabels(LanguageManager.Instance.CurrentTextData, isVaccineCleared);
+        }
     }
 
     public void ReturnToTitle()

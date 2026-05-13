@@ -968,6 +968,11 @@ MonoBehaviour:
   vaccineScoreText: {fileID: 425840929}
   totalScoreText: {fileID: 1704246566}
   rankText: {fileID: 517256205}
+  killCountLabel: {fileID: 924758630}
+  rescueCountLabel: {fileID: 1614889671}
+  vaccineBonusLabel: {fileID: 1499206337}
+  totalScoreLabel: {fileID: 912111711}
+  rankLabel: {fileID: 2146267484}
 --- !u!1 &733850261
 GameObject:
   m_ObjectHideFlags: 0
@@ -1175,7 +1180,6 @@ GameObject:
   - component: {fileID: 912111709}
   - component: {fileID: 912111712}
   - component: {fileID: 912111711}
-  - component: {fileID: 912111710}
   m_Layer: 5
   m_Name: TotalText
   m_TagString: Untagged
@@ -1202,19 +1206,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -150}
   m_SizeDelta: {x: 1000, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &912111710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 912111708}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 137e62ba00f1fa447817f51125469732, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  textKey: 18
 --- !u!114 &912111711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1326,7 +1317,6 @@ GameObject:
   - component: {fileID: 924758629}
   - component: {fileID: 924758631}
   - component: {fileID: 924758630}
-  - component: {fileID: 924758632}
   m_Layer: 5
   m_Name: KillText
   m_TagString: Untagged
@@ -1453,19 +1443,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 924758628}
   m_CullTransparentMesh: 1
---- !u!114 &924758632
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 924758628}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 137e62ba00f1fa447817f51125469732, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  textKey: 14
 --- !u!1 &1026273665
 GameObject:
   m_ObjectHideFlags: 0
@@ -1808,7 +1785,6 @@ GameObject:
   - component: {fileID: 1499206335}
   - component: {fileID: 1499206338}
   - component: {fileID: 1499206337}
-  - component: {fileID: 1499206336}
   m_Layer: 5
   m_Name: MissonClearText
   m_TagString: Untagged
@@ -1835,19 +1811,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 50}
   m_SizeDelta: {x: 1000, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1499206336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1499206334}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 137e62ba00f1fa447817f51125469732, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  textKey: 16
 --- !u!114 &1499206337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1959,7 +1922,6 @@ GameObject:
   - component: {fileID: 1614889670}
   - component: {fileID: 1614889672}
   - component: {fileID: 1614889671}
-  - component: {fileID: 1614889673}
   m_Layer: 5
   m_Name: RescueText
   m_TagString: Untagged
@@ -2086,19 +2048,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1614889669}
   m_CullTransparentMesh: 1
---- !u!114 &1614889673
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1614889669}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 137e62ba00f1fa447817f51125469732, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  textKey: 15
 --- !u!1 &1704246562
 GameObject:
   m_ObjectHideFlags: 0
@@ -2521,7 +2470,6 @@ GameObject:
   - component: {fileID: 2146267482}
   - component: {fileID: 2146267485}
   - component: {fileID: 2146267484}
-  - component: {fileID: 2146267483}
   m_Layer: 5
   m_Name: LankText
   m_TagString: Untagged
@@ -2548,19 +2496,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -300}
   m_SizeDelta: {x: 1000, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2146267483
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2146267481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 137e62ba00f1fa447817f51125469732, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  textKey: 20
 --- !u!114 &2146267484
 MonoBehaviour:
   m_ObjectHideFlags: 0

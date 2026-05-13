@@ -25,8 +25,14 @@ public class LocalizedText : MonoBehaviour
         ResultVaccineBonusLabel,
         ResultVaccinePenaltyLabel,
         ResultTotalScoreLabel,
-        ResultTotalLabel,
-        ResultRankLabel
+        ResultRankLabel,
+        PauseResumeButton,
+        PauseSettingsButton,
+        PauseQuitButton,
+        TitleStartButton,
+        TitleSettingsButton,
+        TitleExitButton,
+        GameTitleName
     }
 
     [SerializeField] private TextKey textKey;
@@ -89,8 +95,14 @@ public class LocalizedText : MonoBehaviour
             case TextKey.ResultVaccineBonusLabel: return data.resultVaccineBonusLabel;
             case TextKey.ResultVaccinePenaltyLabel: return data.resultVaccinePenaltyLabel;
             case TextKey.ResultTotalScoreLabel: return data.resultTotalScoreLabel;
-            case TextKey.ResultTotalLabel: return data.resultTotalLabel;
             case TextKey.ResultRankLabel: return data.resultRankLabel;
+            case TextKey.PauseResumeButton: return data.pauseResumeButton;
+            case TextKey.PauseSettingsButton: return data.pauseSettingsButton;
+            case TextKey.PauseQuitButton: return data.pauseQuitButton;
+            case TextKey.TitleStartButton: return data.titleStartButton;
+            case TextKey.TitleSettingsButton: return data.titleSettingsButton;
+            case TextKey.TitleExitButton: return data.titleExitButton;
+            case TextKey.GameTitleName: return data.gameTitleName;
             default: return string.Empty;
         }
     }

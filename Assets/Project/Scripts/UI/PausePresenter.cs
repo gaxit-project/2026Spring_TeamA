@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
@@ -14,6 +14,11 @@ public class PausePresenter : MonoBehaviour
         view.OnResumeClicked += ResumeGame;
         view.OnSettingsClicked += OpenSettings;
         view.OnTitleClicked += GoToTitle;
+
+        if (LanguageManager.Instance != null)
+        {
+            view.InitializeLabels(LanguageManager.Instance.CurrentTextData);
+        }
     }
 
     private void OnEnable()

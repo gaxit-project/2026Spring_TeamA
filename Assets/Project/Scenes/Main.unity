@@ -3960,6 +3960,9 @@ MonoBehaviour:
   resumeButton: {fileID: 1931126117}
   settingsButton: {fileID: 710247834}
   quitButton: {fileID: 1784535898}
+  resumeText: {fileID: 413790102}
+  settingsText: {fileID: 699052987}
+  quitText: {fileID: 257030221}
 --- !u!114 &623859429
 MonoBehaviour:
   m_ObjectHideFlags: 0
