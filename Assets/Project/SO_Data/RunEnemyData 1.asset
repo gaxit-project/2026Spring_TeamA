@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 22100000, guid: 89a1130e4d1dcc644bc886407f3ce8c2, type: 2}
   enemyHP: 3
-  moveSpeed: 20
+  moveSpeed: 6
   enemyAttackPower: 30
   fieldOfView: 160
   detectionRange: 20

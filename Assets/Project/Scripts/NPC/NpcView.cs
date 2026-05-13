@@ -1,4 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.CompilerServices;
 using DG.Tweening;
 using System;
@@ -13,6 +13,12 @@ public class NPCView : MonoBehaviour, IInteractable, IDamageable
     [SerializeField] private NPCData npcData;
     [SerializeField] private Transform escapePoint; // 逃げていく場所
 
+    [Header("Gender Settings")]
+    [SerializeField] private NPCGender gender = NPCGender.Male;
+
+    [Header("Audio Settings")]
+    [SerializeField] private AudioSource audioSource;
+
     private Animator _animator;
     private NavMeshAgent _agent;
     private bool _hasInteracted = false;
@@ -22,11 +28,21 @@ public class NPCView : MonoBehaviour, IInteractable, IDamageable
 
     public bool CanInteract => (!_hasInteracted || _isPanicking) && !_isDead;
 
+    /// <summary>
+    /// 性別に応じたボイスセットを取得する
+    /// </summary>
+    private NPCVoiceSet CurrentVoiceSet => gender == NPCGender.Male ? npcData.maleVoices : npcData.femaleVoices;
+
     private void Awake()
     {
         _animator = GetComponent<Animator>();
         _agent = GetComponent<NavMeshAgent>();
         _agent.isStopped = true;
+
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
     }
 
     public void TakeDamage(int amount)
@@ -76,6 +92,7 @@ public class NPCView : MonoBehaviour, IInteractable, IDamageable
 
             // 逃走後に助けた時のセリフ
             UIEvents.OnShowSystemMessage?.Invoke(UIManager.Instance.textData.npcRescueAfterEscapeMessage, 3.0f);
+            PlayVoice(CurrentVoiceSet.rescueAfterEscapeVoice != null ? CurrentVoiceSet.rescueAfterEscapeVoice : CurrentVoiceSet.initialRescueVoice);
 
             PlayerPresenter.Instance.SetInputBlocked(true);
             RescueSuccess(interactor);
@@ -112,6 +129,7 @@ public class NPCView : MonoBehaviour, IInteractable, IDamageable
                 if (UIManager.Instance.textData != null)
                 {
                     UIEvents.OnShowSystemMessage?.Invoke(UIManager.Instance.textData.npcInitialRescueMessage, 3.0f);
+                    PlayVoice(CurrentVoiceSet.initialRescueVoice);
                 }
                 RescueSuccess(interactor);
             }
@@ -122,6 +140,7 @@ public class NPCView : MonoBehaviour, IInteractable, IDamageable
                 if (UIManager.Instance.textData != null)
                 {
                     UIEvents.OnShowSystemMessage?.Invoke(UIManager.Instance.textData.npcPanicMessage, 3.0f);
+                    PlayVoice(CurrentVoiceSet.panicVoice);
                 }
                 Debug.Log("生存者がパニックになって逃げ出しました");
                 _animator.SetTrigger("PanicRun");
@@ -149,6 +168,18 @@ public class NPCView : MonoBehaviour, IInteractable, IDamageable
         {
             // 待機中にNPCが消滅してキャンセルされた場合も、念のためPlayerの操作ブロックを解除する
             UIEvents.OnCutsceneStateChanged?.Invoke(false);
+        }
+    }
+
+    /// <summary>
+    /// 指定されたボイス音声を再生する。
+    /// </summary>
+    /// <param name="clip">再生するオーディオクリップ</param>
+    private void PlayVoice(AudioClip clip)
+    {
+        if (clip != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(clip);
         }
     }
 
@@ -321,4 +352,13 @@ public class NPCView : MonoBehaviour, IInteractable, IDamageable
             _destroyCts = null;
         }
     }
+}
+
+/// <summary>
+/// NPCの性別定義
+/// </summary>
+public enum NPCGender
+{
+    Male,
+    Female
 }

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 
@@ -30,6 +30,7 @@ public class BossPresenter : MonoBehaviour, IDamageable
         }
 
         view.OnContactStay += HandlePlayerContact;
+        view.OnAttackHitEvent += HandleAttackHit;
     }
 
     private void Start()
@@ -45,6 +46,11 @@ public class BossPresenter : MonoBehaviour, IDamageable
     private void OnDestroy()
     {
         // 破棄時に購読を解除
+        if (view != null)
+        {
+            view.OnAttackHitEvent -= HandleAttackHit;
+        }
+
         if (GamePresenter.Instance != null)
         {
             GamePresenter.Instance.OnGameClear -= HandleGameClear;
@@ -161,26 +167,43 @@ public class BossPresenter : MonoBehaviour, IDamageable
     }
 
     /// <summary>
-    /// 攻撃アクションのシーケンス管理
+    /// アニメーションのヒットフレームが再生された時に呼ばれる判定処理
+    /// </summary>
+    private void HandleAttackHit()
+    {
+        if (PlayerPresenter.Instance == null) return;
+
+        // ボスの正面1.0mの位置を攻撃判定の中心にする（前方のすり抜け・判定ズラし）
+        Vector3 attackCenter = transform.position + transform.forward * 1.0f;
+        float dist = Vector3.Distance(attackCenter, PlayerPresenter.Instance.transform.position);
+
+        // ボスの正面方向とプレイヤーへの角度をチェック (0.3f = 約140度の扇状)
+        Vector3 dirToPlayer = (PlayerPresenter.Instance.transform.position - transform.position).normalized;
+        float dot = Vector3.Dot(transform.forward, dirToPlayer);
+
+        // 距離が近く、かつボスの前方（視野角内）にいる場合のみヒット
+        if (dist <= data.attackRange && dot > 0.3f)
+        {
+            PlayerPresenter.Instance.TakeDamage(data.attackDamage);
+
+            // ノックバック計算（プレイヤーをボスから遠ざける方向へ）
+            Vector3 pushDirection = (PlayerPresenter.Instance.transform.position - transform.position).normalized;
+            pushDirection.y = 0.25f; // 少し上方に浮かせる
+            pushDirection = pushDirection.normalized;
+
+            PlayerPresenter.Instance.PlayerView.ApplyKnockback(pushDirection * data.knockbackForce, data.knockbackDuration);
+        }
+    }
+
+    /// <summary>
+    /// 攻撃アクションのシーケンス管理（アニメーション再生とクールダウン待機のみ）
     /// </summary>
     private async UniTaskVoid StartAttackSequence()
     {
         view.StopMovement(true);
         view.PlayAttack();
 
-        // 攻撃の「振り」が終わるタイミングまで待機（例: 0.5秒後）
-        await UniTask.Delay(System.TimeSpan.FromSeconds(0.5f));
-
-        // プレイヤーがまだ射程内にいればダメージ実行
-        if (PlayerPresenter.Instance != null)
-        {
-            float dist = Vector3.Distance(transform.position, PlayerPresenter.Instance.transform.position);
-            if (dist <= data.attackRange)
-            {
-                PlayerPresenter.Instance.TakeDamage(data.attackDamage);
-            }
-        }
-
+        // 攻撃アニメーションとその後のインターバル（硬直）が明けるまで待つ
         await UniTask.Delay(System.TimeSpan.FromSeconds(data.attackInterval));
 
         if (model.CurrentState != BossModel.BossState.Stunned)
