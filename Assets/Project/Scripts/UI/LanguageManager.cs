@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class LanguageManager : MonoBehaviour
 {
@@ -8,6 +8,11 @@ public class LanguageManager : MonoBehaviour
     [SerializeField] private TextData englishText;
 
     public TextData CurrentTextData { get; private set; }
+
+    /// <summary>
+    /// 現在の言語が日本語かどうかを取得するプロパティ
+    /// </summary>
+    public bool IsJapanese => CurrentTextData == japaneseText;
 
     private void Awake()
     {
