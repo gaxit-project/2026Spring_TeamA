@@ -11,6 +11,7 @@ public class TextData : ScriptableObject
     public string titleStartButton = "Start";
     public string titleSettingsButton = "Settings";
     public string titleExitButton = "Exit";
+    public string titleReturnButton = "Return";
 
     /// <summary>
     /// ポーズ画面用のテキスト
