@@ -498,7 +498,8 @@ public class PlayerPresenter : MonoBehaviour
     /// </summary>
     private async UniTaskVoid ReloadAsync(CancellationToken token)
     {
-        if (gunModel.CurrentAmmo == gunData.maxAmmo || gunModel.IsReloading) return;
+        // 弾薬が最大、予備弾数が0、または既にリロード中の場合は処理を行わない
+        if (gunModel.CurrentAmmo == gunData.maxAmmo || gunModel.ReserveAmmo <= 0 || gunModel.IsReloading) return;
 
         Debug.Log("Reloading started...");
         gunModel.IsReloading = true;
