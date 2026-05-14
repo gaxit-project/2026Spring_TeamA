@@ -16,6 +16,9 @@ MonoBehaviour:
   titleStartButton: "\u30B9\u30BF\u30FC\u30C8"
   titleSettingsButton: "\u8A2D\u5B9A"
   titleExitButton: "\u7D42\u4E86"
+  titleReturnButton: "\u623B\u308B"
+  titleAudioButton: "\u97F3\u91CF\u8A2D\u5B9A"
+  titleLanguageButton: "\u8A00\u8A9E\u8A2D\u5B9A"
   pauseResumeButton: "\u518D\u958B"
   pauseSettingsButton: "\u8A2D\u5B9A"
   pauseQuitButton: "\u30BF\u30A4\u30C8\u30EB\u3078"
@@ -34,7 +37,7 @@ MonoBehaviour:
   goalPrompt: "[Y] : \u8131\u51FA"
   vaccineWarningMessage: "\u307E\u3060\u30EF\u30AF\u30C1\u30F3\u3092\u96C6\u3081\u3089\u308C\u3066\u3044\u307E\u305B\u3093\u3002\n\u305D\u308C\u3067\u3082\u8131\u51FA\u3057\u307E\u3059\u304B\uFF1F"
   gameClearMessage: "\u30B2\u30FC\u30E0\u30AF\u30EA\u30A2"
-  loadingMessage: Loading...
+  loadingMessage: "\u30ED\u30FC\u30C9\u4E2D..."
   resultZombieKillsLabel: "\u5012\u3057\u305F\u6570"
   resultNpcRescuedLabel: "\u52A9\u3051\u305F\u6570"
   resultVaccineBonusLabel: "\u30AF\u30EA\u30A2\u30DC\u30FC\u30CA\u30B9"

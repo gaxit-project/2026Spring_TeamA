@@ -28,6 +28,8 @@ public class TitleButtonManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI startButtonText;
     [SerializeField] private TextMeshProUGUI settingsButtonText;
     [SerializeField] private TextMeshProUGUI exitButtonText;
+    [SerializeField] private TextMeshProUGUI audioButtonText;
+    [SerializeField] private TextMeshProUGUI languageButtonText;
     [SerializeField] private TextMeshProUGUI[] returnButtonTexts;
 
     private void Start()
@@ -49,6 +51,8 @@ public class TitleButtonManager : MonoBehaviour
         if (startButtonText != null) startButtonText.text = data.titleStartButton;
         if (settingsButtonText != null) settingsButtonText.text = data.titleSettingsButton;
         if (exitButtonText != null) exitButtonText.text = data.titleExitButton;
+        if (audioButtonText != null) audioButtonText.text = data.titleAudioButton;
+        if (languageButtonText != null) languageButtonText.text = data.titleLanguageButton;
 
         if (returnButtonTexts != null)
         {
