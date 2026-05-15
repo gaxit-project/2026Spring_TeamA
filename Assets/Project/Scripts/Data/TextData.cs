@@ -60,6 +60,8 @@ public class TextData : ScriptableObject
     [Header("Goal Texts")]
     public string goalPrompt = "[Y] : Escape";
     [TextArea] public string vaccineWarningMessage = "You haven't collected all vaccines. Escape anyway?";
+    public string confirmYesButton = "Yes";
+    public string confirmNoButton = "No";
 
     /// <summary>
     /// ゲームクリア・ロード画面用のテキスト

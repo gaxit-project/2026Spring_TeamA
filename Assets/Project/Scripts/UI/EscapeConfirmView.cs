@@ -1,10 +1,12 @@
-﻿using TMPro;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class EscapeConfirmView : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI warningText;
+    [SerializeField] private TextMeshProUGUI yesButtonText; // Yesボタンのテキスト
+    [SerializeField] private TextMeshProUGUI noButtonText;  // Noボタンのテキスト
     [SerializeField] private GameObject panel;
 
     [SerializeField] private GameObject firstSelectedButton; // 表示時に最初にフォーカスを当てるボタン
@@ -37,6 +39,8 @@ public class EscapeConfirmView : MonoBehaviour
         if (UIManager.Instance.textData != null)
         {
             warningText.text = UIManager.Instance.textData.vaccineWarningMessage;
+            if (yesButtonText != null) yesButtonText.text = UIManager.Instance.textData.confirmYesButton;
+            if (noButtonText != null) noButtonText.text = UIManager.Instance.textData.confirmNoButton;
         }
 
         // 邪魔なUIを一時的に隠す
