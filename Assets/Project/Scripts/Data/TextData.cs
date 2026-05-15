@@ -76,6 +76,7 @@ public class TextData : ScriptableObject
     public string resultNpcRescuedLabel = "NPCs Rescued";
     public string resultVaccineBonusLabel = "Vaccine Bonus";
     public string resultVaccinePenaltyLabel = "Vaccine Penalty";
+    public string resultTimeBonusLabel = "Time Bonus";
     public string resultTotalScoreLabel = "Total Score";
     public string resultRankLabel = "Rank";
 

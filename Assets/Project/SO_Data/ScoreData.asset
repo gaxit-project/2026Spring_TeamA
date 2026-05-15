@@ -15,8 +15,8 @@ MonoBehaviour:
   vaccinePenalty: 1000
   vaccineBonus: 30
   rankThresholds:
-  - rankName: 
-    minScore: 0
+  - rankName: S
+    minScore: 60
   - rankName: A
     minScore: 50
   - rankName: B
