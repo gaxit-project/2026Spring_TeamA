@@ -74,6 +74,7 @@ public class TextData : ScriptableObject
     /// リザルト画面用のテキスト
     /// </summary>
     [Header("Result Screen Texts")]
+    public string resultSceneTitle = "Result";
     public string resultZombieKillsLabel = "Zombies Defeated";
     public string resultNpcRescuedLabel = "NPCs Rescued";
     public string resultVaccineBonusLabel = "Vaccine Bonus";
@@ -81,6 +82,7 @@ public class TextData : ScriptableObject
     public string resultTimeBonusLabel = "Time Bonus";
     public string resultTotalScoreLabel = "Total Score";
     public string resultRankLabel = "Rank";
+    public string resultReturnToTitleButton = "Title";
 
     /// <summary>
     /// 最終階層カットシーン用のテキスト

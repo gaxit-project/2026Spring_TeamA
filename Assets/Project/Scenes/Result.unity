@@ -586,6 +586,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f3815072afe23547b6f402cb3a051f3, type: 3}
+--- !u!114 &385285951 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8323023155712934416, guid: 3f3815072afe23547b6f402cb3a051f3, type: 3}
+  m_PrefabInstance: {fileID: 385285950}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &425840925
 GameObject:
   m_ObjectHideFlags: 0
@@ -1105,12 +1116,14 @@ MonoBehaviour:
   timeBonusText: {fileID: 513430058}
   totalScoreText: {fileID: 1704246566}
   rankText: {fileID: 517256205}
+  resultTitleLabel: {fileID: 43568787}
   killCountLabel: {fileID: 924758630}
   rescueCountLabel: {fileID: 1614889671}
   vaccineBonusLabel: {fileID: 1499206337}
   timeBonusLabel: {fileID: 1068782023}
   totalScoreLabel: {fileID: 912111711}
   rankLabel: {fileID: 2146267484}
+  returnButtonText: {fileID: 385285951}
 --- !u!1 &733850261
 GameObject:
   m_ObjectHideFlags: 0
