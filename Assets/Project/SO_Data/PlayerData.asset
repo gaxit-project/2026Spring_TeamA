@@ -19,4 +19,4 @@ MonoBehaviour:
   minPitch: -30
   maxPitch: 30
   zombieTag: Zombie
-  damageInterval: 1
+  damageInterval: 2

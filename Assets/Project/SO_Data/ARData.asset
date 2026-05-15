@@ -20,7 +20,7 @@ MonoBehaviour:
   damage: 1
   speed: 30
   maxAmmo: 30
-  initAmmo: 100
+  initAmmo: 300
   fireRate: 0.1
   reloadTime: 2
   fireSound: {fileID: 8300000, guid: 1356f85e0cb80d74d9d9ecfa4f2784f4, type: 3}

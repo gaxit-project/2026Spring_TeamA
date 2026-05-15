@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: NormalEnemyData
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
-  enemyHP: 4
+  enemyHP: 2
   moveSpeed: 5
   enemyAttackPower: 20
   fieldOfView: 160
