@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -11,10 +11,11 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
     [SerializeField] private GunData gunData;   // ScriptableObject
     [SerializeField] private List<EnemyBodyPart> bodyParts;  // 当たり判定リスト
     [SerializeField] private SoundDetectionView soundView;
+    [SerializeField] private float sleepDistance = 50f; // アクティブ距離
 
     private EnemyModel model;
 
-    private GameObject _target;     // 追跡対象
+    private Transform _target;     // 追跡対象
     private bool _isDead = false;   // 死亡判定
     private CancellationTokenSource _cts = new CancellationTokenSource();
 
@@ -51,6 +52,10 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
 
     private void Start()
     {
+        if (PlayerPresenter.Instance != null)
+        {
+            _target = PlayerPresenter.Instance.PlayerView.transform;
+        }
         MoveInterval(_cts.Token).Forget();
     }
 
@@ -156,13 +161,25 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
     /// <returns></returns>
     private async UniTask MoveInterval(CancellationToken token)
     {
-        await UniTask.DelayFrame(UnityEngine.Random.Range(0, 30), cancellationToken: token);
+        await UniTask.Delay(TimeSpan.FromSeconds(UnityEngine.Random.value), cancellationToken: token);
 
         while(!token.IsCancellationRequested)
         {
+            float distSqr = (transform.position - _target.position).sqrMagnitude;
+            float sleepThresholdSqr = sleepDistance * sleepDistance;
+            
+            if(distSqr > sleepThresholdSqr)
+            {
+                view.SeyActiveLogic(false);
+
+                await UniTask.Delay(TimeSpan.FromSeconds(2.0f), cancellationToken: token);
+                continue;
+            }
+
+            view.SeyActiveLogic(true);
             view.Moving();
 
-            float nextInterval = UnityEngine.Random.Range(0.2f, 0.5f);
+            float nextInterval = UnityEngine.Random.Range(0.8f, 1.5f);
             await UniTask.Delay(TimeSpan.FromSeconds(nextInterval), cancellationToken: token);
         }
     }

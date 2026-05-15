@@ -10,6 +10,7 @@ TagManager:
   - Window
   - WindowZone
   - NextLevel
+  - Enemy
   layers:
   - Default
   - TransparentFX
