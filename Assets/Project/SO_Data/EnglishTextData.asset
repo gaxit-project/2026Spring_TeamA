@@ -12,6 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf59788117693ff4e989a28c5f982e21, type: 3}
   m_Name: EnglishTextData
   m_EditorClassIdentifier: 
+  gameTitleName: BIO ESCAPE
+  titleStartButton: Start
+  titleSettingsButton: Settings
+  titleExitButton: Exit
+  titleReturnButton: Return
+  titleAudioButton: Audio
+  titleLanguageButton: Language
+  pauseResumeButton: Resume
+  pauseSettingsButton: Settings
+  pauseQuitButton: Quit
   gameStartMission: Escape the lab within 1 minutes!
   gameStartDisplayTime: 4
   interactPrompt: '[Y] : Talk'
@@ -20,18 +30,18 @@ MonoBehaviour:
   npcPanicMessage: 'NPC : No, stay away from me!'
   npcRescueAfterEscapeMessage: 'NPC : I''m so sorry, I panicked!'
   npcDeathMessage: Oh no! What have I done...
+  npcMessageDisplayTime: 3
   vaccineAPrompt: '[Y] : Collect Vaccine A'
   vaccineBPrompt: '[Y] : Collect Vaccine B'
   vaccineCPrompt: '[Y] : Collect Vaccine C'
   goalPrompt: '[Y] : Escape'
   vaccineWarningMessage: "You haven't collected all vaccines. \nEscape anyway?"
-  gameClearMessage: GAME CLEAR
+  gameClearMessage: Escape Successful
   loadingMessage: Loading...
   resultZombieKillsLabel: Kill
   resultNpcRescuedLabel: Rescue
   resultVaccineBonusLabel: MissionClear
   resultVaccinePenaltyLabel: MissonFaild
+  resultTimeBonusLabel: Time Bonus
   resultTotalScoreLabel: Total
-  resultTotalLabel: Total
   resultRankLabel: Rank
-  npcMessageDisplayTime: 3

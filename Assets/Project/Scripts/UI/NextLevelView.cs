@@ -43,9 +43,16 @@ public class NextLevelView : MonoBehaviour
     public async UniTask PlaySequence(bool isGameClear)
     {
         // UIManager経由でTextDataから文字を取得
-        string clearStr = "GAME CLEAR";
-        string loadingStr = "Loading...";
-        if (UIManager.Instance != null && UIManager.Instance.textData != null)
+        string clearStr = "ゲームクリア";
+        string loadingStr = "ロード中...";
+        
+        // タイトル画面等、UIManagerが存在しない場合はLanguageManagerから取得
+        if (LanguageManager.Instance != null && LanguageManager.Instance.CurrentTextData != null)
+        {
+            clearStr = LanguageManager.Instance.CurrentTextData.gameClearMessage;
+            loadingStr = LanguageManager.Instance.CurrentTextData.loadingMessage;
+        }
+        else if (UIManager.Instance != null && UIManager.Instance.textData != null)
         {
             clearStr = UIManager.Instance.textData.gameClearMessage;
             loadingStr = UIManager.Instance.textData.loadingMessage;

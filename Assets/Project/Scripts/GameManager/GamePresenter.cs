@@ -70,6 +70,9 @@ public class GamePresenter : MonoBehaviour
         if (_isGameEnded) return;
         _isGameEnded = true;
 
+        SessionData.SetGameClear(true);
+        SessionData.SetRemainingTime(model.CurrentTime);
+
         OnGameClear.Invoke();
 
         model.StopTimer();

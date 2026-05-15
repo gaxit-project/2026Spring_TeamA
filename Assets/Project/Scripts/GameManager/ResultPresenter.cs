@@ -22,18 +22,22 @@ public class ResultPresenter : MonoBehaviour
         int killCount = SessionData.KillCount;
         int rescueCount = SessionData.RescueCount;
         bool isVaccineCleared = SessionData.IsVaccineCleared;
+        bool isGameClear = SessionData.IsGameClear;
+        int remainingSeconds = Mathf.FloorToInt(SessionData.RemainingTime);
 
-        // ゾンビを倒した数、NPC救出数、ワクチンのボーナス/ペナルティを合計
-        int vaccineValue = isVaccineCleared ? scoreData.vaccineBonus : -scoreData.vaccinePenalty;
-        int totalScore = killCount + rescueCount + vaccineValue;
+        // ゾンビを倒した数、NPC救出数、ワクチンのボーナス/ペナルティ、残り時間を合計
+        // ※ワクチンボーナスはゲームクリア時のみ適用し、ゲームオーバー時はペナルティ扱い（または適用外）とする
+        int vaccineValue = (isGameClear && isVaccineCleared) ? scoreData.vaccineBonus : -scoreData.vaccinePenalty;
+        int totalScore = killCount + rescueCount + vaccineValue + remainingSeconds;
 
-        // 合計スコアを元にランクを算出
-        string rankName = scoreData.EvaluateRank(totalScore);
+        // 合計スコアを元にランクを算出（ゲームオーバー時は"FAILED"にする）
+        string rankName = isGameClear ? scoreData.EvaluateRank(totalScore) : "FAILED";
 
         view.UpdateScoreDisplay(
             killCount,
             rescueCount,
             vaccineValue,
+            remainingSeconds,
             totalScore,
             rankName
         );
