@@ -95,14 +95,9 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
     public void TakeDamage(int amount)
     {
         if (_isDead) return;
+        model.TakeDamage(amount); // ModelにHPを計算させる
 
-        // ModelにHPを計算させる
-        model.TakeDamage(amount);
-
-        view.Hit().Forget();
-
-        // 死亡処理
-        if (model.CurrentHP <= 0 && !_isDead)
+        if (model.CurrentHP <= 0 && !_isDead)   // 死亡処理
         {
             _isDead = true;
 
@@ -118,7 +113,7 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
     /// <summary>
     /// 攻撃があたった部位とダメージ量の処理を行う
     /// </summary>
-    private void OnHit(int damage, Collider hitCollider)
+    private void OnHit(int damage, Collider hitCollider, EnemyBodyPart.HitPartType partType)
     {
         Debug.Log($"OnHit called. Damage: {damage}, HitCollider: {hitCollider.name}");
 
@@ -129,7 +124,8 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
             return;
         }
 
-        int finaiDamage = hitPart.isHead ? damage * 2 : damage;
+        int finaiDamage = (partType == EnemyBodyPart.HitPartType.Head)? damage * 2 : damage;
+        view.Hit(partType).Forget();
         TakeDamage(finaiDamage);
     }
 
