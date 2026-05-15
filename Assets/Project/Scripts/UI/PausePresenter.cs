@@ -14,6 +14,7 @@ public class PausePresenter : MonoBehaviour
         view.OnResumeClicked += ResumeGame;
         view.OnSettingsClicked += OpenSettings;
         view.OnTitleClicked += GoToTitle;
+        view.OnReturnClicked += CloseSettings;
 
         if (LanguageManager.Instance != null)
         {
@@ -74,6 +75,13 @@ public class PausePresenter : MonoBehaviour
     private void OpenSettings()
     {
         Debug.Log("設定画面を開く");
+
+        view.OpenAudioSettings();
+    }
+
+    private void CloseSettings()
+    {
+        view.CloseAudioSettings();
     }
 
     private void GoToTitle()

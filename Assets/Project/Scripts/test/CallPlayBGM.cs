@@ -11,6 +11,6 @@ public class CallPlayBGM : MonoBehaviour
 
     private void OnDestroy()
     {
-        SoundManager.Instance.StopBGM();
+        SoundManager.Instance?.StopBGM();
     }
 }
