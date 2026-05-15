@@ -1,4 +1,4 @@
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -19,7 +19,6 @@ public class EnemyView : MonoBehaviour
     private EnemyState currentState = EnemyState.Idle;
 
     private float _idleEndTime = 0;
-    float windowsTimer = 0f;
 
     private float sqrDistance = 0f;
     private bool canSee = false;
@@ -35,8 +34,6 @@ public class EnemyView : MonoBehaviour
 
     [SerializeField] private float maxKnockTime = 1.0f;
     private float currentKnockTime = 0f;
-
-    bool foundWindows = false;
 
     // 以下イベント定義
     public event System.Action<int, Collider> HitContact;
@@ -73,17 +70,17 @@ public class EnemyView : MonoBehaviour
         }
 
         renderers = GetComponentsInChildren<Renderer>();
+        _agent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
+        _agent.avoidancePriority = UnityEngine.Random.Range(0, 99);
     }
 
     private void Update()
     {
-        if (enemyData != null && _agent != null)
+        if (Time.frameCount % 4 != 0) return;
+        if(_agent != null && _agent.isOnNavMesh)
         {
-            _agent.speed = enemyData.moveSpeed;
+            _animator.SetBool(HashIsMoving, _agent.velocity.sqrMagnitude > 0.1f);
         }
-
-        bool isMoving = _agent.velocity.sqrMagnitude > 0.1f;
-        _animator.SetBool(HashIsMoving, isMoving);
     }
 
     public void Moving()
@@ -101,7 +98,6 @@ public class EnemyView : MonoBehaviour
 
     private void ScanEnvironment()
     {
-        foundWindows = false;
         isPlayerWindow = false;
         canSee = false;
 
@@ -109,48 +105,19 @@ public class EnemyView : MonoBehaviour
         Vector3 offset = player.position + Vector3.up * 4.5f - startPos;
         Vector3 dir = offset.normalized;
 
-        RaycastHit[] hits = Physics.SphereCastAll(startPos, 0.4f, dir, enemyData.detectionRange);  // レイにあたったコライダーを全て取得
         Debug.DrawRay(startPos, dir * enemyData.detectionRange, Color.red);
 
-        float playerDistance = float.MaxValue;
-        float windowDistance = float.MaxValue;
-        float othersDistance = float.MaxValue;
-
-        for (int i = 0; i < hits.Length; i++)
+        if (Physics.Raycast(startPos, dir, out RaycastHit hit, enemyData.detectionRange))
         {
-            float dist = hits[i].distance;
-            Collider col = hits[i].collider;
-
-            if (hits[i].collider.CompareTag("Player"))
+            if (hit.collider.CompareTag("Player"))
             {
-                playerDistance = dist;  // プレイヤーの距離取得
+                canSee = true;
             }
-            else if (hits[i].collider.CompareTag("WindowZone"))
+            else if (hit.collider.CompareTag("WindowZone"))
             {
-                if (dist < windowDistance)
-                {
-                    windowDistance = dist;  // 窓の距離
-                    windowHitPoint = (dist > 0) ? hits[i].point : col.ClosestPoint(transform.position + Vector3.up * 1.5f);
-                    foundWindows = true;
-                }
+                isPlayerWindow = true;
+                windowHitPoint = hit.point;
             }
-            else if (!hits[i].collider.isTrigger)
-            {
-                if (othersDistance > dist)
-                {
-                    othersDistance = dist;
-                }
-            }
-        }
-
-        if(foundWindows && windowDistance < playerDistance)
-        {
-            isPlayerWindow = true;
-            return;
-        }
-        if(playerDistance < othersDistance)
-        {
-            canSee = true;
         }
     }
 
@@ -204,6 +171,7 @@ public class EnemyView : MonoBehaviour
         // 状態が変わった瞬間だけログを出す
         Debug.Log($"<color=yellow>[StateChange]</color> {currentState} -> {nextState}");
 
+        if (this == null) return;
         if (nextState == EnemyState.Attacking)
         {
             SoundManager.Instance.PlaySound(0);
@@ -224,6 +192,15 @@ public class EnemyView : MonoBehaviour
         {
             _agent.isStopped = (currentState == EnemyState.Attacking || currentState == EnemyState.Knock);
         }
+
+        if (nextState == EnemyState.Attacking || nextState == EnemyState.Knock || nextState == EnemyState.Idle)
+        {
+            _agent.isStopped = true;
+        }
+        else
+        {
+            _agent.isStopped = false;
+        }
     }
 
     private void CurrentAction()
@@ -238,7 +215,6 @@ public class EnemyView : MonoBehaviour
                 break;
             case EnemyState.Knock:
                 _agent.ResetPath();
-                SoundManager.Instance.PlaySound(2);
                 break;
             case EnemyState.Idle:
                 Idle();
@@ -310,7 +286,7 @@ public class EnemyView : MonoBehaviour
         _animator.SetTrigger("GetHit");
 
         Vector3 knockback = (transform.position - player.position).normalized;  // ノックバック
-        float knockbackDistance = 1.0f;
+        float knockbackDistance = 2.0f;
         float knockBackTime = 0;
 
         while(knockBackTime<0.15f)
@@ -335,29 +311,31 @@ public class EnemyView : MonoBehaviour
 
     public async UniTask Extinction()
     {
-        var skinrenderer = GetComponentInChildren<SkinnedMeshRenderer>();
-        if (skinrenderer == null)
-        {
-            return;
-        }
-
-        var material = skinrenderer.material;
+        if (renderers == null) return;
 
         float duration = 2.0f;
         float time = 0f;
 
         while (time < duration)
         {
+            if (this == null) return;
             time += Time.deltaTime;
             float alpha = 1.0f - time / duration;
-
             foreach (var r in renderers)
             {
+                if(r == null || r.material == null) continue;
                 Color color = r.material.color;
                 color.a = alpha;
                 r.material.color = color;
             }
             await UniTask.Yield();  // 1フレーム待機
         }
+    }
+
+    public void SeyActiveLogic(bool active)
+    {
+        if (_agent.isOnNavMesh) _agent.isStopped = !active;
+        _agent.enabled = active;
+        _animator.enabled = active;
     }
 }
