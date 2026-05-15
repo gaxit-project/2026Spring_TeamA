@@ -1411,7 +1411,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 0
+  m_BaseOffset: 0.1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &2431287962323555349
@@ -1439,6 +1439,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8894a1ca9d5a5ea459b6f1b1ff47b88b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
+  roarClip: {fileID: 0}
+  footstepClip: {fileID: 0}
+  attackClip: {fileID: 0}
 --- !u!1 &2022271542445465129
 GameObject:
   m_ObjectHideFlags: 0
