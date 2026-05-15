@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 /// <summary>
 /// UIに関するすべてのイベントを管理する静的クラス
@@ -51,4 +51,15 @@ public static class UIEvents
     /// </summary>
     public static Action OnShowEscapeConfirm;
     public static Action OnHideEscapeConfirm;
+
+    /// <summary>
+    /// 階層が変わった（ロード完了後）ことを通知するイベント
+    /// 引数: 次の階層の番号
+    /// </summary>
+    public static Action<int> OnFloorChanged;
+
+    /// <summary>
+    /// ロード画面が消えて、新しい階層が見えるようになったことを通知するイベント
+    /// </summary>
+    public static Action OnFloorTransitionVisible;
 }

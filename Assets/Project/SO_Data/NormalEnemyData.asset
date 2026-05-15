@@ -15,7 +15,7 @@ MonoBehaviour:
   controller: {fileID: 0}
   enemyHP: 4
   moveSpeed: 5
-  enemyAttackPower: 30
+  enemyAttackPower: 20
   fieldOfView: 160
   detectionRange: 20
   attackDistance: 5

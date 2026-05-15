@@ -36,6 +36,8 @@ MonoBehaviour:
   vaccineCPrompt: '[Y] : Collect Vaccine C'
   goalPrompt: '[Y] : Escape'
   vaccineWarningMessage: "You haven't collected all vaccines. \nEscape anyway?"
+  confirmYesButton: Yes
+  confirmNoButton: No
   gameClearMessage: Escape Successful
   loadingMessage: Loading...
   resultZombieKillsLabel: Kill
@@ -45,3 +47,5 @@ MonoBehaviour:
   resultTimeBonusLabel: Time Bonus
   resultTotalScoreLabel: Total
   resultRankLabel: Rank
+  finalLevelVaccineObjective: Retrieve 3 vaccines
+  finalLevelExitObjective: And head to the exit

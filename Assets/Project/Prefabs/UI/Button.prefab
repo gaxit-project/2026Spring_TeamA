@@ -285,5 +285,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7ad195bd663268488a370b90c454b7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blinkSpeed: 1
+  blinkSpeed: 0.8
   minAlpha: 0.2

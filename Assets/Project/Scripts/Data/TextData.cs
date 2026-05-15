@@ -82,4 +82,10 @@ public class TextData : ScriptableObject
     public string resultTotalScoreLabel = "Total Score";
     public string resultRankLabel = "Rank";
 
+    /// <summary>
+    /// 最終階層カットシーン用のテキスト
+    /// </summary>
+    [Header("Final Level Cutscene Texts")]
+    public string finalLevelVaccineObjective = "Collect 3 Vaccines";
+    public string finalLevelExitObjective = "Escape!";
 }

@@ -167,6 +167,14 @@ public class GamePresenter : MonoBehaviour
             PlayerPresenter.Instance.SetRotation(destination.rotation);
         }
 
+        // ロード画面が暗いうちに階層を更新し、イベントを飛ばしてカメラの準備などをさせる
+        if (PlayerPresenter.Instance != null)
+        {
+            int nextFloor = PlayerPresenter.Instance.CurrentFloor + 1;
+            PlayerPresenter.Instance.SetFloor(nextFloor);
+            UIEvents.OnFloorChanged?.Invoke(nextFloor);
+        }
+
         // 余韻
         await UniTask.Delay(TimeSpan.FromSeconds(0.5));
 
@@ -176,16 +184,8 @@ public class GamePresenter : MonoBehaviour
             await nextLevelView.FadeOutAsync();
         }
 
-
-        // ロード完了後にプレイヤーの階層を+1する
-        if (PlayerPresenter.Instance != null)
-        {
-            int nextFloor = PlayerPresenter.Instance.CurrentFloor + 1;
-            PlayerPresenter.Instance.SetFloor(nextFloor);
-
-            // プレイヤーの操作を再開
-            PlayerPresenter.Instance.SetInputBlocked(false);
-        }
+        // 画面が見えるようになったことを通知
+        UIEvents.OnFloorTransitionVisible?.Invoke();
 
         // プレイヤーの操作を再開
         if (PlayerPresenter.Instance != null)
