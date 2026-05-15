@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CallPlayBGM : MonoBehaviour
 {
@@ -6,7 +6,7 @@ public class CallPlayBGM : MonoBehaviour
 
     void Start()
     {
-        SoundManager.Instance.PlayBGM(index);
+        //SoundManager.Instance.PlayBGM(index);
     }
 
     private void OnDestroy()

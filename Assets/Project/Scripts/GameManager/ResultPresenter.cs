@@ -47,6 +47,19 @@ public class ResultPresenter : MonoBehaviour
         {
             view.InitializeLabels(LanguageManager.Instance.CurrentTextData, isVaccineCleared);
         }
+
+        // BGMの再生
+        if (SoundManager.Instance != null)
+        {
+            if (isGameClear)
+            {
+                SoundManager.Instance.PlayClearBGM();
+            }
+            else
+            {
+                SoundManager.Instance.PlayGameOverBGM();
+            }
+        }
     }
 
     public void ReturnToTitle()

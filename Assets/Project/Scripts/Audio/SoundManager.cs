@@ -4,44 +4,70 @@ using UnityEngine.UI;
 
 public class SoundManager : MonoBehaviour
 {
-    //‰¹Œ¹
+    //éŸ³æº
     [SerializeField] private AudioClip[] seList;
-    [SerializeField] private AudioClip[] bgmList;
 
-    //–Â‚ç‚·‰¹
+    [Header("BGM Clips")]
+    [SerializeField] private AudioClip titleBGM;
+    [SerializeField] private AudioClip mainBGM;
+    [SerializeField] private AudioClip clearBGM;
+    [SerializeField] private AudioClip gameOverBGM;
+
+    //é³´ã‚‰ã™éŸ³
     [SerializeField] private AudioSource audioSourceSE;
     [SerializeField] private AudioSource audioSourceBGM;
 
-    [Header("ƒXƒ‰ƒCƒ_[")]
+    [Header("ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼")]
     [SerializeField] private Slider SESlider;
     [SerializeField] private Slider BGMSlider;
 
     private float _seVolume = 0.5f;
     private float _bgmVolume = 0.5f;
 
-    public static SoundManager Instance;
+    private static SoundManager _instance;
+    public static SoundManager Instance
+    {
+        get
+        {
+            if (_instance == null) return null;
+            return _instance;
+        }
+    }
 
     private void Awake()
     {
-        if(Instance == null)
+        if (_instance == null)
         {
-            //ƒCƒ“ƒXƒ^ƒ“ƒX‚ª‚È‚¯‚ê‚Îİ’è
-            Instance = this;
+            _instance = this;
             DontDestroyOnLoad(this.gameObject);
         }
         else
         {
-            //Šù‚É‚ ‚ê‚Î”jŠü
             Destroy(this.gameObject);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (_instance == this)
+        {
+            _instance = null;
+            SceneManager.activeSceneChanged -= CallGetSliders;
         }
     }
 
     void Start()
     {
-        //ƒV[ƒ“Ø‚è‘Ö‚¦‚ÉŠÖ”‚ğŒÄ‚Ño‚·‚æ‚¤‚É‚·‚é
+        //ã‚·ãƒ¼ãƒ³åˆ‡ã‚Šæ›¿ãˆæ™‚ã«é–¢æ•°ã‚’å‘¼ã³å‡ºã™ã‚ˆã†ã«ã™ã‚‹
         SceneManager.activeSceneChanged += CallGetSliders;
 
-        //AudioSource‚ª–³‚¢ê‡‚ÍƒAƒ^ƒbƒ`‚·‚é
+        // èµ·å‹•æ™‚ã«ã‚¿ã‚¤ãƒˆãƒ«ç”»é¢ãªã‚‰BGMå†ç”Ÿ
+        if (SceneManager.GetActiveScene().name == "Title")
+        {
+            PlayTitleBGM();
+        }
+
+        //AudioSourceãŒç„¡ã„å ´åˆã¯ã‚¢ã‚¿ãƒƒãƒã™ã‚‹
         if (audioSourceSE == null)
         {
             audioSourceSE = gameObject.AddComponent<AudioSource>();
@@ -51,32 +77,41 @@ public class SoundManager : MonoBehaviour
             audioSourceBGM = gameObject.AddComponent<AudioSource>();
         }
 
-        //•Û‘¶‚µ‚½‰¹—Ê‚Ìƒf[ƒ^‚ğƒ[ƒh
+        //ä¿å­˜ã—ãŸéŸ³é‡ã®ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰
         LoadVolumeSetting();
 
         GetSliders();
     }
 
     /// <summary>
-    /// GetSliders‚ğŒÄ‚Ño‚·
+    /// GetSlidersã‚’å‘¼ã³å‡ºã™
     /// </summary>
-    /// <param name="a">ƒ_ƒ~[</param>
-    /// <param name="b">ƒ_ƒ~[</param>
+    /// <param name="a">ãƒ€ãƒŸãƒ¼</param>
+    /// <param name="b">ãƒ€ãƒŸãƒ¼</param>
     private void CallGetSliders(Scene a, Scene b)
     {
         GetSliders();
+
+        if (b.name == "Title")
+        {
+            PlayTitleBGM();
+        }
+        else if (b.name == "MainScene" || b.name == "Stage1") // ãƒ¡ã‚¤ãƒ³ã‚·ãƒ¼ãƒ³ã®åå‰ã‚’è¿½åŠ 
+        {
+            PlayMainBGM();
+        }
     }
 
     /// <summary>
-    /// ƒXƒ‰ƒCƒ_[‚ğæ“¾‚µ‚Ä‰Šú‰»‚·‚é
+    /// ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’å–å¾—ã—ã¦åˆæœŸåŒ–ã™ã‚‹
     /// </summary>
     private void GetSliders()
     {
-        //‰Šú‰»
+        //åˆæœŸåŒ–
         SESlider = null;
         BGMSlider = null;
 
-        //ƒV[ƒ““à‚ÉSettingsSlidersManager‚ª‚ ‚ê‚ÎƒXƒ‰ƒCƒ_[‚ğæ“¾
+        //ã‚·ãƒ¼ãƒ³å†…ã«SettingsSlidersManagerãŒã‚ã‚Œã°ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’å–å¾—
         if (GameObject.FindFirstObjectByType<SettingsSlidersManager>() is SettingsSlidersManager SSM)
         {
             SESlider = SSM.GetSESlider();
@@ -89,7 +124,7 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("SettingsSlidersManager‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½");
+            Debug.LogWarning("SettingsSlidersManagerãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã§ã—ãŸ");
         }
     }
 
@@ -106,17 +141,17 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒXƒ‰ƒCƒ_[‰Šú‰»
+    /// ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼åˆæœŸåŒ–
     /// </summary>
     public void InitializeSliders()
     {
 
-        //ƒXƒ‰ƒCƒ_[‰Šú’l‚ğ”½‰f
+        //ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼åˆæœŸå€¤ã‚’åæ˜ 
         SESlider.value = _seVolume;
         BGMSlider.value = _bgmVolume;
 
 
-        //ƒCƒxƒ“ƒgƒŠƒXƒi[‚ğ“o˜^
+        //ã‚¤ãƒ™ãƒ³ãƒˆãƒªã‚¹ãƒŠãƒ¼ã‚’ç™»éŒ²
         SESlider.onValueChanged.RemoveAllListeners();
         SESlider.onValueChanged.AddListener(delegate { OnSEVolumeChange(); });
 
@@ -127,7 +162,7 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
-    /// SE‚Ì’l‚ª•ÏX‚³‚ê‚½‚Æ‚«‚Ìˆ—
+    /// SEã®å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã®å‡¦ç†
     /// </summary>
     public void OnSEVolumeChange()
     {
@@ -138,7 +173,7 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
-    /// BGM‚Ì’l‚ª•ÏX‚³‚ê‚½‚Æ‚«‚Ìˆ—
+    /// BGMã®å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã®å‡¦ç†
     /// </summary>
     public void OnBGMVolumeChange()
     {
@@ -149,14 +184,14 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
-    /// SEÄ¶
+    /// SEå†ç”Ÿ
     /// </summary>
-    /// <param name="index">Ä¶‚µ‚½‚¢SEList”Ô†</param>
+    /// <param name="index">å†ç”Ÿã—ãŸã„SEListç•ªå·</param>
     public void PlaySound(int index)
     {
         if (seList.Length - 1 < index)
         {
-            Debug.LogError("seList[" + index + "]‚Ì‰¹ºƒf[ƒ^‚Í‘¶İ‚µ‚Ü‚¹‚ñI");
+            Debug.LogError("seList[" + index + "]ã®éŸ³å£°ãƒ‡ãƒ¼ã‚¿ã¯å­˜åœ¨ã—ã¾ã›ã‚“ï¼");
             return;
         }
         audioSourceSE.clip = seList[index];
@@ -164,22 +199,29 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
-    /// BGMÄ¶
+    /// BGMå†ç”Ÿ
     /// </summary>
-    /// <param name="index">Ä¶‚µ‚½‚¢BGMList”Ô†</param>
-    public void PlayBGM(int index)
+    public void PlayBGM(AudioClip clip)
     {
-        if (bgmList.Length - 1 < index)
+        if (clip == null) return;
+
+        // æ—¢ã«åŒã˜æ›²ãŒæµã‚Œã¦ã„ã‚‹ãªã‚‰ä½•ã‚‚ã—ãªã„
+        if (audioSourceBGM.clip == clip && audioSourceBGM.isPlaying)
         {
-            Debug.LogError("bgmList[" + index + "]‚Ì‰¹ºƒf[ƒ^‚Í‘¶İ‚µ‚Ü‚¹‚ñI");
             return;
         }
-        audioSourceBGM.clip = bgmList[index];
+
+        audioSourceBGM.clip = clip;
         audioSourceBGM.Play();
     }
 
+    public void PlayTitleBGM() => PlayBGM(titleBGM);
+    public void PlayMainBGM() => PlayBGM(mainBGM);
+    public void PlayClearBGM() => PlayBGM(clearBGM);
+    public void PlayGameOverBGM() => PlayBGM(gameOverBGM);
+
     /// <summary>
-    /// BGM‚ğ~‚ß‚é
+    /// BGMã‚’æ­¢ã‚ã‚‹
     /// </summary>
     public void StopBGM()
     {
@@ -187,7 +229,7 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ‰¹—Ê‚ğ•Û‘¶‚·‚é
+    /// éŸ³é‡ã‚’ä¿å­˜ã™ã‚‹
     /// </summary>
     private void SaveVolumeSetting()
     {
@@ -197,7 +239,7 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒQ[ƒ€I—¹‚É‰¹—Ê•Û‘¶
+    /// ã‚²ãƒ¼ãƒ çµ‚äº†æ™‚ã«éŸ³é‡ä¿å­˜
     /// </summary>
     private void OnApplicationQuit()
     {

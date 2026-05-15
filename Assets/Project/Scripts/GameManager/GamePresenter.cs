@@ -47,6 +47,9 @@ public class GamePresenter : MonoBehaviour
     {
         UIEvents.OnShowMissionStartMessage?.Invoke();
 
+        // メインBGMを再生
+        if (SoundManager.Instance != null) SoundManager.Instance.PlayMainBGM();
+
         model.StartTimer();
     }
 

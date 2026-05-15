@@ -16,10 +16,12 @@ MonoBehaviour:
   vaccineBonus: 30
   rankThresholds:
   - rankName: S
-    minScore: 60
+    minScore: 200
   - rankName: A
-    minScore: 50
+    minScore: 150
   - rankName: B
-    minScore: 40
+    minScore: 110
   - rankName: C
-    minScore: 30
+    minScore: 75
+  - rankName: D
+    minScore: 0
