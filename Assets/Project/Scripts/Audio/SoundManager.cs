@@ -199,6 +199,16 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
+    /// AudioClipを直接指定してSEを再生
+    /// </summary>
+    /// <param name="clip">再生するAudioClip</param>
+    public void PlaySE(AudioClip clip)
+    {
+        if (clip == null) return;
+        audioSourceSE.PlayOneShot(clip);
+    }
+
+    /// <summary>
     /// BGM再生
     /// </summary>
     public void PlayBGM(AudioClip clip)

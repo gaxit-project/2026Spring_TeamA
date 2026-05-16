@@ -8,7 +8,6 @@ public class BossView : MonoBehaviour
     public event System.Action<Collider> OnContactStay;
     public event System.Action OnAttackHitEvent;
 
-    [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip roarClip;
     [SerializeField] private AudioClip footstepClip;
     [SerializeField] private AudioClip attackClip;
@@ -49,9 +48,9 @@ public class BossView : MonoBehaviour
     /// </summary>
     public void PlayFootstep()
     {
-        if (audioSource != null && footstepClip != null)
+        if (footstepClip != null && SoundManager.Instance != null)
         {
-            audioSource.PlayOneShot(footstepClip);
+            SoundManager.Instance.PlaySE(footstepClip);
         }
     }
 
@@ -61,9 +60,9 @@ public class BossView : MonoBehaviour
     public void PlayRoar()
     {
         animator.SetTrigger(RoarTrigger);
-        if (audioSource != null && roarClip != null)
+        if (roarClip != null && SoundManager.Instance != null)
         {
-            audioSource.PlayOneShot(roarClip);
+            SoundManager.Instance.PlaySE(roarClip);
         }
     }
 
@@ -82,9 +81,9 @@ public class BossView : MonoBehaviour
     /// </summary>
     public void PlayAttackSound()
     {
-        if (audioSource != null && attackClip != null)
+        if (attackClip != null && SoundManager.Instance != null)
         {
-            audioSource.PlayOneShot(attackClip);
+            SoundManager.Instance.PlaySE(attackClip);
         }
     }
 

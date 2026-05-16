@@ -22,7 +22,7 @@ MonoBehaviour:
   pauseResumeButton: Resume
   pauseSettingsButton: Settings
   pauseQuitButton: Quit
-  gameStartMission: Escape the lab within 1 minutes!
+  gameStartMission: Escape the lab within 5 minutes!
   gameStartDisplayTime: 4
   interactPrompt: '[Y] : Talk'
   stopPanickingPrompt: '[Y] : Call'
@@ -40,6 +40,7 @@ MonoBehaviour:
   confirmNoButton: No
   gameClearMessage: Escape Successful
   loadingMessage: Loading...
+  resultSceneTitle: Result
   resultZombieKillsLabel: Kill
   resultNpcRescuedLabel: Rescue
   resultVaccineBonusLabel: MissionClear
@@ -47,5 +48,6 @@ MonoBehaviour:
   resultTimeBonusLabel: Time Bonus
   resultTotalScoreLabel: Total
   resultRankLabel: Rank
+  resultReturnToTitleButton: Title
   finalLevelVaccineObjective: Retrieve 3 vaccines
   finalLevelExitObjective: And head to the exit
