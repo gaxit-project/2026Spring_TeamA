@@ -1,12 +1,20 @@
-﻿using UnityEngine;
+using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "NewGun", menuName = "ScriptableObjects/GunData")]
 public class GunData : ScriptableObject
 {
-    public string gunName;                               // 銃の名前
+    [FormerlySerializedAs("gunName")]
+    public string gunNameEN;                               // 銃の名前(EN)
+    public string gunNameJP;                               // 銃の名前(JP)
+
+    /// <summary>
+    /// 現在の言語設定に応じた銃の名前を返す
+    /// </summary>
+    public string gunName => (LanguageManager.Instance != null && LanguageManager.Instance.IsJapanese) ? gunNameJP : gunNameEN;
     public Sprite gunIcon;                               // 銃のイラスト
     public GameObject gunPrefab;                         // 銃のプレハブ
-    public AnimatorOverrideController animatorOverride;　// 銃ごとのアニメーション
+    public AnimatorOverrideController animatorOverride; // 銃ごとのアニメーション
     public bool isFullAuto;                              // チェックを入れるとフルオート、外すとセミオート
 
     [Header("Gun Parameters")]

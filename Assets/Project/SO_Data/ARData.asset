@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c54cd6513c5338459942f9c7aed4db3, type: 3}
   m_Name: ARData
   m_EditorClassIdentifier: 
-  gunName: Assault Rifle
+  gunNameEN: Assault Rifle
+  gunNameJP: "\u30A2\u30B5\u30EB\u30C8\u30E9\u30A4\u30D5\u30EB"
   gunIcon: {fileID: 21300000, guid: e7da34303d532944abeaacd3f15e75f4, type: 3}
   gunPrefab: {fileID: 5304872329157618278, guid: 6d946e00075767e4c8262eb7d3fa621b, type: 3}
   animatorOverride: {fileID: 22100000, guid: 3a317eda2df4e9440a3dab1aac7f00f6, type: 2}
