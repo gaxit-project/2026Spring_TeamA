@@ -76,11 +76,15 @@ public class PausePresenter : MonoBehaviour
     {
         Debug.Log("設定画面を開く");
 
+        //一時的にポーズボタンを無効化
+        pauseAction.action.Disable();
         view.OpenAudioSettings();
     }
 
     private void CloseSettings()
     {
+        //ポーズボタンの再有効化
+        pauseAction.action.Enable();
         view.CloseAudioSettings();
     }
 
