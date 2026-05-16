@@ -380,6 +380,9 @@ public class PlayerPresenter : MonoBehaviour
     {
         if (index < 0 || index >= inventoryGuns.Length || index == currentGunIndex) return;
 
+        // リロード中は切り替え不可
+        if (gunModel != null && gunModel.IsReloading) return;
+
         currentGunIndex = index;
         SetupWeapon(inventoryGuns[currentGunIndex]);
     }
