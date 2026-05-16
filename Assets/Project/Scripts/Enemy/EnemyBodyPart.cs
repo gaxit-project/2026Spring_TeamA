@@ -3,14 +3,15 @@
 public class EnemyBodyPart : MonoBehaviour
 {
     public EnemyView _parentView;
-    public bool isHead = false;
+    public enum HitPartType { Default, Head, Body, Arm, Leg }
+    public HitPartType partType = HitPartType.Default;
 
     public void NotifyHit(int damage)
     {
         if (_parentView != null)
         {
             Debug.Log($"NotifyHit: Sending damage {damage} to {_parentView.name}");
-            _parentView.ReceiveDamage(damage, this.GetComponent<Collider>());
+            _parentView.ReceiveDamage(damage, this.GetComponent<Collider>(), partType);
         }
         else
         {

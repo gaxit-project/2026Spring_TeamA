@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parentView: {fileID: 7468803020917353328}
-  isHead: 0
+  partType: 2
 --- !u!1 &590194792255316868
 GameObject:
   m_ObjectHideFlags: 0
@@ -2282,7 +2282,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.3, y: 0.3, z: 0.2}
+  m_Size: {x: 0.3, y: 0.3, z: 0.3}
   m_Center: {x: -1.65, y: 0.2, z: 0}
 --- !u!114 &3908061951308063717
 MonoBehaviour:
@@ -2297,7 +2297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parentView: {fileID: 7468803020917353328}
-  isHead: 1
+  partType: 1
 --- !u!1 &6425576446708699637
 GameObject:
   m_ObjectHideFlags: 0
@@ -2913,9 +2913,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyData: {fileID: 11400000, guid: a769329706876d445988ce14bfb8b83e, type: 2}
   player: {fileID: 0}
-  fieldOfView: 60
-  detectionRange: 10
-  isTracking: 0
+  wanderRange: 10
+  minWaitTime: 1
+  maxWaitTime: 3
+  maxKnockTime: 1
 --- !u!114 &6471673435671676833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2935,6 +2936,7 @@ MonoBehaviour:
   - {fileID: 3908061951308063717}
   - {fileID: 7096174838327501049}
   soundView: {fileID: 0}
+  sleepDistance: 50
 --- !u!1 &8143360534306540743
 GameObject:
   m_ObjectHideFlags: 0
