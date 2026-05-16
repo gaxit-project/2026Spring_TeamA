@@ -793,7 +793,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parentView: {fileID: 5735073634931002508}
-  isHead: 1
+  partType: 1
 --- !u!1 &2739700154417595896
 GameObject:
   m_ObjectHideFlags: 0
@@ -924,7 +924,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parentView: {fileID: 5735073634931002508}
-  isHead: 0
+  partType: 2
 --- !u!1 &2942051751570776560
 GameObject:
   m_ObjectHideFlags: 0
@@ -1763,6 +1763,7 @@ MonoBehaviour:
   - {fileID: 6448903100539422884}
   - {fileID: 3704959915243948679}
   soundView: {fileID: 0}
+  sleepDistance: 50
 --- !u!136 &1086623787984485073
 CapsuleCollider:
   m_ObjectHideFlags: 0

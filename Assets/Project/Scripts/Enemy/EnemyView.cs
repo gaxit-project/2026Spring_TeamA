@@ -36,8 +36,8 @@ public class EnemyView : MonoBehaviour
     private float currentKnockTime = 0f;
 
     // 以下イベント定義
-    public event System.Action<int, Collider> HitContact;
     public event System.Action OnAttackHitEvent;
+    public event System.Action<int, Collider, EnemyBodyPart.HitPartType> HitContact;
 
     // 以下行動アニメーション
     private static readonly int HashAttack = Animator.StringToHash("Attack");
@@ -77,6 +77,7 @@ public class EnemyView : MonoBehaviour
     private void Update()
     {
         if (Time.frameCount % 4 != 0) return;
+        if (isHit) return;
         if(_agent != null && _agent.isOnNavMesh)
         {
             _animator.SetBool(HashIsMoving, _agent.velocity.sqrMagnitude > 0.1f);
@@ -85,10 +86,8 @@ public class EnemyView : MonoBehaviour
 
     public void Moving()
     {
-        if (_agent == null || !_agent.isActiveAndEnabled || !_agent.isOnNavMesh || isHit)
-        {
-            return;
-        }
+        if (isHit) return;
+        if (_agent == null || !_agent.isActiveAndEnabled || !_agent.isOnNavMesh) return;
 
         ScanEnvironment();  // 状況データ収集
         EnemyState nextState = DetermineNextState();    // 状態判断
@@ -266,25 +265,26 @@ public class EnemyView : MonoBehaviour
     /// <summary>
     /// ダメージ判定
     /// </summary>
-    public void ReceiveDamage(int damage, Collider collider)
+    public void ReceiveDamage(int damage, Collider collider, EnemyBodyPart.HitPartType partType)
     {
-        HitContact?.Invoke(damage, collider);
+        HitContact?.Invoke(damage, collider, partType);
     }
 
-    public async UniTask Hit()
+    public async UniTask Hit(EnemyBodyPart.HitPartType partType)
     {
-        if(isHit)
-        {
-            return;
-        }
+        if (isHit) return;
         isHit = true;
 
         _agent.isStopped = true;
         _agent.ResetPath();
-        _agent.updateRotation = false;
 
+        _animator.SetInteger("HitPart", (int)partType);
         _animator.SetTrigger("GetHit");
 
+        await UniTask.Yield();
+        
+        _agent.updateRotation = false;
+       
         Vector3 knockback = (transform.position - player.position).normalized;  // ノックバック
         float knockbackDistance = 2.0f;
         float knockBackTime = 0;
@@ -295,11 +295,15 @@ public class EnemyView : MonoBehaviour
             knockBackTime += Time.deltaTime;
             await UniTask.Yield();
         }
+    }
 
-        await UniTask.Delay(300);
+    public void EndHIt()
+    {
+        if (this == null) return;
+
+        isHit = false;
         _agent.updateRotation = true;
         _agent.isStopped = false;
-        isHit = false;
     }
 
     public void Die()
