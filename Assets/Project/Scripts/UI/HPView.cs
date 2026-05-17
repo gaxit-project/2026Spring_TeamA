@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
@@ -17,7 +17,7 @@ public class HPView : MonoBehaviour
     
     private float maxHP;
 
-    public void UpdateHpDiaplay(int currentHP)
+    public void UpdateHpDisplay(int currentHP)
     {
         if (hpText != null)
         {

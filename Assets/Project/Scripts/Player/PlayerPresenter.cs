@@ -112,7 +112,7 @@ public class PlayerPresenter : MonoBehaviour
         if (_isDead || IsInvincible) return;
 
         model.TakeDamage(damage);
-        hpView?.UpdateHpDiaplay(model.CurrentHP);
+        hpView?.UpdateHpDisplay(model.CurrentHP);
 
         Debug.Log($"[Player] Damaged: {damage}, Current HP: {model.CurrentHP}");
     }
@@ -128,7 +128,7 @@ public class PlayerPresenter : MonoBehaviour
         }
         // Model に ScriptableObject を渡して初期化
         model = new PlayerModel(playerData);
-        hpView?.UpdateHpDiaplay(model.CurrentHP);
+        hpView?.UpdateHpDisplay(model.CurrentHP);
     }
 
     /// <summary>
@@ -136,9 +136,21 @@ public class PlayerPresenter : MonoBehaviour
     /// </summary>
     private void SetupMovementInput()
     {
-        view.OnMoveInputReceived += (input) => model.MoveInput = input;
-        view.OnDashInputReceived += (isDash) => model.IsDashing = isDash;
-        view.OnLookInputReceived += (look) => rawLookInput = look;
+        view.OnMoveInputReceived += (input) => 
+        {
+            if (_isInputBlocked) return;
+            model.MoveInput = input;
+        };
+        view.OnDashInputReceived += (isDash) => 
+        {
+            if (_isInputBlocked) return;
+            model.IsDashing = isDash;
+        };
+        view.OnLookInputReceived += (look) => 
+        {
+            if (_isInputBlocked) return;
+            rawLookInput = look;
+        };
     }
 
     /// <summary>
@@ -148,17 +160,24 @@ public class PlayerPresenter : MonoBehaviour
     {
         view.OnWeaponDirectSelect += (index) =>
         {
+            if (_isInputBlocked) return;
             Debug.Log($"[WeaponSelect] Index: {index} が押されました");
             SwapWeapon(index);
         };
-        view.OnWeaponSwitchInputRecieved += (direction) => RotateWeapon(direction);
+        view.OnWeaponSwitchInputRecieved += (direction) => 
+        {
+            if (_isInputBlocked) return;
+            RotateWeapon(direction);
+        };
         view.OnAimInputReceived += (isAiming) =>
         {
+            if (_isInputBlocked) return;
             model.IsAiming = isAiming;
             view.SetAiming(isAiming);
         };
         view.OnFireInputReceived += (pressed) =>
         {
+            if (_isInputBlocked) return;
             if (isFiring == pressed) return;
             isFiring = pressed; // 押しっぱなしの状態を記録
             if (pressed)
@@ -185,7 +204,18 @@ public class PlayerPresenter : MonoBehaviour
             }
         };
         view.OnFireEffectTiming += ExecuteRaycastHit;
-        view.OnReloadInputReceived += () => ReloadAsync(this.GetCancellationTokenOnDestroy()).Forget();
+        view.OnReloadInputReceived += () =>
+        {
+            if (_isInputBlocked) return;
+            
+            // 既にリロード中なら何もしない
+            if (gunModel.CurrentAmmo == gunData.maxAmmo || gunModel.ReserveAmmo <= 0 || gunModel.IsReloading) return;
+            
+            reloadCts?.Cancel();
+            reloadCts?.Dispose();
+            reloadCts = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
+            ReloadAsync(reloadCts.Token).Forget();
+        };
     }
 
     /// <summary>
@@ -265,7 +295,7 @@ public class PlayerPresenter : MonoBehaviour
         };
         model.OnHpChanged += (currentHp) =>
         {
-            hpView?.UpdateHpDiaplay(currentHp);
+            hpView?.UpdateHpDisplay(currentHp);
             if (currentHp <= 0)
             {
                 DisableInput(false);
@@ -326,12 +356,23 @@ public class PlayerPresenter : MonoBehaviour
         {
             model.MoveInput = Vector2.zero;
             view.Move(Vector3.zero);
+            rawLookInput = Vector2.zero;
+            model.IsAiming = false;
+            view.SetAiming(false);
+            isFiring = false;
 
             if (fireCts != null)
             {
                 fireCts.Cancel();
                 fireCts.Dispose();
                 fireCts = null;
+            }
+
+            if (reloadCts != null)
+            {
+                reloadCts.Cancel();
+                reloadCts.Dispose();
+                reloadCts = null;
             }
         }
     }
