@@ -195,8 +195,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6443136113978513343, guid: d5d1d9c49d923f34fb04631490a4efbc, type: 3}
       propertyPath: m_Name
-      value: AttacheCase Variant
+      value: AttacheCase Variant C
       objectReference: {fileID: 0}
+    - target: {fileID: 8461757631400936894, guid: d5d1d9c49d923f34fb04631490a4efbc, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 7a3abbefe5528394d995985357cc12c1, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
