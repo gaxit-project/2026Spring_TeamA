@@ -49,6 +49,7 @@ public class PlayerPresenter : MonoBehaviour
 
     private bool _isDead = false;
     private bool _isInputBlocked = false;
+    public bool IsInvincible { get; set; } = false;
     private IInteractable currentInteractable;
 
     private void Awake()
@@ -108,7 +109,7 @@ public class PlayerPresenter : MonoBehaviour
     /// </summary>
     public void TakeDamage(int damage)
     {
-        if (_isDead) return;
+        if (_isDead || IsInvincible) return;
 
         model.TakeDamage(damage);
         hpView?.UpdateHpDiaplay(model.CurrentHP);
@@ -259,8 +260,7 @@ public class PlayerPresenter : MonoBehaviour
         {
             if (enemyData != null)
             {
-                model.TakeDamage(enemyData.enemyAttackPower);
-                hpView?.UpdateHpDiaplay(model.CurrentHP);
+                TakeDamage(enemyData.enemyAttackPower);
             }
         };
         model.OnHpChanged += (currentHp) =>

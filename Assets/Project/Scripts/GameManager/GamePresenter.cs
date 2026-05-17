@@ -149,10 +149,11 @@ public class GamePresenter : MonoBehaviour
 
     private async UniTaskVoid WarpSequenceAsync(Transform destination)
     {
-        // ワープ中に動けないように、プレイヤーの入力を止める
+        // ワープ中に動けないように、プレイヤーの入力を止め、無敵にする
         if (PlayerPresenter.Instance != null)
         {
             PlayerPresenter.Instance.SetInputBlocked(true);
+            PlayerPresenter.Instance.IsInvincible = true;
             PlayerPresenter.Instance.PlayerView.ForceIdle();
         }
 
@@ -190,9 +191,12 @@ public class GamePresenter : MonoBehaviour
         // 画面が見えるようになったことを通知
         UIEvents.OnFloorTransitionVisible?.Invoke();
 
-        // プレイヤーの操作を再開
+        // プレイヤーの操作を再開、無敵を解除
         if (PlayerPresenter.Instance != null)
+        {
+            PlayerPresenter.Instance.IsInvincible = false;
             PlayerPresenter.Instance.SetInputBlocked(false);
+        }
     }
 
     private async UniTaskVoid TransitionToNextLevelAsync()
