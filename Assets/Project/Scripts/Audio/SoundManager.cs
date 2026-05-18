@@ -259,12 +259,11 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
-    /// AudioSourceの音量を同期する
+    /// SE音量の取得
     /// </summary>
-    /// <param name="source"></param>
-    public void SyncVolume(AudioSource source)
+    public float GetSEVolume()
     {
-        source.volume = _seVolume;
+        return _seVolume;
     }
 
     /// <summary>

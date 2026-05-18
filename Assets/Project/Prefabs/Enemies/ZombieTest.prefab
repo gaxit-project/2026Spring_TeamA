@@ -2917,6 +2917,9 @@ MonoBehaviour:
   minWaitTime: 1
   maxWaitTime: 3
   maxKnockTime: 1
+  _voices:
+  - {fileID: 8300000, guid: 389bd213fa2812d47a14b1d32ba6b072, type: 3}
+  - {fileID: 8300000, guid: c92576919632d7a449f1ebeb8aaa7704, type: 3}
 --- !u!114 &6471673435671676833
 MonoBehaviour:
   m_ObjectHideFlags: 0

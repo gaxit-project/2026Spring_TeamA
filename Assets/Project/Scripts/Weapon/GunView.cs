@@ -27,7 +27,7 @@ public class GunView : MonoBehaviour
     {
         if (clip != null && audioSource != null)
         {
-            SoundManager.Instance.SyncVolume(audioSource);
+            audioSource.volume = SoundManager.Instance.GetSEVolume();
             audioSource.clip = clip;
             audioSource.Play();
         }
