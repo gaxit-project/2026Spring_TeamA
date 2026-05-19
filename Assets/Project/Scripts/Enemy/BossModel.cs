@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine.InputSystem.LowLevel;
 
 public class BossModel
@@ -12,6 +12,8 @@ public class BossModel
     public Action<BossState> OnStateChanged;
     public Action<int> OnHpChanged;
 
+    private int _accumulatedDamage = 0;
+
     /// <summary>
     /// ボスのデータモデルを初期化
     /// </summary>
@@ -20,8 +22,12 @@ public class BossModel
         Data = data;
         CurrentHp = data.maxHp;
         CurrentState = BossState.Chase;
+        _accumulatedDamage = 0;
     }
 
+    /// <summary>
+    /// ダメージを処理し、累積ダメージがしきい値に達したらスタン状態にする
+    /// </summary>
     public void TakeDamage(int damage)
     {
         if (CurrentState == BossState.Dead) return;
@@ -33,9 +39,14 @@ public class BossModel
         {
             SetState(BossState.Dead);
         }
-        else if (damage >= Data.stunDamageThreshold && CurrentState != BossState.Stunned)
+        else if (CurrentState != BossState.Stunned)
         {
-            SetState(BossState.Stunned);
+            _accumulatedDamage += damage;
+            if (_accumulatedDamage >= Data.stunDamageThreshold)
+            {
+                _accumulatedDamage = 0;
+                SetState(BossState.Stunned);
+            }
         }
     }
 

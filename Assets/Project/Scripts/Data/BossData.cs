@@ -23,5 +23,5 @@ public class BossData : ScriptableObject
 
     [Header("ダウン（ひざまずき）設定")]
     public float stunDuration = 8.0f;
-    public int stunDamageThreshold = 5;
+    public int stunDamageThreshold = 10;
 }
