@@ -4903,7 +4903,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u30D0\u30A4\u30AA\u30FB\u30A8\u30B9\u30B1\u30FC\u30D7"
+  m_text: "\u30C7\u30C3\u30C9\u30E9\u30DC"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0890d5e8fbd576345b5aafdb3d532c09, type: 2}
   m_sharedMaterial: {fileID: 5896460460804699372, guid: 0890d5e8fbd576345b5aafdb3d532c09, type: 2}
@@ -4912,8 +4912,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4291348680
-  m_fontColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    rgba: 4283848424
+  m_fontColor: {r: 0.9083557, g: 0.3366547, b: 0.3366547, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

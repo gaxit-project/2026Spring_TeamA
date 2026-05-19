@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf59788117693ff4e989a28c5f982e21, type: 3}
   m_Name: EnglishTextData
   m_EditorClassIdentifier: 
-  gameTitleName: BIO ESCAPE
+  gameTitleName: Dead Lab
   titleStartButton: Start
   titleSettingsButton: Settings
   titleExitButton: Exit
