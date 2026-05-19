@@ -43,7 +43,7 @@ MonoBehaviour:
   resultSceneTitle: Result
   resultZombieKillsLabel: Kill
   resultNpcRescuedLabel: Rescue
-  resultVaccineBonusLabel: MissionClear
+  resultVaccineBonusLabel: ClearBonus
   resultVaccinePenaltyLabel: MissonFaild
   resultTimeBonusLabel: Time Bonus
   resultTotalScoreLabel: Total

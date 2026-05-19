@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 /// <summary>
 /// ワクチンの種類
@@ -12,6 +12,8 @@ public enum VaccineType { A, B, C }
 public class VaccineView : MonoBehaviour, IInteractable
 {
     [SerializeField] private VaccineType type;
+
+    public VaccineType Type => type;
 
     public System.Action OnInteracted;
 

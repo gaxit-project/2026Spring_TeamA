@@ -62,4 +62,9 @@ public static class UIEvents
     /// ロード画面が消えて、新しい階層が見えるようになったことを通知するイベント
     /// </summary>
     public static Action OnFloorTransitionVisible;
+
+    /// <summary>
+    /// ワクチンが回収されたことを通知するイベント
+    /// </summary>
+    public static Action<VaccineType> OnVaccineCollected;
 }
