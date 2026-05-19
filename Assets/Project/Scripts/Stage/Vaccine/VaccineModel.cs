@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 
 /// <summary>
@@ -11,16 +11,19 @@ public class VaccineModel
     public bool IsAllCollected => CollectedCount >= MaxVaccines;
 
     public event Action<int> OnVaccineCollected;
+    public event Action<VaccineType> OnVaccineCollectedWithType;
     public event Action OnAllVaccinesCollected;
 
     /// <summary>
     /// ワクチンを1つ収集する
     /// </summary>
-    public void Collect()
+    /// <param name="type">収集したワクチンの種類</param>
+    public void Collect(VaccineType type)
     {
         if (IsAllCollected) return;
         CollectedCount++;
         OnVaccineCollected?.Invoke(CollectedCount);
+        OnVaccineCollectedWithType?.Invoke(type);
         if (IsAllCollected)
         {
             OnAllVaccinesCollected?.Invoke();

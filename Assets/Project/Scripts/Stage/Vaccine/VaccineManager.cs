@@ -20,11 +20,16 @@ public class VaccineManager : MonoBehaviour
             {
                 item.OnInteracted += () => 
                 {
-                    _model.Collect();
-                    Debug.Log($"[VaccineManager] ワクチン回収！ 現在: {_model.CollectedCount}個");
+                    _model.Collect(item.Type);
+                    Debug.Log($"[VaccineManager] ワクチン回収！ 現在: {_model.CollectedCount}個, 種類: {item.Type}");
                 };
             }
         }
+
+        _model.OnVaccineCollectedWithType += (type) =>
+        {
+            UIEvents.OnVaccineCollected?.Invoke(type);
+        };
 
         // 全て集まった時の処理
         _model.OnAllVaccinesCollected += () =>

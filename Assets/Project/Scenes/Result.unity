@@ -1989,7 +1989,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: MissonClear
+  m_text: ClearBonus
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0890d5e8fbd576345b5aafdb3d532c09, type: 2}
   m_sharedMaterial: {fileID: 5896460460804699372, guid: 0890d5e8fbd576345b5aafdb3d532c09, type: 2}
