@@ -202,6 +202,16 @@ public class SoundManager : MonoBehaviour
     /// AudioClipを直接指定してSEを再生
     /// </summary>
     /// <param name="clip">再生するAudioClip</param>
+    public void PlaySound(AudioClip clip)
+    {
+        if (clip == null) return;
+        audioSourceSE.PlayOneShot(clip);
+    }
+
+    /// <summary>
+    /// AudioClipを直接指定してSEを再生
+    /// </summary>
+    /// <param name="clip">再生するAudioClip</param>
     public void PlaySE(AudioClip clip)
     {
         if (clip == null) return;
@@ -246,6 +256,14 @@ public class SoundManager : MonoBehaviour
         PlayerPrefs.SetFloat("SEVolume", _seVolume);
         PlayerPrefs.SetFloat("BGMVolume", _bgmVolume);
         PlayerPrefs.Save();
+    }
+
+    /// <summary>
+    /// SE音量の取得
+    /// </summary>
+    public float GetSEVolume()
+    {
+        return _seVolume;
     }
 
     /// <summary>

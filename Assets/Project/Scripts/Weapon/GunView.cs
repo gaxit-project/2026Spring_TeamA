@@ -10,7 +10,13 @@ public class GunView : MonoBehaviour
 
     public void PlayShotSound(AudioClip clip)
     {
-        if (clip != null && audioSource != null)
+        if(clip == null) return;
+
+        if(SoundManager.Instance is SoundManager s)
+        {
+            s.PlaySound(clip);
+        }
+        else if (audioSource != null)
         {
             // PlayOneShot: 連射しても音が途切れずに重なって聞こえる
             audioSource.PlayOneShot(clip, 0.2f);
@@ -21,6 +27,7 @@ public class GunView : MonoBehaviour
     {
         if (clip != null && audioSource != null)
         {
+            audioSource.volume = SoundManager.Instance.GetSEVolume();
             audioSource.clip = clip;
             audioSource.Play();
         }

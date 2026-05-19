@@ -35,6 +35,9 @@ public class EnemyView : MonoBehaviour
     [SerializeField] private float maxKnockTime = 1.0f;
     private float currentKnockTime = 0f;
 
+    [SerializeField] private AudioClip[] _voices;
+    private float _volume = 0.5f;
+
     // 以下イベント定義
     public event System.Action OnAttackHitEvent;
     public event System.Action<int, Collider, EnemyBodyPart.HitPartType> HitContact;
@@ -173,12 +176,14 @@ public class EnemyView : MonoBehaviour
         if (this == null) return;
         if (nextState == EnemyState.Attacking)
         {
-            SoundManager.Instance.PlaySound(0);
+            _volume = SoundManager.Instance.GetSEVolume();
+            AudioSource.PlayClipAtPoint(_voices[0], transform.position, _volume);
         }
 
         if (nextState == EnemyState.Tracking)
         {
-            SoundManager.Instance.PlaySound(1);
+            _volume = SoundManager.Instance.GetSEVolume();
+            AudioSource.PlayClipAtPoint(_voices[1], transform.position, _volume);
         }
 
         currentState = nextState;
