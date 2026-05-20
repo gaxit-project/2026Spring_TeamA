@@ -50,7 +50,7 @@ public class BossView : MonoBehaviour
     {
         if (footstepClip != null && SoundManager.Instance != null)
         {
-            SoundManager.Instance.PlaySE(footstepClip);
+            SoundManager.Instance.PlaySound(footstepClip);
         }
     }
 
@@ -62,7 +62,7 @@ public class BossView : MonoBehaviour
         animator.SetTrigger(RoarTrigger);
         if (roarClip != null && SoundManager.Instance != null)
         {
-            SoundManager.Instance.PlaySE(roarClip);
+            SoundManager.Instance.PlaySound(roarClip);
         }
     }
 
@@ -83,7 +83,7 @@ public class BossView : MonoBehaviour
     {
         if (attackClip != null && SoundManager.Instance != null)
         {
-            SoundManager.Instance.PlaySE(attackClip);
+            SoundManager.Instance.PlaySound(attackClip);
         }
     }
 
