@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3330310371471392835}
   - component: {fileID: 9023265429619313161}
   m_Layer: 0
-  m_Name: Point Light
+  m_Name: Spot Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,13 +26,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4004925560725470872}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.4, z: 0}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 0.19999996, y: 0.2, z: 0.19999996}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2872249835736554204}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!108 &3330310371471392835
 Light:
   m_ObjectHideFlags: 0
@@ -42,12 +42,12 @@ Light:
   m_GameObject: {fileID: 4004925560725470872}
   m_Enabled: 1
   serializedVersion: 11
-  m_Type: 2
+  m_Type: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 100
   m_Range: 5
-  m_SpotAngle: 30
-  m_InnerSpotAngle: 21.80208
+  m_SpotAngle: 100
+  m_InnerSpotAngle: 0
   m_CookieSize: 10
   m_Shadows:
     m_Type: 0
@@ -195,7 +195,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6443136113978513343, guid: d5d1d9c49d923f34fb04631490a4efbc, type: 3}
       propertyPath: m_Name
-      value: AttacheCase Variant
+      value: AttacheCase Variant A
       objectReference: {fileID: 0}
     - target: {fileID: 8461757631400936894, guid: d5d1d9c49d923f34fb04631490a4efbc, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'

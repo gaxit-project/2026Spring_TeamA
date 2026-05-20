@@ -106,6 +106,7 @@ public class GamePresenter : MonoBehaviour
     {
         // 少し間を開ける
         await UniTask.Delay(TimeSpan.FromSeconds(0.5));
+        SoundManager.Instance.PlaySound(4);
         
         if (nextLevelView != null)
         {

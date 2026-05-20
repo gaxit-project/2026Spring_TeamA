@@ -171,19 +171,22 @@ public class EnemyView : MonoBehaviour
         }
 
         // 状態が変わった瞬間だけログを出す
+        // 要修正
         Debug.Log($"<color=yellow>[StateChange]</color> {currentState} -> {nextState}");
 
         if (this == null) return;
         if (nextState == EnemyState.Attacking)
         {
             _volume = SoundManager.Instance.GetSEVolume();
-            AudioSource.PlayClipAtPoint(_voices[0], transform.position, _volume);
+            //AudioSource.PlayClipAtPoint(_voices[0], transform.position, _volume);
+            SoundManager.Instance.PlaySound(0);
         }
 
         if (nextState == EnemyState.Tracking)
         {
             _volume = SoundManager.Instance.GetSEVolume();
-            AudioSource.PlayClipAtPoint(_voices[1], transform.position, _volume);
+            //AudioSource.PlayClipAtPoint(_voices[1], transform.position, _volume);
+            SoundManager.Instance.PlaySound(1);
         }
 
         currentState = nextState;
