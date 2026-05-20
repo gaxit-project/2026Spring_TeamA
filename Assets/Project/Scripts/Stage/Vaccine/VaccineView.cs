@@ -32,6 +32,7 @@ public class VaccineView : MonoBehaviour, IInteractable
     {
         if (!CanInteract) return;
         CanInteract = false;
+        SoundManager.Instance?.PlaySound(3);
 
         // 本体を消す
         gameObject.SetActive(false);

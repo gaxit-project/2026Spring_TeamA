@@ -50,6 +50,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 389bd213fa2812d47a14b1d32ba6b072, type: 3}
   - {fileID: 8300000, guid: c92576919632d7a449f1ebeb8aaa7704, type: 3}
   - {fileID: 8300000, guid: 22197a836aa113f4a9a18074d5761fd7, type: 3}
+  - {fileID: 8300000, guid: c325536f1f68e6b42a90f08de85321eb, type: 3}
   titleBGM: {fileID: 8300000, guid: 5aefeec42fa5f4040a15e6ff6e7d19a2, type: 3}
   mainBGM: {fileID: 8300000, guid: 863aad42e54ba8d419bc5c352bbc88fa, type: 3}
   clearBGM: {fileID: 8300000, guid: 3face004ac9ac16418f2c809cb13d344, type: 3}
