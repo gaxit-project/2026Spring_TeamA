@@ -43,10 +43,9 @@ public class ExplosiveBarrel : MonoBehaviour, IDamageable
 
         if (explosionSound != null)
         {
-            soundVolume = SoundManager.Instance.GetSEVolume();
-            AudioSource.PlayClipAtPoint(explosionSound, transform.position, soundVolume);
-            AudioSource.PlayClipAtPoint(explosionSound, transform.position, soundVolume);
-            AudioSource.PlayClipAtPoint(explosionSound, transform.position, soundVolume);
+            //要修正
+            //soundVolume = SoundManager.Instance.GetSEVolume();
+            SoundManager.Instance.PlaySound(explosionSound);
             Debug.Log("play explosion SE");
         }
 
