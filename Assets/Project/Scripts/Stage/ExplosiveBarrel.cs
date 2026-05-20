@@ -45,6 +45,8 @@ public class ExplosiveBarrel : MonoBehaviour, IDamageable
         {
             soundVolume = SoundManager.Instance.GetSEVolume();
             AudioSource.PlayClipAtPoint(explosionSound, transform.position, soundVolume);
+            AudioSource.PlayClipAtPoint(explosionSound, transform.position, soundVolume);
+            AudioSource.PlayClipAtPoint(explosionSound, transform.position, soundVolume);
             Debug.Log("play explosion SE");
         }
 
