@@ -19,6 +19,8 @@ MonoBehaviour:
   titleReturnButton: Return
   titleAudioButton: Audio
   titleLanguageButton: Language
+  titleCreditButton: Credit
+  titleCreditText: '''Simulacra'' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au'
   pauseResumeButton: Resume
   pauseSettingsButton: Settings
   pauseQuitButton: Quit

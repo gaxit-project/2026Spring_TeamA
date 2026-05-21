@@ -19,9 +19,14 @@ public class TitleButtonManager : MonoBehaviour
     [SerializeField] private Button audioSettingsOpenButton;
     [SerializeField] private Button languageSettingsOpenButton;
     [SerializeField] private Button defaultLanguageButton;
+    [SerializeField] private Button creditOpenButton;
+    [SerializeField] private Button creditPanelReturnButton;
 
     [Header("音量設定のスライダー")]
     [SerializeField] private Slider settingsSlider;
+
+    [Header("クレジット表記パネル")]
+    [SerializeField] private GameObject creditPanel;
 
     [Header("テキスト")]
     [SerializeField] private TextMeshProUGUI gameTitleText;
@@ -30,6 +35,8 @@ public class TitleButtonManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI exitButtonText;
     [SerializeField] private TextMeshProUGUI audioButtonText;
     [SerializeField] private TextMeshProUGUI languageButtonText;
+    [SerializeField] private TextMeshProUGUI creditButtonText;
+    [SerializeField] private TextMeshProUGUI creditText;
     [SerializeField] private TextMeshProUGUI[] returnButtonTexts;
 
     private void Start()
@@ -53,6 +60,8 @@ public class TitleButtonManager : MonoBehaviour
         if (exitButtonText != null) exitButtonText.text = data.titleExitButton;
         if (audioButtonText != null) audioButtonText.text = data.titleAudioButton;
         if (languageButtonText != null) languageButtonText.text = data.titleLanguageButton;
+        if (creditButtonText != null) creditButtonText.text = data.titleCreditButton;
+        if (creditText != null) creditText.text = data.titleCreditText;
 
         if (returnButtonTexts != null)
         {
@@ -167,6 +176,40 @@ public class TitleButtonManager : MonoBehaviour
         if (languageSettingsOpenButton != null)
         {
             EventSystem.current.SetSelectedGameObject(languageSettingsOpenButton.gameObject);
+        }
+    }
+
+    /// <summary>
+    /// クレジットを表記するパネルを開く
+    /// </summary>
+    public void OpenCreditPanel()
+    {
+        Debug.Log("Creditを開きます");
+        if (settingsPanel != null) settingsPanel.SetActive(false);
+        if (creditPanel != null) creditPanel.SetActive(true);
+
+        // 選択状態の変更
+        EventSystem.current.SetSelectedGameObject(null);
+        if (defaultLanguageButton != null)
+        {
+            EventSystem.current.SetSelectedGameObject(creditPanelReturnButton.gameObject);
+        }
+    }
+
+    /// <summary>
+    /// クレジットを表示するパネルを閉じ、設定パネルに戻る
+    /// </summary>
+    public void CloseCreditPanel()
+    {
+        Debug.Log("Creditを閉じます");
+        if (creditPanel != null) creditPanel.SetActive(false);
+        if (settingsPanel != null) settingsPanel.SetActive(true);
+
+        // 選択状態の変更
+        EventSystem.current.SetSelectedGameObject(null);
+        if (languageSettingsOpenButton != null)
+        {
+            EventSystem.current.SetSelectedGameObject(creditOpenButton.gameObject);
         }
     }
 
