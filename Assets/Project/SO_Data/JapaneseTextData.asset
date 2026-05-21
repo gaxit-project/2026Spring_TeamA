@@ -20,8 +20,7 @@ MonoBehaviour:
   titleAudioButton: "\u97F3\u91CF\u8A2D\u5B9A"
   titleLanguageButton: "\u8A00\u8A9E\u8A2D\u5B9A"
   titleCreditButton: "\u30AF\u30EC\u30B8\u30C3\u30C8"
-  titleCreditText: "\u300ESimulacra\u300F \u4F5C\u66F2\uFF1AScott Buckley - CC BY
-    4.0 \u30E9\u30A4\u30BB\u30F3\u30B9\u306B\u57FA\u3065\u3044\u3066\u4F7F\u7528
+  titleCreditText: "\u300ESimulacra\u300F / Scott Buckley - CC BY 4.0 \u30E9\u30A4\u30BB\u30F3\u30B9\u306B\u57FA\u3065\u3044\u3066\u4F7F\u7528
     - www.scottbuckley.com.au"
   pauseResumeButton: "\u518D\u958B"
   pauseSettingsButton: "\u8A2D\u5B9A"
