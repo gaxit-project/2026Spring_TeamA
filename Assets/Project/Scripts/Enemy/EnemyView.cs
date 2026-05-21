@@ -1,4 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -305,10 +305,14 @@ public class EnemyView : MonoBehaviour
         }
     }
 
-    public void EndHIt()
+    /// <summary>
+    /// 被弾によるひるみ状態が終了したときに呼び出され、移動・回転を再開する（アニメーションイベント用）。
+    /// </summary>
+    public void EndHit()
     {
         if (this == null) return;
 
+        // 被弾フラグを解除し、追跡・回転・移動を再開
         isHit = false;
         _agent.updateRotation = true;
         _agent.isStopped = false;
