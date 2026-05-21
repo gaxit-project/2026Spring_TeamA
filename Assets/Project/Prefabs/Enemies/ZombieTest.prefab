@@ -2939,7 +2939,7 @@ MonoBehaviour:
   - {fileID: 3908061951308063717}
   - {fileID: 7096174838327501049}
   soundView: {fileID: 0}
-  sleepDistance: 50
+  sleepDistance: 200
 --- !u!1 &8143360534306540743
 GameObject:
   m_ObjectHideFlags: 0
