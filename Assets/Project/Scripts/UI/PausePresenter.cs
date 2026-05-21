@@ -29,6 +29,7 @@ public class PausePresenter : MonoBehaviour
             pauseAction.action.Enable();
             pauseAction.action.performed += OnPauseActionPerformed;
         }
+        UIEvents.OnCutsceneStateChanged += OnCutsceneStateChanged;
     }
 
     private void OnDisable()
@@ -36,6 +37,28 @@ public class PausePresenter : MonoBehaviour
         if (pauseAction != null)
         {
             pauseAction.action.performed -= OnPauseActionPerformed;
+        }
+        UIEvents.OnCutsceneStateChanged -= OnCutsceneStateChanged;
+    }
+
+    /// <summary>
+    /// カットシーンの開始・終了時にポーズアクションの有効・無効を切り替える
+    /// </summary>
+    private void OnCutsceneStateChanged(bool isBlocked)
+    {
+        if (pauseAction == null) return;
+
+        if (isBlocked)
+        {
+            if (isPaused)
+            {
+                ResumeGame();
+            }
+            pauseAction.action.Disable();
+        }
+        else
+        {
+            pauseAction.action.Enable();
         }
     }
 

@@ -49,6 +49,7 @@ public class PlayerPresenter : MonoBehaviour
 
     private bool _isDead = false;
     private bool _isInputBlocked = false;
+    private bool _isCutsceneActive = false;
     public bool IsInvincible { get; set; } = false;
     private IInteractable currentInteractable;
 
@@ -71,11 +72,11 @@ public class PlayerPresenter : MonoBehaviour
 
     private void OnEnable()
     {
-        UIEvents.OnCutsceneStateChanged += SetInputBlocked;
+        UIEvents.OnCutsceneStateChanged += OnCutsceneStateChanged;
     }
     private void OnDestroy()
     {
-        UIEvents.OnCutsceneStateChanged -= SetInputBlocked;
+        UIEvents.OnCutsceneStateChanged -= OnCutsceneStateChanged;
     }
 
     private void Update()
@@ -351,6 +352,9 @@ public class PlayerPresenter : MonoBehaviour
     /// </summary>
     public void SetInputBlocked(bool isBlocked)
     {
+        // カットシーン再生中の場合、外部からのブロック解除命令は無視する
+        if (!isBlocked && _isCutsceneActive) return;
+
         _isInputBlocked = isBlocked;
         if (isBlocked)
         {
@@ -375,6 +379,15 @@ public class PlayerPresenter : MonoBehaviour
                 reloadCts = null;
             }
         }
+    }
+
+    /// <summary>
+    /// カットシーンの開始・終了状態の変更を受け取り、入力ブロックを連動させる。
+    /// </summary>
+    private void OnCutsceneStateChanged(bool isBlocked)
+    {
+        _isCutsceneActive = isBlocked;
+        SetInputBlocked(isBlocked);
     }
 
     /// <summary>

@@ -48,7 +48,7 @@ public class FinalLevelCutscenePresenter : MonoBehaviour
     }
 
     /// <summary>
-    /// カットシーンを非同期で再生する
+    /// カットシーンを非同期で再生する。演出中の入力をブロックし、終了後に解除する。
     /// </summary>
     public async UniTask PlayCutsceneAsync(CancellationToken token)
     {
@@ -63,7 +63,8 @@ public class FinalLevelCutscenePresenter : MonoBehaviour
         _transitionVisibleTcs = new UniTaskCompletionSource();
         await _transitionVisibleTcs.Task;
 
-        // 【演出開始】画面が見えた瞬間に時間を止め、1つ目のテキストを表示する
+        // 【演出開始】入力をブロックし、画面が見えた瞬間に時間を止め、1つ目のテキストを表示する
+        UIEvents.OnCutsceneStateChanged?.Invoke(true);
         float originalTimeScale = Time.timeScale;
         Time.timeScale = 0f;
         _view.ShowVaccineCamera(0);
@@ -89,6 +90,9 @@ public class FinalLevelCutscenePresenter : MonoBehaviour
             _view.HideText();
             _view.ShowUI();
             Time.timeScale = originalTimeScale;
+
+            // 入力ブロックを解除する
+            UIEvents.OnCutsceneStateChanged?.Invoke(false);
         }
     }
 }
