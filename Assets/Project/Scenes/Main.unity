@@ -422,7 +422,7 @@ Transform:
   m_GameObject: {fileID: 56842639}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.01745245, z: 0, w: 0.99984777}
-  m_LocalPosition: {x: 0, y: 6, z: 5.1}
+  m_LocalPosition: {x: -0.00000024586916, y: 6, z: 5.0999994}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8490,6 +8490,14 @@ PrefabInstance:
       propertyPath: interactPromptText
       value: 
       objectReference: {fileID: 113361133}
+    - target: {fileID: 2914454189447459183, guid: bd154ce00f43e6f458887d2f343a54b9, type: 3}
+      propertyPath: inventoryGuns.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2914454189447459183, guid: bd154ce00f43e6f458887d2f343a54b9, type: 3}
+      propertyPath: 'inventoryGuns.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 3b8ef6caacfe6cf40bd23105a66a3f82, type: 2}
     - target: {fileID: 3078580080931563611, guid: bd154ce00f43e6f458887d2f343a54b9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.2
