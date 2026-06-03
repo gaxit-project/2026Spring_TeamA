@@ -11,6 +11,7 @@ TagManager:
   - WindowZone
   - NextLevel
   - Enemy
+  - Wall
   layers:
   - Default
   - TransparentFX

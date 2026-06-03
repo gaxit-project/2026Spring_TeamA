@@ -72,6 +72,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4601752149474337928}
+  - component: {fileID: 879461742970207362}
   m_Layer: 7
   m_Name: Base HumanLArmPalm
   m_TagString: Untagged
@@ -99,6 +100,27 @@ Transform:
   - {fileID: 2570431669862923253}
   m_Father: {fileID: 7943860475206989391}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &879461742970207362
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534007144365083654}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 0.2, y: 0.2, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &607351346451833748
 GameObject:
   m_ObjectHideFlags: 0
@@ -1264,6 +1286,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3398175344776887939}
+  - component: {fileID: 7757400479652552486}
   m_Layer: 7
   m_Name: Base HumanRArmPalm
   m_TagString: Untagged
@@ -1291,6 +1314,27 @@ Transform:
   - {fileID: 6452036690987721886}
   m_Father: {fileID: 6675441855561315635}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &7757400479652552486
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3966580336803930390}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 0.2, y: 0.2, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4027202067230914134
 GameObject:
   m_ObjectHideFlags: 0
@@ -1744,6 +1788,7 @@ MonoBehaviour:
   minWaitTime: 1
   maxWaitTime: 3
   maxKnockTime: 3
+  _voices: []
 --- !u!114 &7302803427362131248
 MonoBehaviour:
   m_ObjectHideFlags: 0
