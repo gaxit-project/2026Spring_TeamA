@@ -19,5 +19,5 @@ MonoBehaviour:
   fieldOfView: 160
   detectionRange: 20
   attackDistance: 5
-  windowKnockDistance: 5
+  windowKnockDistance: 12
   attackRangeOffset: 5
