@@ -11,6 +11,7 @@ public class EnemyView : MonoBehaviour
     private Animator _animator; // アニメーション制御
     private Renderer[] renderers;
     public Transform player;    // プレイヤーの位置情報
+    private Collider[] colliders;
     public bool isTracking { get; set; } = false;
     private bool isHit = false;
 
@@ -72,6 +73,7 @@ public class EnemyView : MonoBehaviour
             player = PlayerPresenter.Instance.PlayerView.transform;
         }
 
+        colliders = GetComponentsInChildren<Collider>();
         renderers = GetComponentsInChildren<Renderer>();
         _agent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
         _agent.avoidancePriority = UnityEngine.Random.Range(0, 99);
@@ -280,6 +282,10 @@ public class EnemyView : MonoBehaviour
 
     public async UniTask Hit(EnemyBodyPart.HitPartType partType)
     {
+        if(partType == EnemyBodyPart.HitPartType.Head)
+        {
+            Die();
+        }
         if (isHit) return;
         isHit = true;
 
@@ -322,6 +328,10 @@ public class EnemyView : MonoBehaviour
     {
         _agent.isStopped = true;
         _agent.ResetPath();
+        for(int i=0; i<colliders.Length; i++)
+        {
+            colliders[i].enabled = false;
+        }
         _animator.SetBool("Die", true);
     }
 
