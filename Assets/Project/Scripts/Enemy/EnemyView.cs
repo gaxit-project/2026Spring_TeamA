@@ -318,6 +318,22 @@ public class EnemyView : MonoBehaviour
         _agent.isStopped = false;
     }
 
+    /// <summary>
+    /// 感電時の処理
+    /// </summary>
+    public void Shocked()
+    {
+
+    }
+
+    /// <summary>
+    /// 凍結時の処理
+    /// </summary>
+    public void Frozen()
+    {
+
+    }
+
     public void Die()
     {
         _agent.isStopped = true;
