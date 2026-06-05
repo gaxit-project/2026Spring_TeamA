@@ -19,6 +19,9 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
     private bool _isDead = false;   // 死亡判定
     private CancellationTokenSource _cts = new CancellationTokenSource();
 
+    private bool isShocked = false;
+    private bool isFrozen = false;
+
     // 子要素にあるものはエディタ上で事前に埋めて保存する
     private void OnValidate()
     {
@@ -108,6 +111,23 @@ public class EnemyPresenter : MonoBehaviour, IDamageable
             view.Die();
             HandleDeathAsync().Forget();
         }
+    }
+
+    public void Shocked()
+    {
+        if(isShocked || isFrozen) return;
+
+        isShocked = true;
+        view.ChangeSpeed(0.2f);
+    }
+
+    public void Frozen()
+    {
+        if (isFrozen) return;
+
+        if(isShocked) isShocked = false;
+        isShocked = true;
+        view.ChangeSpeed(0f);
     }
 
     /// <summary>

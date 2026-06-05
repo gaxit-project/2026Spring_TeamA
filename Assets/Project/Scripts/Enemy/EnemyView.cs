@@ -324,8 +324,22 @@ public class EnemyView : MonoBehaviour
         _agent.isStopped = false;
     }
 
+    /// <summary>
+    /// animatorの再生速度と移動速度の変更
+    /// </summary>
+    /// <param name="speed">変更後のanimator再生速度</param>
+    public void ChangeSpeed(float speed)
+    {
+        Debug.LogWarning("Change speed : " + speed + "f");
+        _animator.speed = speed;
+        _agent.speed = _agent.speed * speed;
+        _agent.acceleration = _agent.acceleration * speed;
+    }
+
     public void Die()
     {
+        if(_animator.speed != 1) _animator.speed = 1;
+
         _agent.isStopped = true;
         _agent.ResetPath();
         for(int i=0; i<colliders.Length; i++)
