@@ -150,9 +150,6 @@ public class PlayerPresenter : MonoBehaviour
     }
 
     /// <summary>
-    /// 射撃・武器切り替えの入力設定
-    /// </summary>
-    /// <summary>
     /// 射撃の入力設定と自動エイム
     /// </summary>
     private void SetupCombat()
@@ -191,6 +188,11 @@ public class PlayerPresenter : MonoBehaviour
             }
         };
         view.OnFireEffectTiming += ExecuteRaycastHit;
+        view.OnReloadInputReceived += () =>
+        {
+            if (_isInputBlocked) return;
+            StartReload();
+        };
     }
 
     /// <summary>
@@ -465,38 +467,34 @@ public class PlayerPresenter : MonoBehaviour
     {
         if (gunModel.CurrentAmmo == gunData.maxAmmo || gunModel.ReserveAmmo <= 0 || gunModel.IsReloading) return;
 
+        gunModel.IsReloading = true; // 即時に同期的でリロード中フラグを設定
         reloadCts?.Cancel();
         reloadCts?.Dispose();
         reloadCts = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
         ReloadAsync(reloadCts.Token).Forget();
     }
 
-    /// <summary>
-    /// 現在の状態を確認し、すべての条件を満たしていれば発砲処理を呼び出す。弾薬0時は自動リロードを実行。
-    /// </summary>
     private void TryFire()
     {
         if (_isDead) return;
         if (!isFiring) return;
+        if (gunModel.IsReloading) return; // リロード中なら射撃処理は一切無視
         if (Time.time < lastFireTime + gunData.fireRate) return;
         if (!model.IsAiming) return;
 
-        // 弾薬が0になったら自動リロードを開始
-        if (gunModel.CurrentAmmo <= 0)
+        // 完全に弾が尽きた（残弾0かつ予備0）ときのみ弾切れ音を鳴らす
+        if (gunModel.CurrentAmmo <= 0 && gunModel.ReserveAmmo <= 0)
         {
-            if (!gunModel.IsReloading && gunModel.ReserveAmmo > 0)
-            {
-                StartReload();
-            }
-            else if (gunModel.ReserveAmmo <= 0)
-            {
-                // 予備弾薬も無い場合は空撃ち音
-                gunView.PlayShotSound(gunData.emptySound);
-            }
+            gunView.PlayShotSound(gunData.emptySound);
             return;
         }
 
-        if (gunModel.IsReloading) return;
+        // 残弾は0だが予備があるときは、音を鳴らさずに自動リロードを開始
+        if (gunModel.CurrentAmmo <= 0 && gunModel.ReserveAmmo > 0)
+        {
+            StartReload();
+            return;
+        }
 
         ExecuteFire();
     }
@@ -526,16 +524,9 @@ public class PlayerPresenter : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 武器の規定リロード時間だけ待機し、UIのプログレスバーを更新した後に弾薬を最大まで補充する非同期処理。
-    /// </summary>
     private async UniTaskVoid ReloadAsync(CancellationToken token)
     {
-        // 弾薬が最大、予備弾数が0、または既にリロード中の場合は処理を行わない
-        if (gunModel.CurrentAmmo == gunData.maxAmmo || gunModel.ReserveAmmo <= 0 || gunModel.IsReloading) return;
-
         Debug.Log("Reloading started...");
-        gunModel.IsReloading = true;
         view.PlayReloadAnim();
         gunView.PlaySimpleSound(gunData.reloadSound);
 

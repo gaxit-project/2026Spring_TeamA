@@ -150,6 +150,7 @@ public class PlayerView : MonoBehaviour
     public event System.Action<bool> OnFireInputReceived;
     
     public event System.Action OnFireEffectTiming;
+    public event System.Action OnReloadInputReceived;
     public event System.Action OnInteractInputReceived;
     
     public event System.Action<Collider> OnTriggerEnterEvent;
@@ -179,6 +180,11 @@ public class PlayerView : MonoBehaviour
     private void OnFire(InputValue value)
     {
         OnFireInputReceived?.Invoke(value.isPressed);
+    }
+
+    private void OnReload(InputValue value)
+    {
+        OnReloadInputReceived?.Invoke();
     }
 
     private void OnInteract(InputValue value)
