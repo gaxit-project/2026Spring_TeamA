@@ -147,16 +147,11 @@ public class PlayerView : MonoBehaviour
     public event System.Action<Vector2> OnMoveInputReceived;
     public event System.Action<Vector2> OnLookInputReceived;
 
-    public event System.Action<bool> OnDashInputReceived;
-    public event System.Action<bool> OnAimInputReceived;
     public event System.Action<bool> OnFireInputReceived;
     
     public event System.Action OnFireEffectTiming;
     public event System.Action OnReloadInputReceived;
     public event System.Action OnInteractInputReceived;
-    
-    public event System.Action<int> OnWeaponSwitchInputRecieved;
-    public event System.Action<int> OnWeaponDirectSelect;
     
     public event System.Action<Collider> OnTriggerEnterEvent;
     public event System.Action<Collider> OnTriggerExitEvent;
@@ -177,19 +172,9 @@ public class PlayerView : MonoBehaviour
         OnMoveInputReceived?.Invoke(value.Get<Vector2>());
     }
 
-    private void OnDash(InputValue value)
-    {
-        OnDashInputReceived?.Invoke(value.isPressed);
-    }
-
     private void OnLook(InputValue value)
     {
         OnLookInputReceived?.Invoke(value.Get<Vector2>());
-    }
-
-    private void OnAim(InputValue value)
-    {
-        OnAimInputReceived?.Invoke(value.isPressed);
     }
 
     private void OnFire(InputValue value)
@@ -200,26 +185,6 @@ public class PlayerView : MonoBehaviour
     private void OnReload(InputValue value)
     {
         OnReloadInputReceived?.Invoke();
-    }
-
-    private void OnNextWeapon(InputValue value)
-    {
-        if (value.isPressed) OnWeaponSwitchInputRecieved?.Invoke(1);
-    }
-
-    private void OnPrevWeapon(InputValue value)
-    {
-        if (value.isPressed) OnWeaponSwitchInputRecieved?.Invoke(-1);
-    }
-
-    private void OnWeapon1(InputValue value)
-    {
-        if (value.isPressed) OnWeaponDirectSelect?.Invoke(0);
-    }
-
-    private void OnWeapon2(InputValue value)
-    {
-        if (value.isPressed) OnWeaponDirectSelect?.Invoke(1);
     }
 
     private void OnInteract(InputValue value)

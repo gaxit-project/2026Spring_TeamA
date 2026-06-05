@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class PlayerModel
 {
@@ -15,7 +15,6 @@ public class PlayerModel
     public Vector2 MoveInput { get; set; }
     public float CurrentPan { get; set; }
     public float CurrentPitch { get; set; }
-    public bool IsDashing { get; set; }
 
     public bool IsAiming { get; set; } = false;
 
@@ -29,10 +28,12 @@ public class PlayerModel
         CurrentHP = data.hp;
     }
 
+    /// <summary>
+    /// 移動速度（moveSpeed）を使用して移動量を計算する
+    /// </summary>
     public Vector3 CalcMove(float deltaTime)
     {
-        float speed = IsDashing ? _data.moveDashSpeed : _data.moveSpeed;
-        return new Vector3(MoveInput.x, 0, MoveInput.y) * speed * deltaTime;
+        return new Vector3(MoveInput.x, 0, MoveInput.y) * _data.moveSpeed * deltaTime;
     }
 
     public void TakeDamage(int amount)

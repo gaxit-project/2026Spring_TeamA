@@ -102,7 +102,7 @@ public class PlayerPresenter : MonoBehaviour
 
         view.UpdateBodyRotation(model.CurrentPan);
         view.SetUpperBodyPitch(model.CurrentPitch);
-        view.SetDashAnimation(model.IsDashing && model.MoveInput.sqrMagnitude > 0.001f);
+        view.SetDashAnimation(model.MoveInput.sqrMagnitude > 0.001f);
     }
 
     /// <summary>
@@ -142,11 +142,6 @@ public class PlayerPresenter : MonoBehaviour
             if (_isInputBlocked) return;
             model.MoveInput = input;
         };
-        view.OnDashInputReceived += (isDash) => 
-        {
-            if (_isInputBlocked) return;
-            model.IsDashing = isDash;
-        };
         view.OnLookInputReceived += (look) => 
         {
             if (_isInputBlocked) return;
@@ -155,32 +150,20 @@ public class PlayerPresenter : MonoBehaviour
     }
 
     /// <summary>
-    /// 射撃・武器切り替えの入力設定
+    /// 射撃の入力設定と自動エイム
     /// </summary>
     private void SetupCombat()
     {
-        view.OnWeaponDirectSelect += (index) =>
-        {
-            if (_isInputBlocked) return;
-            Debug.Log($"[WeaponSelect] Index: {index} が押されました");
-            SwapWeapon(index);
-        };
-        view.OnWeaponSwitchInputRecieved += (direction) => 
-        {
-            if (_isInputBlocked) return;
-            RotateWeapon(direction);
-        };
-        view.OnAimInputReceived += (isAiming) =>
-        {
-            if (_isInputBlocked) return;
-            model.IsAiming = isAiming;
-            view.SetAiming(isAiming);
-        };
         view.OnFireInputReceived += (pressed) =>
         {
             if (_isInputBlocked) return;
             if (isFiring == pressed) return;
             isFiring = pressed; // 押しっぱなしの状態を記録
+
+            // 自動エイムのON/OFF
+            model.IsAiming = pressed;
+            view.SetAiming(pressed);
+
             if (pressed)
             {
                 if (gunData.isFullAuto)
@@ -208,14 +191,7 @@ public class PlayerPresenter : MonoBehaviour
         view.OnReloadInputReceived += () =>
         {
             if (_isInputBlocked) return;
-            
-            // 既にリロード中なら何もしない
-            if (gunModel.CurrentAmmo == gunData.maxAmmo || gunModel.ReserveAmmo <= 0 || gunModel.IsReloading) return;
-            
-            reloadCts?.Cancel();
-            reloadCts?.Dispose();
-            reloadCts = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
-            ReloadAsync(reloadCts.Token).Forget();
+            StartReload();
         };
     }
 
@@ -415,33 +391,6 @@ public class PlayerPresenter : MonoBehaviour
     }
 
     /// <summary>
-    /// 現在の武器インデックスから指定された方向へインデックスをずらし、次の武器への持ち替えを要求する。
-    /// </summary>
-    private void RotateWeapon(int direction)
-    {
-        int nextIndex = currentGunIndex + direction;
-
-        if (nextIndex < 0) nextIndex = inventoryGuns.Length - 1;
-        if (nextIndex >= inventoryGuns.Length) nextIndex = 0;
-
-        SwapWeapon(nextIndex);
-    }
-
-    /// <summary>
-    /// 指定されたインデックスの武器が存在し、現在と違う武器であれば実際に持ち替え処理を実行する。
-    /// </summary>
-    private void SwapWeapon(int index)
-    {
-        if (index < 0 || index >= inventoryGuns.Length || index == currentGunIndex) return;
-
-        // リロード中は切り替え不可
-        if (gunModel != null && gunModel.IsReloading) return;
-
-        currentGunIndex = index;
-        SetupWeapon(inventoryGuns[currentGunIndex]);
-    }
-
-    /// <summary>
     /// 指定された銃データ（GunData）を基に新しい武器の3Dモデルを生成し、状態やHUDの表示を初期化する。
     /// </summary>
     private void SetupWeapon(GunData data)
@@ -500,7 +449,7 @@ public class PlayerPresenter : MonoBehaviour
     {
         while (!token.IsCancellationRequested)
         {
-            if (model.IsAiming && gunModel.CanShoot())
+            if (model.IsAiming && !gunModel.IsReloading)
             {
                 TryFire();
             }
@@ -512,19 +461,38 @@ public class PlayerPresenter : MonoBehaviour
 
 
     /// <summary>
-    /// 現在の状態（操作ブロック、弾薬の有無、連射間隔、エイム状態など）を確認し、すべての条件を満たしていれば発砲処理を呼び出す。
+    /// 自動リロードを開始する
     /// </summary>
+    private void StartReload()
+    {
+        if (gunModel.CurrentAmmo == gunData.maxAmmo || gunModel.ReserveAmmo <= 0 || gunModel.IsReloading) return;
+
+        gunModel.IsReloading = true; // 即時に同期的でリロード中フラグを設定
+        reloadCts?.Cancel();
+        reloadCts?.Dispose();
+        reloadCts = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
+        ReloadAsync(reloadCts.Token).Forget();
+    }
+
     private void TryFire()
     {
         if (_isDead) return;
         if (!isFiring) return;
-        if (!gunModel.CanShoot()) return;
+        if (gunModel.IsReloading) return; // リロード中なら射撃処理は一切無視
         if (Time.time < lastFireTime + gunData.fireRate) return;
         if (!model.IsAiming) return;
 
-        if (gunModel.CurrentAmmo <= 0 && !gunModel.IsReloading)
+        // 完全に弾が尽きた（残弾0かつ予備0）ときのみ弾切れ音を鳴らす
+        if (gunModel.CurrentAmmo <= 0 && gunModel.ReserveAmmo <= 0)
         {
             gunView.PlayShotSound(gunData.emptySound);
+            return;
+        }
+
+        // 残弾は0だが予備があるときは、音を鳴らさずに自動リロードを開始
+        if (gunModel.CurrentAmmo <= 0 && gunModel.ReserveAmmo > 0)
+        {
+            StartReload();
             return;
         }
 
@@ -548,18 +516,17 @@ public class PlayerPresenter : MonoBehaviour
         gunView.PlayShotSound(gunData.fireSound);
 
         Debug.Log($"[Fire] Damage: {gunModel.Damage}, Remaining Ammo: {gunModel.CurrentAmmo}");
+
+        // 弾数が0になったら即時に自動リロードを開始する
+        if (gunModel.CurrentAmmo <= 0)
+        {
+            StartReload();
+        }
     }
 
-    /// <summary>
-    /// 武器の規定リロード時間だけ待機し、UIのプログレスバーを更新した後に弾薬を最大まで補充する非同期処理。
-    /// </summary>
     private async UniTaskVoid ReloadAsync(CancellationToken token)
     {
-        // 弾薬が最大、予備弾数が0、または既にリロード中の場合は処理を行わない
-        if (gunModel.CurrentAmmo == gunData.maxAmmo || gunModel.ReserveAmmo <= 0 || gunModel.IsReloading) return;
-
         Debug.Log("Reloading started...");
-        gunModel.IsReloading = true;
         view.PlayReloadAnim();
         gunView.PlaySimpleSound(gunData.reloadSound);
 
