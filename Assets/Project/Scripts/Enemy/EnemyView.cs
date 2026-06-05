@@ -319,23 +319,21 @@ public class EnemyView : MonoBehaviour
     }
 
     /// <summary>
-    /// 感電時の処理
+    /// animatorの再生速度と移動速度の変更
     /// </summary>
-    public void Shocked()
+    /// <param name="speed">変更後のanimator再生速度</param>
+    public void ChangeSpeed(float speed)
     {
-
-    }
-
-    /// <summary>
-    /// 凍結時の処理
-    /// </summary>
-    public void Frozen()
-    {
-
+        Debug.LogWarning("Change speed : " + speed + "f");
+        _animator.speed = speed;
+        _agent.speed = _agent.speed * speed;
+        _agent.acceleration = _agent.acceleration * speed;
     }
 
     public void Die()
     {
+        if(_animator.speed != 1) _animator.speed = 1;
+
         _agent.isStopped = true;
         _agent.ResetPath();
         _animator.SetBool("Die", true);

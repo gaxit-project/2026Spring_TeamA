@@ -4,7 +4,7 @@ public class ElectricPanel : MonoBehaviour, IDamageable
 {
     [Header("Settings")]
     [SerializeField] private int maxHP = 1;
-    [SerializeField] private int dischargeDamage = 50; // 放電のダメージ量
+    [SerializeField] private int dischargeDamage = 0; // 放電のダメージ量
     [SerializeField] private float dischargeRadius = 5.0f; // 放電の半径
 
     [Header("Effects")]
@@ -67,7 +67,7 @@ public class ElectricPanel : MonoBehaviour, IDamageable
             }
 
             // 当たったオブジェクトがゾンビなら感電させる
-            if(hitCollider.GetComponent<EnemyView>() is EnemyView enemy)
+            if(hitCollider.GetComponentInParent<EnemyPresenter>() is EnemyPresenter enemy)
             {
                 enemy.Shocked();
             }

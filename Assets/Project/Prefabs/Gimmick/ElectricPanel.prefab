@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 1
-  dischargeDamage: 50
+  dischargeDamage: 0
   dischargeRadius: 5
   dischargeEffect: {fileID: 0}
   dischargeSound: {fileID: 0}

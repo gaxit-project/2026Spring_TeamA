@@ -4,7 +4,7 @@ public class FreezeCylinder : MonoBehaviour, IDamageable
 {
     [Header("Settings")]
     [SerializeField] private int maxHP = 1;
-    [SerializeField] private int freezeDamage = 10; // 凍結のダメージ量
+    [SerializeField] private int freezeDamage = 0; // 凍結のダメージ量
     [SerializeField] private float freezeRadius = 5.0f; // 凍結の半径
 
     [Header("Effects")]
@@ -67,7 +67,7 @@ public class FreezeCylinder : MonoBehaviour, IDamageable
             }
 
             // 当たったオブジェクトがゾンビなら凍結させる
-            if (hitCollider.GetComponent<EnemyView>() is EnemyView enemy)
+            if (hitCollider.GetComponentInParent<EnemyPresenter>() is EnemyPresenter enemy)
             {
                 enemy.Frozen();
             }
