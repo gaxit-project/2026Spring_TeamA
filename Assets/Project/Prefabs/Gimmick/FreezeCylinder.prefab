@@ -125,7 +125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHP: 1
   freezeDamage: 0
-  freezeRadius: 5
+  freezeRadius: 10
   freezeEffect: {fileID: 0}
-  freezeSound: {fileID: 0}
+  freezeSound: {fileID: 8300000, guid: 3da7bb7347cd25f4d8775441a201f353, type: 3}
   soundVolume: 1

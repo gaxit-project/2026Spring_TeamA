@@ -123,7 +123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHP: 1
   dischargeDamage: 0
-  dischargeRadius: 5
+  dischargeRadius: 10
   dischargeEffect: {fileID: 0}
-  dischargeSound: {fileID: 0}
+  dischargeSound: {fileID: 8300000, guid: efe9b6b568d0b734e9d034bcc2300c26, type: 3}
   soundVolume: 1
