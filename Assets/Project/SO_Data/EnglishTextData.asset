@@ -20,7 +20,10 @@ MonoBehaviour:
   titleAudioButton: Audio
   titleLanguageButton: Language
   titleCreditButton: Credit
-  titleCreditText: '''Simulacra'' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au'
+  titleCreditText: '''Simulacra'' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au
+
+    ''Electric_Shock03-1(Timbre1-Short)''
+    by OtoLogic  - released under CC-BY 4.0. https://otologic.jp'
   pauseResumeButton: Resume
   pauseSettingsButton: Settings
   pauseQuitButton: Quit

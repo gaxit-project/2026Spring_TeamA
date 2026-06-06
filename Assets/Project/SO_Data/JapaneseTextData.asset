@@ -21,7 +21,9 @@ MonoBehaviour:
   titleLanguageButton: "\u8A00\u8A9E\u8A2D\u5B9A"
   titleCreditButton: "\u30AF\u30EC\u30B8\u30C3\u30C8"
   titleCreditText: "\u300ESimulacra\u300F / Scott Buckley - CC BY 4.0 \u30E9\u30A4\u30BB\u30F3\u30B9\u306B\u57FA\u3065\u3044\u3066\u4F7F\u7528
-    - www.scottbuckley.com.au"
+    - www.scottbuckley.com.au\n\u300EElectric_Shock03-1(Timbre1-Short)\u300F / OtoLogic 
+    - CC BY 4.0 \u30E9\u30A4\u30BB\u30F3\u30B9\u306B\u57FA\u3065\u3044\u3066\u4F7F\u7528
+    - https://otologic.jp"
   pauseResumeButton: "\u518D\u958B"
   pauseSettingsButton: "\u8A2D\u5B9A"
   pauseQuitButton: "\u30BF\u30A4\u30C8\u30EB\u3078"

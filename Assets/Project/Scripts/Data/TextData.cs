@@ -15,7 +15,7 @@ public class TextData : ScriptableObject
     public string titleAudioButton = "Audio";
     public string titleLanguageButton = "Language";
     public string titleCreditButton = "Credit";
-    public string titleCreditText = "";
+    [TextArea] public string titleCreditText = "";
 
     /// <summary>
     /// ポーズ画面用のテキスト
