@@ -14,6 +14,7 @@ public class EnemyView : MonoBehaviour
     private Collider[] colliders;
     public bool isTracking { get; set; } = false;
     private bool isHit = false;
+    private bool isFreezing = false;
 
     public enum EnemyState { Idle, Tracking, Attacking, Knock }
 
@@ -83,6 +84,11 @@ public class EnemyView : MonoBehaviour
     {
         if (Time.frameCount % 4 != 0) return;
         if (isHit) return;
+        if (isFreezing)
+        {
+            _agent.velocity = Vector3.zero;
+            return;
+        }
         if(_agent != null && _agent.isOnNavMesh)
         {
             _animator.SetBool(HashIsMoving, _agent.velocity.sqrMagnitude > 0.1f);
@@ -330,7 +336,10 @@ public class EnemyView : MonoBehaviour
     /// <param name="speed">変更後のanimator再生速度</param>
     public void ChangeSpeed(float speed)
     {
-        Debug.LogWarning("Change speed : " + speed + "f");
+        if (speed == 0) isFreezing = true;
+        else isFreezing = false;
+
+        _agent.velocity = _agent.velocity * speed;
         _animator.speed = speed;
         _agent.speed = _agent.speed * speed;
         _agent.acceleration = _agent.acceleration * speed;
